@@ -13,6 +13,8 @@ import {
 } from 'firebase/firestore'
 import { db, isFirebaseConfigured } from './firebase'
 import {
+  seedAboutChurch,
+  seedAboutPastor,
   seedAboutTabs,
   seedContact,
   seedEducation,
@@ -26,6 +28,8 @@ import {
   seedWorship,
 } from '../data/seed'
 import type {
+  AboutChurch,
+  AboutPastor,
   AboutTab,
   AnnualMotto,
   ContactInfo,
@@ -212,6 +216,51 @@ export async function getAboutTabs(): Promise<AboutTab[]> {
       content: String(d.content ?? ''),
     }))) ?? seedAboutTabs
   )
+}
+
+export async function getAboutChurch(): Promise<AboutChurch> {
+  return (
+    (await fetchDoc<AboutChurch>('aboutChurch', 'main', (id, d) => ({
+      id,
+      heroImageUrl: String(d.heroImageUrl ?? seedAboutChurch.heroImageUrl),
+      title: String(d.title ?? seedAboutChurch.title),
+      body: String(d.body ?? seedAboutChurch.body),
+      updatedAt: String(d.updatedAt ?? ''),
+    }))) ?? seedAboutChurch
+  )
+}
+
+export async function getAboutPastor(): Promise<AboutPastor> {
+  return (
+    (await fetchDoc<AboutPastor>('aboutPastor', 'main', (id, d) => {
+      const education = Array.isArray(d.education)
+        ? d.education.map(String)
+        : seedAboutPastor.education
+      const career = Array.isArray(d.career) ? d.career.map(String) : seedAboutPastor.career
+      return {
+        id,
+        photoUrl: String(d.photoUrl ?? seedAboutPastor.photoUrl),
+        name: String(d.name ?? seedAboutPastor.name),
+        title: String(d.title ?? seedAboutPastor.title),
+        education,
+        career,
+        notes: String(d.notes ?? ''),
+        updatedAt: String(d.updatedAt ?? ''),
+      }
+    })) ?? seedAboutPastor
+  )
+}
+
+/** Textarea 줄 단위 → 배열 (빈 줄 제거) */
+export function linesToList(text: string): string[] {
+  return text
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
+
+export function listToLines(list: string[]): string {
+  return list.join('\n')
 }
 
 export async function getStaffMembers(): Promise<StaffMember[]> {

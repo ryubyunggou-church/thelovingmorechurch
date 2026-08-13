@@ -62,6 +62,27 @@ export interface AboutTab {
   content: string
 }
 
+/** /about 교회소개 탭 */
+export interface AboutChurch {
+  id: string
+  heroImageUrl: string
+  title: string
+  body: string
+  updatedAt: string
+}
+
+/** /about 담임목사소개 탭 */
+export interface AboutPastor {
+  id: string
+  photoUrl: string
+  name: string
+  title: string
+  education: string[]
+  career: string[]
+  notes: string
+  updatedAt: string
+}
+
 export interface StaffMember {
   id: string
   name: string

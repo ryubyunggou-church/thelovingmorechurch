@@ -48,6 +48,16 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    match /aboutChurch/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /aboutPastor/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     match /staffMembers/{id} {
       allow read: if true;
       allow write: if isAdmin();

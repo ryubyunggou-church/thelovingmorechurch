@@ -1,4 +1,6 @@
 import type {
+  AboutChurch,
+  AboutPastor,
   AboutTab,
   AnnualMotto,
   ContactInfo,
@@ -131,13 +133,47 @@ export const seedAboutTabs: AboutTab[] = [
   },
 ]
 
+/** /about 교회소개 — 전경 + 본문 placeholder */
+export const seedAboutChurch: AboutChurch = {
+  id: 'main',
+  heroImageUrl:
+    'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1600&q=80',
+  title: '교회소개',
+  body: `대한예수교장로회 사랑하는교회는 예수 그리스도의 십자가 복음을 중심으로, 예배·교육·선교·교제를 통해 하나님의 나라를 이 땅에 이루고자 합니다.
+
+말씀 위에 굳게 서서 세대를 아우르는 공동체를 세우며, 이웃과 열방을 향해 열린 교회로 걸어갑니다.
+
+(placeholder — 관리자 모드에서 교회전경 사진과 소개글을 수정할 수 있습니다.)`,
+  updatedAt: new Date().toISOString(),
+}
+
+/** /about 담임목사소개 — 인물 + 학력/경력 placeholder */
+export const seedAboutPastor: AboutPastor = {
+  id: 'main',
+  photoUrl:
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+  name: '유병구 목사',
+  title: '담임목사',
+  education: [
+    '○○대학교 신학과 졸업 (placeholder)',
+    '○○신학대학원 M.Div. (placeholder)',
+  ],
+  career: [
+    '○○교회 부목사 사역 (placeholder)',
+    '대한예수교장로회 사랑하는교회 담임 (현재)',
+  ],
+  notes:
+    '성도와 함께 말씀과 기도로 성장하는 공동체를 소망합니다. (placeholder — 관리자 편집으로 교체)',
+  updatedAt: new Date().toISOString(),
+}
+
 export const seedStaff: StaffMember[] = [
   {
     id: 's1',
-    name: '김○○',
+    name: '유병구',
     role: '담임목사',
     photoUrl:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
     order: 1,
   },
   {
@@ -145,7 +181,7 @@ export const seedStaff: StaffMember[] = [
     name: '이○○',
     role: '부목사',
     photoUrl:
-      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
     order: 2,
   },
   {
@@ -153,8 +189,16 @@ export const seedStaff: StaffMember[] = [
     name: '박○○',
     role: '전도사',
     photoUrl:
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
     order: 3,
+  },
+  {
+    id: 's4',
+    name: '최○○',
+    role: '교육전도사',
+    photoUrl:
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80',
+    order: 4,
   },
 ]
 
