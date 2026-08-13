@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
+import { GripVertical, Plus, Trash2 } from 'lucide-react'
 import { PageShell } from '../components/layout/PageShell'
 import { Seo } from '../components/shared/Seo'
-import { ListPage } from '../components/shared/ListPage'
 import { EditableBlock } from '../components/shared/EditableBlock'
+import { WorshipScheduleList } from '../features/worship/WorshipScheduleList'
 import { FormField } from '../components/ui/form-field'
 import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
-import { getWorshipSchedule, saveDocument } from '../lib/content-service'
+import { getWorshipSchedule, removeDocument, saveDocument } from '../lib/content-service'
 import type { WorshipScheduleItem } from '../types/content'
 import { seedWorship } from '../data/seed'
 import { useAdminStore } from '../store/admin-store'
+import { cn } from '../lib/utils'
 
 export function WorshipPage() {
   const [items, setItems] = useState<WorshipScheduleItem[]>(seedWorship)
@@ -34,17 +36,19 @@ export function WorshipPage() {
           renderEditor={(close) => (
             <WorshipEditor
               items={items}
-              onSave={async (next) => {
+              onSave={async (next, removedIds) => {
                 try {
-                  await Promise.all(
-                    next.map((item) =>
-                      saveDocument(
-                        'worshipSchedule',
-                        item.id,
-                        item as unknown as Record<string, unknown>,
-                      ),
+                  await Promise.all([
+                    ...removedIds.map((id) => removeDocument('worshipSchedule', id)),
+                    ...next.map((item, index) =>
+                      saveDocument('worshipSchedule', item.id, {
+                        name: item.name,
+                        time: item.time,
+                        note: item.note,
+                        order: index + 1,
+                      }),
                     ),
-                  )
+                  ])
                   pushToast({ title: '예배안내 저장됨', variant: 'success' })
                   await reload()
                   close()
@@ -59,14 +63,7 @@ export function WorshipPage() {
             />
           )}
         >
-          <ListPage
-            items={items.map((i) => ({
-              id: i.id,
-              title: i.name,
-              meta: i.time,
-              note: i.note,
-            }))}
-          />
+          <WorshipScheduleList items={items} />
         </EditableBlock>
       </PageShell>
     </>
@@ -78,67 +75,184 @@ function WorshipEditor({
   onSave,
 }: {
   items: WorshipScheduleItem[]
-  onSave: (items: WorshipScheduleItem[]) => Promise<void>
+  onSave: (items: WorshipScheduleItem[], removedIds: string[]) => Promise<void>
 }) {
-  const [draft, setDraft] = useState(items)
+  const [draft, setDraft] = useState(() => [...items].sort((a, b) => a.order - b.order))
+  const [removedIds, setRemovedIds] = useState<string[]>([])
   const [saving, setSaving] = useState(false)
+  const [dragIndex, setDragIndex] = useState<number | null>(null)
+  const [overIndex, setOverIndex] = useState<number | null>(null)
 
   useEffect(() => {
-    setDraft(items)
+    setDraft([...items].sort((a, b) => a.order - b.order))
+    setRemovedIds([])
   }, [items])
 
+  const updateAt = (idx: number, patch: Partial<WorshipScheduleItem>) => {
+    setDraft((prev) => {
+      const next = [...prev]
+      const cur = next[idx]
+      if (!cur) return prev
+      next[idx] = { ...cur, ...patch }
+      return next
+    })
+  }
+
+  const addItem = () => {
+    const id = `w_${Date.now()}`
+    setDraft((prev) => [
+      ...prev,
+      {
+        id,
+        name: '새 예배',
+        time: '',
+        note: '',
+        order: prev.length + 1,
+      },
+    ])
+  }
+
+  const removeAt = (idx: number) => {
+    const target = draft[idx]
+    if (!target) return
+    const existed = items.some((i) => i.id === target.id)
+    if (existed) {
+      setRemovedIds((r) => (r.includes(target.id) ? r : [...r, target.id]))
+    }
+    setDraft((prev) => prev.filter((_, i) => i !== idx))
+  }
+
+  const onDragStart = (e: React.DragEvent, idx: number) => {
+    setDragIndex(idx)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', String(idx))
+  }
+
+  const onDragOver = (e: React.DragEvent, idx: number) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    if (overIndex !== idx) setOverIndex(idx)
+  }
+
+  const onDrop = (e: React.DragEvent, idx: number) => {
+    e.preventDefault()
+    const from = dragIndex
+    if (from === null || from === idx) {
+      setDragIndex(null)
+      setOverIndex(null)
+      return
+    }
+    setDraft((prev) => {
+      const next = [...prev]
+      const [moved] = next.splice(from, 1)
+      if (!moved) return prev
+      next.splice(idx, 0, moved)
+      return next
+    })
+    setDragIndex(null)
+    setOverIndex(null)
+  }
+
+  const onDragEnd = () => {
+    setDragIndex(null)
+    setOverIndex(null)
+  }
+
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <p className="text-xs text-ink-muted">
-        각 예배 행의 예배명·시간·비고를 수정한 뒤 저장하세요. 내용이 많으면 모달 안에서 스크롤됩니다.
+        왼쪽 핸들을 드래그해 순서를 바꾸거나, 추가·삭제한 뒤 저장하세요. 목록이 길면 모달 안에서
+        스크롤됩니다.
       </p>
-      {draft.map((item, idx) => (
-        <div key={item.id} className="space-y-3 rounded-lg border border-stone p-3">
-          <p className="text-xs font-semibold text-terracotta">예배 #{idx + 1}</p>
-          <FormField label="예배명" htmlFor={`w-name-${item.id}`} hint="예: 주일 오전예배, 수요예배">
-            <Input
-              id={`w-name-${item.id}`}
-              value={item.name}
-              onChange={(e) => {
-                const next = [...draft]
-                next[idx] = { ...item, name: e.target.value }
-                setDraft(next)
-              }}
-              placeholder="예배명"
-            />
-          </FormField>
-          <FormField label="시간" htmlFor={`w-time-${item.id}`} hint="예: 오전 11:00">
-            <Input
-              id={`w-time-${item.id}`}
-              value={item.time}
-              onChange={(e) => {
-                const next = [...draft]
-                next[idx] = { ...item, time: e.target.value }
-                setDraft(next)
-              }}
-              placeholder="시간"
-            />
-          </FormField>
-          <FormField label="비고" htmlFor={`w-note-${item.id}`} hint="장소·요일 등 부가 정보">
-            <Input
-              id={`w-note-${item.id}`}
-              value={item.note}
-              onChange={(e) => {
-                const next = [...draft]
-                next[idx] = { ...item, note: e.target.value }
-                setDraft(next)
-              }}
-              placeholder="비고"
-            />
-          </FormField>
-        </div>
-      ))}
-      <div className="flex justify-end">
+
+      <div className="space-y-3">
+        {draft.map((item, idx) => (
+          <div
+            key={item.id}
+            onDragOver={(e) => onDragOver(e, idx)}
+            onDrop={(e) => onDrop(e, idx)}
+            className={cn(
+              'space-y-3 rounded-xl border p-3 transition-colors',
+              // 카드 배경: cream보다 진한 토프 계열로 구분
+              'border-[#c4ae8e]/70 bg-[#e4d5be]',
+              dragIndex === idx && 'opacity-60',
+              overIndex === idx && dragIndex !== idx && 'ring-2 ring-terracotta/50',
+            )}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-2">
+                <span
+                  draggable
+                  onDragStart={(e) => onDragStart(e, idx)}
+                  onDragEnd={onDragEnd}
+                  className="inline-flex cursor-grab touch-none rounded-md p-1 text-ink-muted hover:bg-cream/50 active:cursor-grabbing"
+                  aria-label="드래그하여 순서 변경"
+                  role="button"
+                  tabIndex={0}
+                >
+                  <GripVertical className="h-5 w-5" />
+                </span>
+                <p className="text-xs font-semibold text-terracotta">예배 #{idx + 1}</p>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="shrink-0 border-red-200 bg-cream/80 text-red-800 hover:bg-red-50"
+                onClick={() => removeAt(idx)}
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                삭제
+              </Button>
+            </div>
+
+            <FormField label="예배명" htmlFor={`w-name-${item.id}`} hint="예: 주일 오전예배, 수요예배">
+              <Input
+                id={`w-name-${item.id}`}
+                value={item.name}
+                onChange={(e) => updateAt(idx, { name: e.target.value })}
+                placeholder="예배명"
+                className="bg-cream"
+              />
+            </FormField>
+            <FormField label="시간" htmlFor={`w-time-${item.id}`} hint="예: 오전 11:00">
+              <Input
+                id={`w-time-${item.id}`}
+                value={item.time}
+                onChange={(e) => updateAt(idx, { time: e.target.value })}
+                placeholder="시간"
+                className="bg-cream"
+              />
+            </FormField>
+            <FormField label="비고" htmlFor={`w-note-${item.id}`} hint="장소·요일 등 부가 정보">
+              <Input
+                id={`w-note-${item.id}`}
+                value={item.note}
+                onChange={(e) => updateAt(idx, { note: e.target.value })}
+                placeholder="비고"
+                className="bg-cream"
+              />
+            </FormField>
+          </div>
+        ))}
+      </div>
+
+      {draft.length === 0 ? (
+        <p className="rounded-lg border border-dashed border-[#c4ae8e] bg-[#e4d5be]/50 px-3 py-6 text-center text-sm text-ink-muted">
+          등록된 예배가 없습니다. 아래 「예배 추가」를 눌러 주세요.
+        </p>
+      ) : null}
+
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-stone/60 pt-3">
+        <Button type="button" variant="outline" onClick={addItem}>
+          <Plus className="h-4 w-4" />
+          예배 추가
+        </Button>
         <Button
           disabled={saving}
           onClick={() => {
             setSaving(true)
-            void onSave(draft).finally(() => setSaving(false))
+            void onSave(draft, removedIds).finally(() => setSaving(false))
           }}
         >
           저장 후 게시

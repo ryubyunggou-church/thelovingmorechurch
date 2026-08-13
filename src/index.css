@@ -66,3 +66,60 @@
 .site-footer__rule {
   border-top: 1px solid #c4ae8e !important;
 }
+
+/* Radix Tooltip — fade + soft scale (exit animation uses keyframes so Radix waits) */
+@keyframes ui-tooltip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes ui-tooltip-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+}
+
+.ui-tooltip-content[data-state='delayed-open'],
+.ui-tooltip-content[data-state='instant-open'] {
+  animation: ui-tooltip-in 170ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.ui-tooltip-content[data-state='closed'] {
+  animation: ui-tooltip-out 130ms ease-in both;
+}
+
+.ui-tooltip-content[data-side='bottom'][data-state='delayed-open'],
+.ui-tooltip-content[data-side='bottom'][data-state='instant-open'] {
+  animation-name: ui-tooltip-in-from-top;
+}
+
+@keyframes ui-tooltip-in-from-top {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-tooltip-content[data-state='delayed-open'],
+  .ui-tooltip-content[data-state='instant-open'],
+  .ui-tooltip-content[data-state='closed'] {
+    animation: none !important;
+  }
+}
+
