@@ -1,0 +1,38 @@
+rules_version = '2';
+
+// tlmchurch — Firebase Storage
+// 읽기: 공개 (사이트 이미지/영상 표시)
+// 쓰기: Firestore admins/{uid} 에 등록된 관리자만 + 용량/타입 제한
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Firestore admins 컬렉션에 문서가 있으면 관리자 (super/sub 동일)
+    function isAdmin() {
+      return isSignedIn()
+        && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+    }
+
+    function isAllowedContentType() {
+      return request.resource.contentType.matches('image/.*')
+        || request.resource.contentType.matches('video/mp4')
+        || request.resource.contentType.matches('video/webm');
+    }
+
+    // 앱 업로드 경로 (uploadMediaFile → uploads/{folder}/...)
+    match /uploads/{allPaths=**} {
+      allow read: if true;
+      allow create, update: if isAdmin()
+        && request.resource.size < 15 * 1024 * 1024
+        && isAllowedContentType();
+      allow delete: if isAdmin();
+    }
+
+    // 그 외 경로는 거부
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

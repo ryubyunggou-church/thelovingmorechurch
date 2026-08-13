@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-cream: #faf6f0;
+  --color-cream-dark: #f1ebe1;
+  --color-stone: #e4d9cb;
+  /* 푸터 전용: cream(#faf6f0) 대비 확실한 웜 토프 (본문과 분리) */
+  --color-footer: #d8c4a8;
+  --color-footer-border: #c4ae8e;
+  --color-ink: #3b2f2a;
+  --color-ink-muted: #6b5b52;
+  --color-terracotta: #c46b3e;
+  --color-terracotta-dark: #a55630;
+
+  --font-serif: 'Noto Serif KR', 'Georgia', serif;
+  --font-sans: 'Noto Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    font-family: var(--font-sans);
+    background: var(--color-cream);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3 {
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+  }
+
+  .prose a {
+    color: var(--color-terracotta);
+  }
+}
+
+/* 푸터 배경 강제 — 유틸/캐시와 무관하게 항상 적용 */
+.site-footer {
+  background-color: #d8c4a8 !important;
+  border-top: 1px solid #c4ae8e !important;
+}
+
+.site-footer__rule {
+  border-top: 1px solid #c4ae8e !important;
+}

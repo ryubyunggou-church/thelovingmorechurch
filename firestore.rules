@@ -1,0 +1,89 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isSuperAdmin() {
+      return isAdmin()
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'super';
+    }
+
+    // Admin registry: read by signed-in users; write only by super (prefer Cloud Functions)
+    match /admins/{uid} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // Public content collections
+    match /heroSlides/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /siteSettings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /pastorGreeting/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /annualMotto/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /aboutTabs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /staffMembers/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /worshipSchedule/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /educationDepartments/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /missions/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /contactInfo/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // News: published posts public; drafts admin-only; write admin-only
+    match /newsPosts/{id} {
+      allow read: if resource.data.isPublished == true || isAdmin();
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasAll(['title', 'contentHtml', 'isPublished', 'authorUid', 'createdAt'])
+        && request.resource.data.authorUid == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
