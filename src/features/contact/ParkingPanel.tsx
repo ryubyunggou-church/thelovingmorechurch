@@ -42,8 +42,16 @@ export function ParkingPanel({ contact, onUpdated }: Props) {
         {photos.length > 0 ? (
           <div className="grid gap-3 sm:grid-cols-2">
             {photos.slice(0, 2).map((url) => (
-              <div key={url} className="overflow-hidden rounded-2xl border border-stone shadow-sm">
-                <img src={url} alt="" className="aspect-[4/3] w-full object-cover" loading="lazy" />
+              <div
+                key={url}
+                className="group overflow-hidden rounded-2xl border border-stone shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_-12px_rgba(196,107,62,0.4)]"
+              >
+                <img
+                  src={url}
+                  alt=""
+                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
               </div>
             ))}
           </div>
