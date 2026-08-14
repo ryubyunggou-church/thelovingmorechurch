@@ -11,6 +11,7 @@ import { RouteListPanel } from '../features/contact/RouteListPanel'
 import { ParkingPanel } from '../features/contact/ParkingPanel'
 import { MapImagePanel } from '../features/contact/MapImagePanel'
 import { getContactInfo, saveDocument } from '../lib/content-service'
+import { toTelHref } from '../lib/utils'
 import type { ContactInfo } from '../types/content'
 import { seedContact } from '../data/seed'
 import { useAdminStore } from '../store/admin-store'
@@ -75,9 +76,19 @@ export function ContactPage() {
                       <div className="h-full space-y-4 rounded-2xl border border-stone bg-white p-6 shadow-sm">
                         <h2 className="font-serif text-xl font-semibold text-ink">교회 연락처</h2>
                         <InfoRow icon={MapPin} label="주소" value={contact.address} />
-                        <InfoRow icon={Phone} label="전화" value={contact.phone} />
+                        <InfoRow
+                          icon={Phone}
+                          label="전화"
+                          value={contact.phone}
+                          href={contact.phone ? toTelHref(contact.phone) : undefined}
+                        />
                         <InfoRow icon={Printer} label="팩스" value={contact.fax} />
-                        <InfoRow icon={Mail} label="이메일" value={contact.email} />
+                        <InfoRow
+                          icon={Mail}
+                          label="이메일"
+                          value={contact.email}
+                          href={contact.email ? `mailto:${contact.email}` : undefined}
+                        />
                       </div>
                     </EditableBlock>
 
@@ -108,17 +119,29 @@ function InfoRow({
   icon: Icon,
   label,
   value,
+  href,
 }: {
   icon: typeof MapPin
   label: string
   value: string
+  /** 있으면 값을 링크(tel:/mailto: 등)로 렌더링 */
+  href?: string
 }) {
   return (
     <div className="flex items-start gap-3">
       <Icon className="mt-0.5 h-5 w-5 shrink-0 text-terracotta" />
       <div>
         <p className="text-xs font-semibold tracking-wide text-ink-muted">{label}</p>
-        <p className="whitespace-pre-line text-sm text-ink">{value}</p>
+        {href ? (
+          <a
+            href={href}
+            className="whitespace-pre-line text-sm text-ink underline-offset-2 transition hover:text-terracotta hover:underline"
+          >
+            {value}
+          </a>
+        ) : (
+          <p className="whitespace-pre-line text-sm text-ink">{value}</p>
+        )}
       </div>
     </div>
   )

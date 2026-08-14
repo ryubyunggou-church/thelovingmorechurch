@@ -1,5 +1,6 @@
 import { SITE_NAME } from '../../types/content'
 import { useAdminStore } from '../../store/admin-store'
+import { toTelHref } from '../../lib/utils'
 
 /** 푸터 고정 연락처 (공식 소재지) */
 const FOOTER_CONTACT = {
@@ -35,7 +36,13 @@ export function Footer() {
             </p>
             <p className="text-xs sm:text-sm">{FOOTER_CONTACT.addressEn}</p>
             <p className="pt-1">
-              <span className="font-medium text-ink">Tel</span> : {FOOTER_CONTACT.tel}
+              <span className="font-medium text-ink">Tel</span> :{' '}
+              <a
+                href={toTelHref(FOOTER_CONTACT.tel)}
+                className="underline-offset-2 transition hover:text-terracotta hover:underline"
+              >
+                {FOOTER_CONTACT.tel}
+              </a>
               <span className="mx-2 text-stone" aria-hidden>
                 |
               </span>
