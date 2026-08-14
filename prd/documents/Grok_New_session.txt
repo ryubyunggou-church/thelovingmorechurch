@@ -25,20 +25,8 @@ Grok 새로운 세션 여는 방법 (이 환경 기준)
 정리: UI에서 새 채팅 → 같은 repo 열기 → 위 한 줄 + 다음 할 일 이면 충분합니다.
 
 
-* 교육부서
-1. 편집' 모달 : 1) 신규부서 추가 및 삭제. 
-              2)부서명' 명칭의 입력필드 명칭을 자동으로 분석하여 대표사진 이미지를 unsplash 에서 추출하여 입력필드에 저장해 주는 로직.
+<a href="https://map.kakao.com/?urlX=512492&urlY=1129706&urlLevel=3&map_type=TYPE_MAP&map_hybrid=false" target="_blank"><img width="504" height="310" src="https://staticmap.kakao.com/map/mapservice?FORMAT=PNG&SCALE=2.5&MX=512492&MY=1129705&S=0&IW=504&IH=310&LANG=0&COORDSTM=WCONGNAMUL&logo=kakao_logo" style="border:1px solid #ccc"></a><div class="hide" style="overflow:hidden;padding:7px 11px;border:1px solid #dfdfdf;border-color:rgba(0,0,0,.1);border-radius:0 0 2px 2px;background-color:#f9f9f9;width:482px;"><strong style="float: left;"><img src="//t1.kakaocdn.net/localimg/localimages/07/2018/pc/common/logo_kakaomap.png" width="72" height="16" alt="카카오맵"></strong><div style="float: right;position:relative"><a style="font-size:12px;text-decoration:none;float:left;height:15px;padding-top:1px;line-height:15px;color:#000" target="_blank" href="https://map.kakao.com/?urlX=512492&urlY=1129706&urlLevel=3&map_type=TYPE_MAP&map_hybrid=false">지도 크게 보기</a></div></div>
 
-
-
-* 선교사역
-1. 편집' 모달 : 1)'사역/선교지 이름' 입력필드의 명칭을 자동으로 분석하여 대표사진 이미지를 unsplash 에서 추출하여 입력필드에 저장해 주는 로직.
-
-
-
-
-인도 . 해외선교 . 첸나이
-캄보디아 . 해외선교 . 예수마을선교회
 
 
 

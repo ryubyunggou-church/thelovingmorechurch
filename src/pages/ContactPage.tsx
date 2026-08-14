@@ -10,6 +10,8 @@ import { Button } from '../components/ui/button'
 import { RouteListPanel } from '../features/contact/RouteListPanel'
 import { ParkingPanel } from '../features/contact/ParkingPanel'
 import { getContactInfo, saveDocument } from '../lib/content-service'
+import { isMapEmbedUrl, normalizeMapEmbed } from '../lib/map-embed'
+import { sanitizeHtml } from '../lib/sanitize'
 import type { ContactInfo } from '../types/content'
 import { seedContact } from '../data/seed'
 import { useAdminStore } from '../store/admin-store'
@@ -86,16 +88,25 @@ export function ContactPage() {
 
                     <div className="overflow-hidden rounded-2xl border border-stone bg-cream-dark">
                       {contact.naverMapEmbedUrl ? (
-                        <iframe
-                          title="네이버 지도"
-                          src={contact.naverMapEmbedUrl}
-                          className="h-[280px] w-full border-0 lg:h-full lg:min-h-[280px]"
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                        />
+                        isMapEmbedUrl(contact.naverMapEmbedUrl) ? (
+                          <iframe
+                            title="찾아오시는 길 지도"
+                            src={contact.naverMapEmbedUrl}
+                            className="h-[280px] w-full border-0 lg:h-full lg:min-h-[280px]"
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                          />
+                        ) : (
+                          <div
+                            className="flex h-full min-h-[280px] w-full items-center justify-center overflow-hidden p-4 [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg"
+                            dangerouslySetInnerHTML={{
+                              __html: sanitizeHtml(contact.naverMapEmbedUrl),
+                            }}
+                          />
+                        )
                       ) : (
                         <div className="flex h-[280px] items-center justify-center text-sm text-ink-muted">
-                          네이버 지도 embed URL을 관리자 모드에서 설정해 주세요.
+                          지도 embed URL을 관리자 모드에서 설정해 주세요.
                         </div>
                       )}
                     </div>
@@ -169,9 +180,10 @@ const CONTACT_FIELDS = [
   },
   {
     key: 'naverMapEmbedUrl' as const,
-    label: '네이버 지도 embed URL',
-    hint: '네이버 지도 공유 → HTML 소스의 iframe src 또는 지도 페이지 URL',
-    placeholder: 'https://map.naver.com/…',
+    label: '지도 embed 코드',
+    hint: '네이버 지도는 iframe 임베드를 지원하지 않습니다 · 카카오맵 "공유하기"에서 복사한 코드를 통짜로 붙여넣으세요 (iframe/이미지+링크 위젯 모두 지원)',
+    placeholder: '카카오맵 공유 코드 또는 https://map.kakao.com/…',
+    multiline: true,
   },
 ]
 
@@ -224,7 +236,8 @@ function ContactEditor({
               phone: form.phone.trim() || contact.phone,
               fax: form.fax.trim() || contact.fax,
               email: form.email.trim() || contact.email,
-              naverMapEmbedUrl: form.naverMapEmbedUrl.trim() || contact.naverMapEmbedUrl,
+              naverMapEmbedUrl:
+                normalizeMapEmbed(form.naverMapEmbedUrl) || contact.naverMapEmbedUrl,
             }).finally(() => setSaving(false))
           }}
         >
