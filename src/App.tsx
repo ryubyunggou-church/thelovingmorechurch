@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
 import { BackToTop } from './components/layout/BackToTop'
@@ -36,6 +36,17 @@ const NotFoundPage = lazy(() =>
   import('./pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
 )
 
+/** 라우트 이동 시 이전 페이지의 스크롤 위치가 그대로 남아 상단이 잘려 보이는 문제 방지 */
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
+
 function PageFallback() {
   return (
     <div className="flex min-h-[40vh] items-center justify-center text-sm text-ink-muted">
@@ -54,6 +65,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="flex min-h-screen flex-col bg-cream text-ink">
         <Header />
         <main className="flex-1">
