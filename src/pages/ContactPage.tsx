@@ -5,6 +5,7 @@ import { TabbedPage } from '../components/shared/TabbedPage'
 import { EditableBlock } from '../components/shared/EditableBlock'
 import { FormField } from '../components/ui/form-field'
 import { Input } from '../components/ui/input'
+import { Textarea } from '../components/ui/textarea'
 import { Button } from '../components/ui/button'
 import { RouteListPanel } from '../features/contact/RouteListPanel'
 import { ParkingPanel } from '../features/contact/ParkingPanel'
@@ -134,7 +135,7 @@ function InfoRow({
       <Icon className="mt-0.5 h-5 w-5 shrink-0 text-terracotta" />
       <div>
         <p className="text-xs font-semibold tracking-wide text-ink-muted">{label}</p>
-        <p className="text-sm text-ink">{value}</p>
+        <p className="whitespace-pre-line text-sm text-ink">{value}</p>
       </div>
     </div>
   )
@@ -144,8 +145,9 @@ const CONTACT_FIELDS = [
   {
     key: 'address' as const,
     label: '주소',
-    hint: '예배당 도로명 주소',
+    hint: '예배당 도로명 주소 · 여러 줄 입력 가능',
     placeholder: '경기도 …',
+    multiline: true,
   },
   {
     key: 'phone' as const,
@@ -189,16 +191,28 @@ function ContactEditor({
 
   return (
     <div className="space-y-4">
-      {CONTACT_FIELDS.map((f) => (
-        <FormField key={f.key} label={f.label} htmlFor={`contact-${f.key}`} hint={f.hint}>
-          <Input
-            id={`contact-${f.key}`}
-            value={form[f.key]}
-            placeholder={f.placeholder}
-            onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
-          />
-        </FormField>
-      ))}
+      {CONTACT_FIELDS.map((f) =>
+        f.multiline ? (
+          <FormField key={f.key} label={f.label} htmlFor={`contact-${f.key}`} hint={f.hint}>
+            <Textarea
+              id={`contact-${f.key}`}
+              className="min-h-[80px]"
+              value={form[f.key]}
+              placeholder={f.placeholder}
+              onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+            />
+          </FormField>
+        ) : (
+          <FormField key={f.key} label={f.label} htmlFor={`contact-${f.key}`} hint={f.hint}>
+            <Input
+              id={`contact-${f.key}`}
+              value={form[f.key]}
+              placeholder={f.placeholder}
+              onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+            />
+          </FormField>
+        ),
+      )}
       <div className="flex justify-end">
         <Button
           disabled={saving}
