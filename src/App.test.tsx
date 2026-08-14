@@ -7,7 +7,6 @@ vi.mock('./lib/firebase', () => ({
   app: null,
   auth: null,
   db: null,
-  storage: null,
   isFirebaseConfigured: false,
 }))
 

@@ -1,5 +1,4 @@
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { storage, auth } from './firebase'
+import { app, auth } from './firebase'
 import { detectMediaType as detectMediaKind } from './media'
 
 export { detectMediaKind as detectMediaType }
@@ -30,7 +29,7 @@ function mapUploadError(err: unknown): string {
 
 /** Upload to Firebase Storage `uploads/{folder}/...` and return public download URL. */
 export async function uploadMediaFile(file: File, folder = 'hero'): Promise<string> {
-  if (!storage) {
+  if (!app) {
     throw new Error('Firebase Storage가 설정되지 않았습니다. .env 및 Storage 활성화를 확인해 주세요.')
   }
   if (!auth?.currentUser) {
@@ -43,6 +42,12 @@ export async function uploadMediaFile(file: File, folder = 'hero'): Promise<stri
   if (file.size > 15 * 1024 * 1024) {
     throw new Error('파일 용량은 15MB 이하여야 합니다.')
   }
+
+  // Lazy-load the Storage SDK so it's excluded from the eagerly-loaded
+  // firebase chunk that every visitor downloads — only admins uploading
+  // media pull this in.
+  const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
+  const storage = getStorage(app)
 
   const safeName = file.name.replace(/[^\w.\-가-힣]/g, '_')
   const path = `uploads/${folder}/${Date.now()}_${safeName}`
