@@ -71,4 +71,35 @@ describe('EducationDeptManagePanel', () => {
     await waitFor(() => expect(removeDocument).toHaveBeenCalledWith('educationDepartments', 'd2'))
     expect(onUpdated).toHaveBeenCalled()
   })
+
+  it('allows renaming a default department inline', async () => {
+    const user = userEvent.setup()
+    const onUpdated = vi.fn()
+    render(<EducationDeptManagePanel depts={depts} onUpdated={onUpdated} />)
+
+    await user.click(screen.getByRole('button', { name: /유치부/ }))
+    const input = screen.getByRole('textbox', { name: /유치부 부서명 수정/ })
+    await user.clear(input)
+    await user.type(input, '유아부')
+    await user.click(screen.getByRole('button', { name: '저장' }))
+
+    await waitFor(() =>
+      expect(saveDocument).toHaveBeenCalledWith('educationDepartments', 'd1', { name: '유아부' }),
+    )
+    expect(onUpdated).toHaveBeenCalled()
+  })
+
+  it('cancels inline rename without saving', async () => {
+    saveDocument.mockClear()
+    const user = userEvent.setup()
+    render(<EducationDeptManagePanel depts={depts} onUpdated={() => {}} />)
+
+    await user.click(screen.getByRole('button', { name: /유치부/ }))
+    const input = screen.getByRole('textbox', { name: /유치부 부서명 수정/ })
+    await user.type(input, '변경중')
+    await user.click(screen.getByRole('button', { name: '취소' }))
+
+    expect(saveDocument).not.toHaveBeenCalled()
+    expect(screen.getByRole('button', { name: /유치부/ })).toBeInTheDocument()
+  })
 })

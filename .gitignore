@@ -18,6 +18,8 @@ dist-ssr
 !.env.example
 prd/github-firebase-info.txt
 **/serviceAccount*.json
+**/*firebase-adminsdk*.json
+prd/documents/*.json
 
 # Editor
 .vscode/*

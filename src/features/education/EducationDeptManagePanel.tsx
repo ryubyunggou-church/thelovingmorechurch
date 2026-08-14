@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { Plus, Trash2 } from 'lucide-react'
+import { Check, Pencil, Plus, Trash2, X } from 'lucide-react'
 import type { EducationDepartment } from '../../types/content'
 import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
 import { removeDocument, saveDocument } from '../../lib/content-service'
 import { createBlankEducationDept, isDefaultEducationDept } from '../../lib/education-order'
 import { cn } from '../../lib/utils'
@@ -20,6 +21,9 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
   const [adding, setAdding] = useState(false)
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editValue, setEditValue] = useState('')
+  const [savingId, setSavingId] = useState<string | null>(null)
   const confirmTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -70,6 +74,43 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
     confirmTimer.current = setTimeout(() => setConfirmingId(null), CONFIRM_TIMEOUT_MS)
   }
 
+  const startEditing = (dept: EducationDepartment) => {
+    setEditingId(dept.id)
+    setEditValue(dept.name)
+  }
+
+  const cancelEditing = () => {
+    setEditingId(null)
+    setEditValue('')
+  }
+
+  const saveName = async (dept: EducationDepartment) => {
+    const trimmed = editValue.trim()
+    if (!trimmed) {
+      pushToast({ title: '부서명을 입력해 주세요', variant: 'error' })
+      return
+    }
+    if (trimmed === dept.name) {
+      cancelEditing()
+      return
+    }
+    setSavingId(dept.id)
+    try {
+      await saveDocument('educationDepartments', dept.id, { name: trimmed })
+      pushToast({ title: '부서명이 수정되었습니다', variant: 'success' })
+      cancelEditing()
+      onUpdated()
+    } catch (err) {
+      pushToast({
+        title: '부서명 수정 실패',
+        description: err instanceof Error ? err.message : '',
+        variant: 'error',
+      })
+    } finally {
+      setSavingId(null)
+    }
+  }
+
   const doDelete = async (id: string) => {
     if (confirmTimer.current) clearTimeout(confirmTimer.current)
     setDeletingId(id)
@@ -96,7 +137,7 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
         <h2 className="mt-1 font-serif text-2xl font-semibold text-ink">부서추가/삭제</h2>
         <p className="mt-2 text-sm text-ink-muted">
           기본 4개 부서(유치부·유초등부·중고등부·청년가족부)는 삭제할 수 없습니다. 새로 추가한
-          부서만 삭제할 수 있습니다.
+          부서만 삭제할 수 있습니다. 부서명을 클릭하면 수정할 수 있습니다.
         </p>
       </div>
 
@@ -109,17 +150,65 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
         {depts.map((dept) => {
           const isDefault = isDefaultEducationDept(dept.deptKey)
           const isConfirming = confirmingId === dept.id
+          const isEditing = editingId === dept.id
+          const isSaving = savingId === dept.id
           return (
             <li
               key={dept.id}
               className="flex items-center justify-between gap-3 rounded-lg border border-stone/60 bg-white/60 px-4 py-3"
             >
-              <span className="min-w-0 truncate text-sm font-medium text-ink">
-                {dept.name || '(제목 없음)'}
-                {isDefault ? (
-                  <span className="ml-2 text-xs font-normal text-ink-muted">기본 부서</span>
-                ) : null}
-              </span>
+              {isEditing ? (
+                <div className="flex min-w-0 flex-1 items-center gap-1.5">
+                  <Input
+                    aria-label={`${dept.name} 부서명 수정`}
+                    className="h-8 text-sm"
+                    value={editValue}
+                    disabled={isSaving}
+                    autoFocus
+                    onChange={(e) => setEditValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') void saveName(dept)
+                      if (e.key === 'Escape') cancelEditing()
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    aria-label="저장"
+                    disabled={isSaving}
+                    onClick={() => void saveName(dept)}
+                    className="h-8 w-8 shrink-0 border-terracotta/30 bg-cream/80 p-0 text-terracotta hover:bg-terracotta/10"
+                  >
+                    <Check className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    aria-label="취소"
+                    disabled={isSaving}
+                    onClick={cancelEditing}
+                    className="h-8 w-8 shrink-0 border-stone bg-cream/80 p-0 text-ink-muted hover:bg-stone/20"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => startEditing(dept)}
+                  className="group flex min-w-0 flex-1 items-center gap-1.5 text-left"
+                >
+                  <span className="min-w-0 truncate text-sm font-medium text-ink">
+                    {dept.name || '(제목 없음)'}
+                    {isDefault ? (
+                      <span className="ml-2 text-xs font-normal text-ink-muted">기본 부서</span>
+                    ) : null}
+                  </span>
+                  <Pencil className="h-3.5 w-3.5 shrink-0 text-ink-muted opacity-0 transition group-hover:opacity-100" />
+                </button>
+              )}
               {isDefault ? (
                 <span className="shrink-0 text-xs text-ink-muted">삭제 불가</span>
               ) : (

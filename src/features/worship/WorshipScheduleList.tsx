@@ -215,13 +215,6 @@ export function WorshipScheduleList({
             )
           })}
         </ul>
-
-        <footer className="border-t border-stone/70 bg-[#f7efe4]/40 px-5 py-3 sm:px-6">
-          <p className="text-[11px] leading-relaxed text-ink-muted sm:text-xs">
-            행에 마우스를 올리거나 포커스하면 안내 문구가 표시됩니다. 모바일에서는 행을 탭해
-            주세요.
-          </p>
-        </footer>
       </section>
     </TooltipProvider>
   )

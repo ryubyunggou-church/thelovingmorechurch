@@ -127,7 +127,7 @@ export function Header() {
         </div>
       ) : null}
 
-      <div className="bg-terracotta px-4 py-1.5 text-center text-xs font-medium text-cream sm:text-[13px]">
+      <div className="bg-terracotta px-4 py-1.5 text-center text-sm font-medium text-cream sm:text-sm">
         {isAdminMode ? (
           <span>
             관리자 모드 활성화 · 편집 가능 영역에 연필 아이콘이 표시됩니다
