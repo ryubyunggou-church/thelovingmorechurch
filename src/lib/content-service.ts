@@ -219,7 +219,8 @@ export async function getContactInfo(): Promise<ContactInfo> {
       fax: String(d.fax ?? ''),
       email: String(d.email ?? ''),
       siteUrl: String(d.siteUrl ?? ''),
-      naverMapEmbedUrl: String(d.naverMapEmbedUrl ?? d.mapEmbedUrl ?? ''),
+      mapImageUrl: String(d.mapImageUrl ?? ''),
+      mapLinkUrl: d.mapLinkUrl != null ? String(d.mapLinkUrl) : undefined,
       routes: Array.isArray(d.routes)
         ? d.routes.map((r: DocumentData, i: number) => mapRoute(r, i + 1))
         : [],

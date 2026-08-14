@@ -161,7 +161,10 @@ export interface ContactInfo {
   fax: string
   email: string
   siteUrl: string
-  naverMapEmbedUrl: string
+  /** 지도 캡처 이미지 (MVP — API 지도 임베드 대신 관리자가 업로드) */
+  mapImageUrl: string
+  /** 지도 이미지 클릭 시 이동할 외부 지도 링크. 선택 */
+  mapLinkUrl?: string
   routes: ContactRoute[]
   /** 주차안내 사진. 최대 2장 */
   parkingPhotos: string[]

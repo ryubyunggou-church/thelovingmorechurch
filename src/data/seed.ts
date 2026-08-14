@@ -106,8 +106,8 @@ export const seedContact: ContactInfo = {
   fax: '(02)453-7361',
   email: 'ryubyunggou@gmail.com',
   siteUrl: 'https://www.tlmc.kr',
-  naverMapEmbedUrl:
-    'https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EB%8F%99%EB%8C%80%EB%AC%B8%EA%B5%AC%20%EC%A0%84%EB%86%8D%EB%A1%9C%2020',
+  mapImageUrl: '',
+  mapLinkUrl: '',
   routes: [
     {
       id: 'route-1',

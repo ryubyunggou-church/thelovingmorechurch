@@ -9,9 +9,8 @@ import { Textarea } from '../components/ui/textarea'
 import { Button } from '../components/ui/button'
 import { RouteListPanel } from '../features/contact/RouteListPanel'
 import { ParkingPanel } from '../features/contact/ParkingPanel'
+import { MapImagePanel } from '../features/contact/MapImagePanel'
 import { getContactInfo, saveDocument } from '../lib/content-service'
-import { isMapEmbedUrl, normalizeMapEmbed } from '../lib/map-embed'
-import { sanitizeHtml } from '../lib/sanitize'
 import type { ContactInfo } from '../types/content'
 import { seedContact } from '../data/seed'
 import { useAdminStore } from '../store/admin-store'
@@ -61,7 +60,6 @@ export function ContactPage() {
                                   phone: next.phone,
                                   fax: next.fax,
                                   email: next.email,
-                                  naverMapEmbedUrl: next.naverMapEmbedUrl,
                                 })
                                 pushToast({ title: '연락처 저장됨', variant: 'success' })
                                 await reload()
@@ -86,30 +84,7 @@ export function ContactPage() {
                       </EditableBlock>
                     </div>
 
-                    <div className="overflow-hidden rounded-2xl border border-stone bg-cream-dark">
-                      {contact.naverMapEmbedUrl ? (
-                        isMapEmbedUrl(contact.naverMapEmbedUrl) ? (
-                          <iframe
-                            title="찾아오시는 길 지도"
-                            src={contact.naverMapEmbedUrl}
-                            className="h-[280px] w-full border-0 lg:h-full lg:min-h-[280px]"
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                          />
-                        ) : (
-                          <div
-                            className="flex h-full min-h-[280px] w-full items-center justify-center overflow-hidden p-4 [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg"
-                            dangerouslySetInnerHTML={{
-                              __html: sanitizeHtml(contact.naverMapEmbedUrl),
-                            }}
-                          />
-                        )
-                      ) : (
-                        <div className="flex h-[280px] items-center justify-center text-sm text-ink-muted">
-                          지도 embed URL을 관리자 모드에서 설정해 주세요.
-                        </div>
-                      )}
-                    </div>
+                    <MapImagePanel contact={contact} onUpdated={() => void reload()} />
                   </div>
 
                   <RouteListPanel routes={contact.routes} onUpdated={() => void reload()} />
@@ -178,13 +153,6 @@ const CONTACT_FIELDS = [
     hint: '문의용 공개 이메일',
     placeholder: 'info@…',
   },
-  {
-    key: 'naverMapEmbedUrl' as const,
-    label: '지도 embed 코드',
-    hint: '네이버 지도는 iframe 임베드를 지원하지 않습니다 · 카카오맵 "공유하기"에서 복사한 코드를 통짜로 붙여넣으세요 (iframe/이미지+링크 위젯 모두 지원)',
-    placeholder: '카카오맵 공유 코드 또는 https://map.kakao.com/…',
-    multiline: true,
-  },
 ]
 
 function ContactEditor({
@@ -192,7 +160,7 @@ function ContactEditor({
   onSave,
 }: {
   contact: ContactInfo
-  onSave: (c: Pick<ContactInfo, 'address' | 'phone' | 'fax' | 'email' | 'naverMapEmbedUrl'>) => Promise<void>
+  onSave: (c: Pick<ContactInfo, 'address' | 'phone' | 'fax' | 'email'>) => Promise<void>
 }) {
   const [form, setForm] = useState(contact)
   const [saving, setSaving] = useState(false)
@@ -236,8 +204,6 @@ function ContactEditor({
               phone: form.phone.trim() || contact.phone,
               fax: form.fax.trim() || contact.fax,
               email: form.email.trim() || contact.email,
-              naverMapEmbedUrl:
-                normalizeMapEmbed(form.naverMapEmbedUrl) || contact.naverMapEmbedUrl,
             }).finally(() => setSaving(false))
           }}
         >
