@@ -79,6 +79,8 @@
 ## Phase 2 — 확장 + 게시판
 
 - [x] aboutTabs / staffMembers / educationDepartments / missions 편집 UI
+- [x] 교육부서 4탭 풀뷰 패널 + 시드 폴백 + 대상/장소 필드 (`prd/02-교육부서-선교사역-PRD.md`)
+- [x] 선교사역 2탭 카드 그리드 + 목록 CRUD(추가/삭제/순서/사진)
 - [x] newsPosts 목록(페이지네이션) + 상세 + 작성 모달
 - [x] 클라이언트 DOMPurify sanitize + 단위 테스트
 - [x] Functions 서버 sanitize 훅 스텁

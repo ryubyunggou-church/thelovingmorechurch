@@ -207,37 +207,61 @@ export const seedEducation: EducationDepartment[] = [
     id: 'e1',
     deptKey: 'kindergarten',
     name: '유치부',
-    missionText: '말씀과 놀이로 하나님을 알아가는 어린이 공동체',
+    missionText: `말씀과 놀이로 하나님을 처음 만나는 어린이 공동체입니다.
+
+찬양·성경이야기·교제를 통해 주님의 사랑을 몸으로 익히고, 가정과 함께 믿음의 첫걸음을 돕습니다.
+
+(placeholder — 관리자 모드에서 사진과 소개글을 수정할 수 있습니다.)`,
     image:
-      'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1200&q=80',
     scheduleInfo: '주일 오전 11:00',
+    targetAge: '만 3~7세',
+    place: '유치부실',
   },
   {
     id: 'e2',
     deptKey: 'elementary',
     name: '유초등부',
-    missionText: '성경 이야기와 교제를 통해 믿음의 뿌리를 세웁니다',
+    missionText: `성경 이야기와 교제를 통해 믿음의 뿌리를 세우는 초등 공동체입니다.
+
+말씀 암송과 소그룹으로 친구와 함께 예수님을 알아가며, 예배하는 아이로 자라도록 동행합니다.
+
+(placeholder — 관리자 모드에서 사진과 소개글을 수정할 수 있습니다.)`,
     image:
-      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80',
     scheduleInfo: '주일 오전 11:00',
+    targetAge: '초등 1~6학년',
+    place: '유초등부실',
   },
   {
     id: 'e3',
     deptKey: 'youth',
     name: '중고등부',
-    missionText: '청소년의 고민과 꿈을 말씀으로 품는 사역',
+    missionText: `청소년의 고민과 꿈을 말씀으로 품는 사역입니다.
+
+주일 예배와 금요 모임에서 또래와 멘토가 함께 기도하고, 세상에서 그리스도인으로 서는 연습을 합니다.
+
+(placeholder — 관리자 모드에서 사진과 소개글을 수정할 수 있습니다.)`,
     image:
-      'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80',
     scheduleInfo: '주일 오전 11:00 · 금요 모임',
+    targetAge: '중·고등학생',
+    place: '중고등부실',
   },
   {
     id: 'e4',
     deptKey: 'youngadult',
     name: '청년가족부',
-    missionText: '청년과 가정이 함께 성장하는 예배와 교제',
+    missionText: `청년과 가정이 함께 성장하는 예배와 교제입니다.
+
+말씀 나눔과 주중 소그룹으로 서로를 붙들고, 일터와 가정에서 복음을 살아내는 공동체를 꿈꿉니다.
+
+(placeholder — 관리자 모드에서 사진과 소개글을 수정할 수 있습니다.)`,
     image:
-      'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1200&q=80',
     scheduleInfo: '주일 오후 · 주중 소그룹',
+    targetAge: '청년·가정',
+    place: '본당 / 소그룹',
   },
 ]
 
@@ -246,29 +270,44 @@ export const seedMissions: MissionItem[] = [
     id: 'm1',
     type: 'domestic',
     name: '국내 이웃 섬김',
-    description: '지역 사회 나눔과 돌봄 사역 (placeholder)',
+    description:
+      '동대문구 인근 이웃과 함께하는 나눔·돌봄 사역입니다. 필요를 나누고 기도로 동행합니다. (placeholder)',
     order: 1,
+    region: '서울 동대문구',
+    image:
+      'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'm2',
     type: 'domestic',
     name: '국내 미자립 교회 후원',
-    description: '동역 교회 지원 및 기도 네트워크 (placeholder)',
+    description:
+      '동역 교회를 후원하고 기도 네트워크로 연결하는 사역입니다. (placeholder)',
     order: 2,
+    region: '국내 동역',
+    image:
+      'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'm3',
     type: 'overseas',
     name: '해외 선교지 A',
-    description: '선교사 파송 및 후원 사역 소개 (placeholder)',
+    description:
+      '파송 선교사와 현지 사역을 후원하고 중보하는 선교지입니다. (placeholder)',
     order: 1,
+    region: '동남아시아',
+    image:
+      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'm4',
     type: 'overseas',
     name: '해외 선교지 B',
-    description: '단기 선교 및 중보 기도 사역 (placeholder)',
+    description: '단기 선교와 중보 기도로 함께하는 선교지입니다. (placeholder)',
     order: 2,
+    region: '중앙아시아',
+    image:
+      'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80',
   },
 ]
 

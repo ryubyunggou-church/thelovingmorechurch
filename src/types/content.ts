@@ -106,6 +106,10 @@ export interface EducationDepartment {
   missionText: string
   image: string
   scheduleInfo: string
+  /** 대상 연령·학년. 비우면 칩 숨김 */
+  targetAge?: string
+  /** 모임 장소. 비우면 칩 숨김 */
+  place?: string
 }
 
 export interface MissionItem {
@@ -114,6 +118,10 @@ export interface MissionItem {
   name: string
   description: string
   order: number
+  /** 지역·권역 라벨 */
+  region?: string
+  /** 대표 사진. 없으면 플레이스홀더 */
+  image?: string
 }
 
 export interface NewsPost {

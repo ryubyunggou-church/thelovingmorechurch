@@ -25,4 +25,22 @@ test.describe('public site smoke', () => {
     await page.getByRole('tab', { name: '담임목사소개' }).click()
     await expect(page).toHaveURL(/\/about$/)
   })
+
+  test('education tabs switch without route change', async ({ page }) => {
+    await page.goto('/education')
+    await expect(page.getByRole('heading', { name: '교육부서', exact: true })).toBeVisible()
+    await expect(page.getByRole('tab', { name: '유치부' })).toBeVisible()
+    await page.getByRole('tab', { name: '중고등부' }).click()
+    await expect(page).toHaveURL(/\/education$/)
+    await expect(page.getByRole('heading', { name: '중고등부' })).toBeVisible()
+  })
+
+  test('missions tabs switch without route change', async ({ page }) => {
+    await page.goto('/missions')
+    await expect(page.getByRole('heading', { name: '선교사역', exact: true })).toBeVisible()
+    await expect(page.getByRole('heading', { name: '국내선교' })).toBeVisible()
+    await page.getByRole('tab', { name: '국외선교' }).click()
+    await expect(page).toHaveURL(/\/missions$/)
+    await expect(page.getByRole('heading', { name: '국외선교' })).toBeVisible()
+  })
 })

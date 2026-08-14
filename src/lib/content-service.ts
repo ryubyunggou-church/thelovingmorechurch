@@ -17,7 +17,6 @@ import {
   seedAboutPastor,
   seedAboutTabs,
   seedContact,
-  seedEducation,
   seedHeroSlides,
   seedMissions,
   seedNews,
@@ -44,6 +43,7 @@ import type {
 } from '../types/content'
 import { sanitizeHtml } from './sanitize'
 import { detectMediaType } from './media'
+import { orderEducationDepartments } from './education-order'
 
 async function fetchCollection<T>(
   name: string,
@@ -279,16 +279,17 @@ export async function getStaffMembers(): Promise<StaffMember[]> {
 }
 
 export async function getEducationDepartments(): Promise<EducationDepartment[]> {
-  return (
-    (await fetchCollection<EducationDepartment>('educationDepartments', (id, d) => ({
-      id,
-      deptKey: d.deptKey as EducationDepartment['deptKey'],
-      name: String(d.name ?? ''),
-      missionText: String(d.missionText ?? ''),
-      image: String(d.image ?? ''),
-      scheduleInfo: String(d.scheduleInfo ?? ''),
-    }))) ?? seedEducation
-  )
+  const remote = await fetchCollection<EducationDepartment>('educationDepartments', (id, d) => ({
+    id,
+    deptKey: d.deptKey as EducationDepartment['deptKey'],
+    name: String(d.name ?? ''),
+    missionText: String(d.missionText ?? ''),
+    image: String(d.image ?? ''),
+    scheduleInfo: d.scheduleInfo == null ? undefined : String(d.scheduleInfo),
+    targetAge: d.targetAge == null ? undefined : String(d.targetAge),
+    place: d.place == null ? undefined : String(d.place),
+  }))
+  return orderEducationDepartments(remote ?? [])
 }
 
 export async function getMissions(): Promise<MissionItem[]> {
@@ -300,6 +301,8 @@ export async function getMissions(): Promise<MissionItem[]> {
       name: String(d.name ?? ''),
       description: String(d.description ?? ''),
       order: Number(d.order ?? 0),
+      region: String(d.region ?? ''),
+      image: String(d.image ?? ''),
     }),
     'order',
   )
