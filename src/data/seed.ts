@@ -202,6 +202,19 @@ export const seedStaff: StaffMember[] = [
   },
 ]
 
+/**
+ * 관리자가 "부서 추가"로 새 부서를 만들 때 순환 배정되는 대표사진 후보군.
+ * 실시간 키워드 검색 대신, 앱 내 다른 곳에서 이미 쓰고 있는 검증된 커뮤니티/사역 테마 사진을 재사용한다.
+ */
+export const educationPlaceholderImages: string[] = [
+  'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80',
+]
+
 export const seedEducation: EducationDepartment[] = [
   {
     id: 'e1',
@@ -217,6 +230,7 @@ export const seedEducation: EducationDepartment[] = [
     scheduleInfo: '주일 오전 11:00',
     targetAge: '만 3~7세',
     place: '유치부실',
+    order: 1,
   },
   {
     id: 'e2',
@@ -232,6 +246,7 @@ export const seedEducation: EducationDepartment[] = [
     scheduleInfo: '주일 오전 11:00',
     targetAge: '초등 1~6학년',
     place: '유초등부실',
+    order: 2,
   },
   {
     id: 'e3',
@@ -247,6 +262,7 @@ export const seedEducation: EducationDepartment[] = [
     scheduleInfo: '주일 오전 11:00 · 금요 모임',
     targetAge: '중·고등학생',
     place: '중고등부실',
+    order: 3,
   },
   {
     id: 'e4',
@@ -262,8 +278,26 @@ export const seedEducation: EducationDepartment[] = [
     scheduleInfo: '주일 오후 · 주중 소그룹',
     targetAge: '청년·가정',
     place: '본당 / 소그룹',
+    order: 4,
   },
 ]
+
+/**
+ * 관리자가 "사역 추가"로 새 사역을 만들 때 타입별로 순환 배정되는 대표사진 후보군.
+ * 국내/해외는 사진 톤이 뚜렷이 달라 하나로 합치지 않고 타입별 풀을 따로 둔다.
+ */
+export const missionPlaceholderImages: Record<'domestic' | 'overseas', string[]> = {
+  domestic: [
+    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80',
+  ],
+  overseas: [
+    'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1200&q=80',
+  ],
+}
 
 export const seedMissions: MissionItem[] = [
   {

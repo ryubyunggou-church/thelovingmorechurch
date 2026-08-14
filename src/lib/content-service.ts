@@ -281,11 +281,12 @@ export async function getStaffMembers(): Promise<StaffMember[]> {
 export async function getEducationDepartments(): Promise<EducationDepartment[]> {
   const remote = await fetchCollection<EducationDepartment>('educationDepartments', (id, d) => ({
     id,
-    deptKey: d.deptKey as EducationDepartment['deptKey'],
+    deptKey: String(d.deptKey ?? ''),
     name: String(d.name ?? ''),
     missionText: String(d.missionText ?? ''),
     image: String(d.image ?? ''),
-    scheduleInfo: d.scheduleInfo == null ? undefined : String(d.scheduleInfo),
+    scheduleInfo: d.scheduleInfo == null ? '' : String(d.scheduleInfo),
+    order: Number(d.order ?? 0),
     targetAge: d.targetAge == null ? undefined : String(d.targetAge),
     place: d.place == null ? undefined : String(d.place),
   }))

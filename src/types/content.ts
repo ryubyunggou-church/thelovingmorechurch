@@ -101,11 +101,14 @@ export interface WorshipScheduleItem {
 
 export interface EducationDepartment {
   id: string
-  deptKey: 'kindergarten' | 'elementary' | 'youth' | 'youngadult'
+  /** 기본 4부서는 'kindergarten'|'elementary'|'youth'|'youngadult', 관리자가 추가한 부서는 'custom_…' */
+  deptKey: string
   name: string
   missionText: string
   image: string
   scheduleInfo: string
+  /** 탭 정렬 순서. 기본 4부서는 1~4 고정, 추가 부서는 뒤에 이어붙음 */
+  order: number
   /** 대상 연령·학년. 비우면 칩 숨김 */
   targetAge?: string
   /** 모임 장소. 비우면 칩 숨김 */

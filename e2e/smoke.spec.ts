@@ -43,4 +43,10 @@ test.describe('public site smoke', () => {
     await expect(page).toHaveURL(/\/missions$/)
     await expect(page.getByRole('heading', { name: '국외선교' })).toBeVisible()
   })
+
+  test('education manage tab is hidden for regular visitors', async ({ page }) => {
+    await page.goto('/education')
+    await expect(page.getByRole('heading', { name: '교육부서', exact: true })).toBeVisible()
+    await expect(page.getByRole('tab', { name: '부서추가/삭제' })).toHaveCount(0)
+  })
 })

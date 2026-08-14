@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createBlankMission, missionsByType } from './mission-list'
+import { missionPlaceholderImages } from '../data/seed'
 import type { MissionItem } from '../types/content'
 
 const item = (partial: Partial<MissionItem> & Pick<MissionItem, 'id' | 'type' | 'order'>): MissionItem => ({
@@ -36,10 +37,25 @@ describe('createBlankMission', () => {
       type: 'domestic',
       name: '새 국내 사역',
       order: 3,
-      image: '',
       region: '',
     })
     expect(overseas.name).toBe('새 선교지')
     expect(overseas.type).toBe('overseas')
+  })
+
+  it('auto-assigns a placeholder image from the type-specific pool instead of leaving it blank', () => {
+    const domestic = createBlankMission('domestic', 1)
+    const overseas = createBlankMission('overseas', 1)
+    expect(missionPlaceholderImages.domestic).toContain(domestic.image)
+    expect(missionPlaceholderImages.overseas).toContain(overseas.image)
+    expect(domestic.image).not.toBe(overseas.image)
+  })
+
+  it('cycles within its own type pool and never crosses into the other type', () => {
+    const domesticPoolSize = missionPlaceholderImages.domestic.length
+    const first = createBlankMission('domestic', 1)
+    const wrapped = createBlankMission('domestic', 1 + domesticPoolSize)
+    expect(wrapped.image).toBe(first.image)
+    expect(missionPlaceholderImages.overseas).not.toContain(first.image)
   })
 })
