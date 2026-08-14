@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom'
 import { PageShell } from '../components/layout/PageShell'
 import { Seo } from '../components/shared/Seo'
 import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
-import { Textarea } from '../components/ui/textarea'
-import { FormField } from '../components/ui/form-field'
-import { MediaInputField } from '../components/shared/MediaInputField'
 import {
   Dialog,
   DialogContent,
@@ -14,6 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '../components/ui/dialog'
+import { NewsEditorForm } from '../features/news/NewsEditorForm'
 import { getNewsPosts, saveDocument } from '../lib/content-service'
 import { sanitizeHtml } from '../lib/sanitize'
 import { formatDate } from '../lib/utils'
@@ -123,7 +120,7 @@ export function NewsPage() {
               </DialogDescription>
             </DialogHeader>
             <NewsEditorForm
-              onSubmit={async (payload, publish) => {
+              onSubmit={async (payload) => {
                 try {
                   const id = `news_${Date.now()}`
                   await saveDocument('newsPosts', id, {
@@ -132,13 +129,10 @@ export function NewsPage() {
                     thumbnail: payload.thumbnail,
                     authorUid: user?.uid ?? 'admin',
                     createdAt: new Date().toISOString(),
-                    isPublished: publish,
+                    isPublished: true,
                     viewCount: 0,
                   })
-                  pushToast({
-                    title: publish ? '게시 완료' : '임시 저장됨',
-                    variant: 'success',
-                  })
+                  pushToast({ title: '게시 완료', variant: 'success' })
                   setEditorOpen(false)
                   await reload()
                 } catch (err) {
@@ -155,87 +149,5 @@ export function NewsPage() {
         </Dialog>
       </PageShell>
     </>
-  )
-}
-
-function NewsEditorForm({
-  onSubmit,
-  onError,
-}: {
-  onSubmit: (
-    payload: { title: string; contentHtml: string; thumbnail: string },
-    publish: boolean,
-  ) => Promise<void>
-  onError: (m: string) => void
-}) {
-  const [title, setTitle] = useState('')
-  const [contentHtml, setContentHtml] = useState('<p></p>')
-  const [thumbnail, setThumbnail] = useState('')
-  const [saving, setSaving] = useState(false)
-
-  return (
-    <div className="space-y-4">
-      <FormField label="제목" htmlFor="news-title" required hint="목록·상세에 표시되는 글 제목">
-        <Input
-          id="news-title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="제목"
-          required
-        />
-      </FormField>
-
-      <MediaInputField
-        label="썸네일 이미지"
-        imageOnly
-        folder="news"
-        value={{ mediaUrl: thumbnail, mediaType: 'image' }}
-        defaultUrl=""
-        hint="목록 카드에 쓰입니다. 없으면 빈 썸네일로 표시됩니다."
-        onChange={(m) => setThumbnail(m.mediaUrl)}
-        onError={onError}
-      />
-
-      <FormField
-        label="본문 (HTML)"
-        htmlFor="news-body"
-        required
-        hint="p, h1~h6, strong 등. 저장 시 서버/클라이언트 sanitize 적용"
-      >
-        <Textarea
-          id="news-body"
-          className="min-h-[180px] font-mono text-xs"
-          value={contentHtml}
-          onChange={(e) => setContentHtml(e.target.value)}
-          placeholder="<p>본문…</p>"
-        />
-      </FormField>
-
-      <div className="flex justify-end gap-2">
-        <Button
-          variant="secondary"
-          disabled={saving || !title.trim()}
-          onClick={() => {
-            setSaving(true)
-            void onSubmit({ title: title.trim(), contentHtml, thumbnail }, false).finally(() =>
-              setSaving(false),
-            )
-          }}
-        >
-          저장 후 미리보기
-        </Button>
-        <Button
-          disabled={saving || !title.trim()}
-          onClick={() => {
-            setSaving(true)
-            void onSubmit({ title: title.trim(), contentHtml, thumbnail }, true).finally(() =>
-              setSaving(false),
-            )
-          }}
-        >
-          게시
-        </Button>
-      </div>
-    </div>
   )
 }

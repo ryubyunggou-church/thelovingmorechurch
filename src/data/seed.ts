@@ -345,6 +345,16 @@ export const seedMissions: MissionItem[] = [
   },
 ]
 
+/**
+ * 관리자가 "새 글 작성" 시 Date.now() 기준으로 순환 배정되는 썸네일 후보군.
+ * 뉴스는 부서/사역처럼 고정 카테고리가 없어 시각 기준으로만 순환한다.
+ */
+export const newsPlaceholderImages: string[] = [
+  'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80',
+]
+
 export const seedNews: NewsPost[] = [
   {
     id: 'n1',
