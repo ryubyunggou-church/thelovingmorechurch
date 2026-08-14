@@ -1,25 +1,22 @@
 import { useEffect, useState } from 'react'
 import { PageShell } from '../components/layout/PageShell'
 import { Seo } from '../components/shared/Seo'
-import { ListPage } from '../components/shared/ListPage'
 import { EditableBlock } from '../components/shared/EditableBlock'
 import { FormField } from '../components/ui/form-field'
 import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
-import { getContactInfo, getWorshipSchedule, saveDocument } from '../lib/content-service'
-import type { ContactInfo, WorshipScheduleItem } from '../types/content'
-import { seedContact, seedWorship } from '../data/seed'
+import { getContactInfo, saveDocument } from '../lib/content-service'
+import type { ContactInfo } from '../types/content'
+import { seedContact } from '../data/seed'
 import { useAdminStore } from '../store/admin-store'
 import { Mail, MapPin, Phone, Printer } from 'lucide-react'
 
 export function ContactPage() {
   const [contact, setContact] = useState<ContactInfo>(seedContact)
-  const [worship, setWorship] = useState<WorshipScheduleItem[]>(seedWorship)
   const pushToast = useAdminStore((s) => s.pushToast)
 
   const reload = async () => {
     setContact(await getContactInfo())
-    setWorship(await getWorshipSchedule())
   }
 
   useEffect(() => {
@@ -34,7 +31,8 @@ export function ContactPage() {
         description="예배 장소와 연락처, 지도 안내입니다."
         current="오시는길"
       >
-        <div className="grid gap-10 lg:grid-cols-2">
+        <div className="max-w-xl">
+          <h2 className="mb-4 font-serif text-xl font-semibold text-ink">교회 연락처</h2>
           <EditableBlock
             label="연락처 정보"
             renderEditor={(close) => (
@@ -61,25 +59,13 @@ export function ContactPage() {
               />
             )}
           >
-            <div className="space-y-4 rounded-2xl border border-stone bg-cream p-6">
+            <div className="space-y-4 rounded-2xl border border-stone bg-white p-6 shadow-sm">
               <InfoRow icon={MapPin} label="주소" value={contact.address} />
               <InfoRow icon={Phone} label="전화" value={contact.phone} />
               <InfoRow icon={Printer} label="팩스" value={contact.fax} />
               <InfoRow icon={Mail} label="이메일" value={contact.email} />
             </div>
           </EditableBlock>
-
-          <div>
-            <h2 className="mb-4 font-serif text-xl font-semibold text-ink">예배시간</h2>
-            <ListPage
-              items={worship.map((i) => ({
-                id: i.id,
-                title: i.name,
-                meta: i.time,
-                note: i.note,
-              }))}
-            />
-          </div>
         </div>
 
         <div className="mt-10 overflow-hidden rounded-2xl border border-stone bg-cream-dark">
