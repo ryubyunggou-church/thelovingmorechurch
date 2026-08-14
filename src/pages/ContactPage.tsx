@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 import { PageShell } from '../components/layout/PageShell'
 import { Seo } from '../components/shared/Seo'
+import { TabbedPage } from '../components/shared/TabbedPage'
 import { EditableBlock } from '../components/shared/EditableBlock'
 import { FormField } from '../components/ui/form-field'
 import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
+import { RouteListPanel } from '../features/contact/RouteListPanel'
+import { ParkingPanel } from '../features/contact/ParkingPanel'
 import { getContactInfo, saveDocument } from '../lib/content-service'
 import type { ContactInfo } from '../types/content'
 import { seedContact } from '../data/seed'
@@ -31,58 +34,87 @@ export function ContactPage() {
         description="예배 장소와 연락처, 지도 안내입니다."
         current="오시는길"
       >
-        <div className="max-w-xl">
-          <h2 className="mb-4 font-serif text-xl font-semibold text-ink">교회 연락처</h2>
-          <EditableBlock
-            label="연락처 정보"
-            renderEditor={(close) => (
-              <ContactEditor
-                contact={contact}
-                onSave={async (next) => {
-                  try {
-                    await saveDocument(
-                      'contactInfo',
-                      'main',
-                      next as unknown as Record<string, unknown>,
-                    )
-                    pushToast({ title: '연락처 저장됨', variant: 'success' })
-                    await reload()
-                    close()
-                  } catch (err) {
-                    pushToast({
-                      title: '저장 실패',
-                      description: err instanceof Error ? err.message : '',
-                      variant: 'error',
-                    })
-                  }
-                }}
-              />
-            )}
-          >
-            <div className="space-y-4 rounded-2xl border border-stone bg-white p-6 shadow-sm">
-              <InfoRow icon={MapPin} label="주소" value={contact.address} />
-              <InfoRow icon={Phone} label="전화" value={contact.phone} />
-              <InfoRow icon={Printer} label="팩스" value={contact.fax} />
-              <InfoRow icon={Mail} label="이메일" value={contact.email} />
-            </div>
-          </EditableBlock>
-        </div>
+        <TabbedPage
+          tabs={[
+            {
+              key: 'directions',
+              label: '오시는 방법',
+              content: (
+                <div className="space-y-10 py-2">
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    <div>
+                      <h2 className="mb-4 font-serif text-xl font-semibold text-ink">
+                        교회 연락처
+                      </h2>
+                      <EditableBlock
+                        label="연락처 정보"
+                        renderEditor={(close) => (
+                          <ContactEditor
+                            contact={contact}
+                            onSave={async (next) => {
+                              try {
+                                await saveDocument('contactInfo', 'main', {
+                                  address: next.address,
+                                  phone: next.phone,
+                                  fax: next.fax,
+                                  email: next.email,
+                                  naverMapEmbedUrl: next.naverMapEmbedUrl,
+                                })
+                                pushToast({ title: '연락처 저장됨', variant: 'success' })
+                                await reload()
+                                close()
+                              } catch (err) {
+                                pushToast({
+                                  title: '저장 실패',
+                                  description: err instanceof Error ? err.message : '',
+                                  variant: 'error',
+                                })
+                              }
+                            }}
+                          />
+                        )}
+                      >
+                        <div className="space-y-4 rounded-2xl border border-stone bg-white p-6 shadow-sm">
+                          <InfoRow icon={MapPin} label="주소" value={contact.address} />
+                          <InfoRow icon={Phone} label="전화" value={contact.phone} />
+                          <InfoRow icon={Printer} label="팩스" value={contact.fax} />
+                          <InfoRow icon={Mail} label="이메일" value={contact.email} />
+                        </div>
+                      </EditableBlock>
+                    </div>
 
-        <div className="mt-10 overflow-hidden rounded-2xl border border-stone bg-cream-dark">
-          {contact.naverMapEmbedUrl ? (
-            <iframe
-              title="네이버 지도"
-              src={contact.naverMapEmbedUrl}
-              className="h-[360px] w-full border-0 sm:h-[420px]"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          ) : (
-            <div className="flex h-[280px] items-center justify-center text-sm text-ink-muted">
-              네이버 지도 embed URL을 관리자 모드에서 설정해 주세요.
-            </div>
-          )}
-        </div>
+                    <div className="overflow-hidden rounded-2xl border border-stone bg-cream-dark">
+                      {contact.naverMapEmbedUrl ? (
+                        <iframe
+                          title="네이버 지도"
+                          src={contact.naverMapEmbedUrl}
+                          className="h-[280px] w-full border-0 lg:h-full lg:min-h-[280px]"
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      ) : (
+                        <div className="flex h-[280px] items-center justify-center text-sm text-ink-muted">
+                          네이버 지도 embed URL을 관리자 모드에서 설정해 주세요.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <RouteListPanel routes={contact.routes} onUpdated={() => void reload()} />
+                </div>
+              ),
+            },
+            {
+              key: 'parking',
+              label: '주차안내',
+              content: (
+                <div className="py-2">
+                  <ParkingPanel contact={contact} onUpdated={() => void reload()} />
+                </div>
+              ),
+            },
+          ]}
+        />
       </PageShell>
     </>
   )
@@ -146,7 +178,7 @@ function ContactEditor({
   onSave,
 }: {
   contact: ContactInfo
-  onSave: (c: ContactInfo) => Promise<void>
+  onSave: (c: Pick<ContactInfo, 'address' | 'phone' | 'fax' | 'email' | 'naverMapEmbedUrl'>) => Promise<void>
 }) {
   const [form, setForm] = useState(contact)
   const [saving, setSaving] = useState(false)
@@ -173,7 +205,6 @@ function ContactEditor({
           onClick={() => {
             setSaving(true)
             void onSave({
-              ...form,
               // 비운 필드는 기존 값 유지 (미디어와 동일 정책)
               address: form.address.trim() || contact.address,
               phone: form.phone.trim() || contact.phone,

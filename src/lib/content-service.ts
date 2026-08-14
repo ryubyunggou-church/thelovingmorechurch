@@ -32,11 +32,13 @@ import type {
   AboutTab,
   AnnualMotto,
   ContactInfo,
+  ContactRoute,
   EducationDepartment,
   HeroSlide,
   MissionItem,
   NewsPost,
   PastorGreeting,
+  RouteIconType,
   SiteSettings,
   StaffMember,
   WorshipScheduleItem,
@@ -195,6 +197,19 @@ export async function getWorshipSchedule(): Promise<WorshipScheduleItem[]> {
   return (remote ?? seedWorship).sort((a, b) => a.order - b.order)
 }
 
+const ROUTE_ICON_TYPES: RouteIconType[] = ['subway', 'bus', 'walk']
+
+function mapRoute(r: DocumentData, fallbackOrder: number): ContactRoute {
+  const iconType = ROUTE_ICON_TYPES.includes(r.iconType) ? (r.iconType as RouteIconType) : 'subway'
+  return {
+    id: String(r.id ?? `route-${fallbackOrder}`),
+    iconType,
+    title: String(r.title ?? ''),
+    description: String(r.description ?? ''),
+    order: Number(r.order ?? fallbackOrder),
+  }
+}
+
 export async function getContactInfo(): Promise<ContactInfo> {
   return (
     (await fetchDoc<ContactInfo>('contactInfo', 'main', (id, d) => ({
@@ -205,6 +220,11 @@ export async function getContactInfo(): Promise<ContactInfo> {
       email: String(d.email ?? ''),
       siteUrl: String(d.siteUrl ?? ''),
       naverMapEmbedUrl: String(d.naverMapEmbedUrl ?? d.mapEmbedUrl ?? ''),
+      routes: Array.isArray(d.routes)
+        ? d.routes.map((r: DocumentData, i: number) => mapRoute(r, i + 1))
+        : [],
+      parkingPhotos: Array.isArray(d.parkingPhotos) ? d.parkingPhotos.map(String) : [],
+      parkingNotices: Array.isArray(d.parkingNotices) ? d.parkingNotices.map(String) : [],
     }))) ?? seedContact
   )
 }

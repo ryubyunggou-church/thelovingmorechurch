@@ -108,6 +108,35 @@ export const seedContact: ContactInfo = {
   siteUrl: 'https://www.tlmc.kr',
   naverMapEmbedUrl:
     'https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EB%8F%99%EB%8C%80%EB%AC%B8%EA%B5%AC%20%EC%A0%84%EB%86%8D%EB%A1%9C%2020',
+  routes: [
+    {
+      id: 'route-1',
+      iconType: 'subway',
+      title: '1호선·2호선',
+      description: '신설동역 하차 → 도보 이동 (placeholder — 관리자 모드에서 실제 경로로 수정)',
+      order: 1,
+    },
+    {
+      id: 'route-2',
+      iconType: 'bus',
+      title: '간선버스',
+      description: '전농로 인근 정류장 하차 (placeholder — 관리자 모드에서 실제 노선으로 수정)',
+      order: 1,
+    },
+    {
+      id: 'route-3',
+      iconType: 'walk',
+      title: '역에서 도보',
+      description: '도보 약 10분 (placeholder — 관리자 모드에서 실제 경로로 수정)',
+      order: 1,
+    },
+  ],
+  parkingPhotos: [],
+  parkingNotices: [
+    '교회 주차장은 주일 예배 시간에 한해 이용 가능합니다. (placeholder)',
+    '이중 주차 차량은 연락처를 남기고 기어를 중립에 두어 주세요. (placeholder)',
+    '만차 시 인근 공영주차장 또는 대중교통을 이용해 주시기 바랍니다. (placeholder)',
+  ],
 }
 
 export const seedAboutTabs: AboutTab[] = [

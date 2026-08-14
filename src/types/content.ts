@@ -138,6 +138,22 @@ export interface NewsPost {
   viewCount?: number
 }
 
+/** 오시는길 "오시는 방법" 경로 안내 아이콘 종류 */
+export type RouteIconType = 'subway' | 'bus' | 'walk'
+
+/**
+ * 오시는길 경로 안내 항목. 지하철/버스처럼 교통 인프라별 고정 분류 대신
+ * 범용 리스트로 모델링해, 이전(이사) 시에도 스키마 변경 없이 대응한다.
+ */
+export interface ContactRoute {
+  id: string
+  iconType: RouteIconType
+  /** 예: "분당선·신분당선", "1303 (안양방면)" */
+  title: string
+  description: string
+  order: number
+}
+
 export interface ContactInfo {
   id: string
   address: string
@@ -146,6 +162,11 @@ export interface ContactInfo {
   email: string
   siteUrl: string
   naverMapEmbedUrl: string
+  routes: ContactRoute[]
+  /** 주차안내 사진. 최대 2장 */
+  parkingPhotos: string[]
+  /** 주차 요령 안내 문구. 한 줄 = 한 항목 */
+  parkingNotices: string[]
 }
 
 export const SITE_NAME = '대한예수교장로회 사랑하는교회'
