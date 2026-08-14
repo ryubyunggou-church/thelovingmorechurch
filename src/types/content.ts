@@ -176,7 +176,7 @@ export const SITE_NAME = '대한예수교장로회 사랑하는교회'
 
 export const PARTNER_LINKS = [
   { label: '대한예수교장로회 총회', href: 'https://gapck.org' },
-  { label: '남경기노회', href: 'https://nkgc.org' },
+  { label: '남경기노회', href: 'http://남경기노회.kr' },
   { label: 'GMS 총회세계선교회', href: 'https://gms.kr' },
 ] as const
 
