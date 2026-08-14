@@ -57,7 +57,8 @@ async function fetchCollection<T>(
     const snap = await getDocs(q)
     if (snap.empty) return null
     return snap.docs.map((d) => mapFn(d.id, d.data()))
-  } catch {
+  } catch (err) {
+    console.error(`[content-service] fetchCollection("${name}") failed:`, err)
     return null
   }
 }
@@ -72,7 +73,8 @@ async function fetchDoc<T>(
     const snap = await getDoc(doc(db, name, id))
     if (!snap.exists()) return null
     return mapFn(snap.id, snap.data())
-  } catch {
+  } catch (err) {
+    console.error(`[content-service] fetchDoc("${name}/${id}") failed:`, err)
     return null
   }
 }
@@ -337,8 +339,8 @@ export async function getNewsPosts(opts?: {
           } satisfies NewsPost
         })
       }
-    } catch {
-      // fall through to seed
+    } catch (err) {
+      console.error('[content-service] getNewsPosts() failed, falling back to seed:', err)
     }
   }
   const list = seedNews.filter((n) => (publishedOnly ? n.isPublished : true))
@@ -362,8 +364,8 @@ export async function getNewsPost(id: string): Promise<NewsPost | null> {
           viewCount: Number(data.viewCount ?? 0),
         }
       }
-    } catch {
-      // fall through
+    } catch (err) {
+      console.error(`[content-service] getNewsPost("${id}") failed, falling back to seed:`, err)
     }
   }
   return seedNews.find((n) => n.id === id) ?? null
