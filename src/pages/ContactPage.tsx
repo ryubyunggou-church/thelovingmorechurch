@@ -44,45 +44,42 @@ export function ContactPage() {
               content: (
                 <div className="space-y-10 py-2">
                   <div className="grid gap-6 lg:grid-cols-2">
-                    <div>
-                      <h2 className="mb-4 font-serif text-xl font-semibold text-ink">
-                        교회 연락처
-                      </h2>
-                      <EditableBlock
-                        label="연락처 정보"
-                        renderEditor={(close) => (
-                          <ContactEditor
-                            contact={contact}
-                            onSave={async (next) => {
-                              try {
-                                await saveDocument('contactInfo', 'main', {
-                                  address: next.address,
-                                  phone: next.phone,
-                                  fax: next.fax,
-                                  email: next.email,
-                                })
-                                pushToast({ title: '연락처 저장됨', variant: 'success' })
-                                await reload()
-                                close()
-                              } catch (err) {
-                                pushToast({
-                                  title: '저장 실패',
-                                  description: err instanceof Error ? err.message : '',
-                                  variant: 'error',
-                                })
-                              }
-                            }}
-                          />
-                        )}
-                      >
-                        <div className="space-y-4 rounded-2xl border border-stone bg-white p-6 shadow-sm">
-                          <InfoRow icon={MapPin} label="주소" value={contact.address} />
-                          <InfoRow icon={Phone} label="전화" value={contact.phone} />
-                          <InfoRow icon={Printer} label="팩스" value={contact.fax} />
-                          <InfoRow icon={Mail} label="이메일" value={contact.email} />
-                        </div>
-                      </EditableBlock>
-                    </div>
+                    <EditableBlock
+                      label="연락처 정보"
+                      className="h-full"
+                      renderEditor={(close) => (
+                        <ContactEditor
+                          contact={contact}
+                          onSave={async (next) => {
+                            try {
+                              await saveDocument('contactInfo', 'main', {
+                                address: next.address,
+                                phone: next.phone,
+                                fax: next.fax,
+                                email: next.email,
+                              })
+                              pushToast({ title: '연락처 저장됨', variant: 'success' })
+                              await reload()
+                              close()
+                            } catch (err) {
+                              pushToast({
+                                title: '저장 실패',
+                                description: err instanceof Error ? err.message : '',
+                                variant: 'error',
+                              })
+                            }
+                          }}
+                        />
+                      )}
+                    >
+                      <div className="h-full space-y-4 rounded-2xl border border-stone bg-white p-6 shadow-sm">
+                        <h2 className="font-serif text-xl font-semibold text-ink">교회 연락처</h2>
+                        <InfoRow icon={MapPin} label="주소" value={contact.address} />
+                        <InfoRow icon={Phone} label="전화" value={contact.phone} />
+                        <InfoRow icon={Printer} label="팩스" value={contact.fax} />
+                        <InfoRow icon={Mail} label="이메일" value={contact.email} />
+                      </div>
+                    </EditableBlock>
 
                     <MapImagePanel contact={contact} onUpdated={() => void reload()} />
                   </div>
