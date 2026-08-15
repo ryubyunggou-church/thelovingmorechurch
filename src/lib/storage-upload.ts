@@ -1,4 +1,5 @@
 import { app, auth } from './firebase'
+import { compressImage } from './image-compress'
 import { detectMediaType as detectMediaKind } from './media'
 
 export { detectMediaKind as detectMediaType }
@@ -38,8 +39,13 @@ export async function uploadMediaFile(file: File, folder = 'hero'): Promise<stri
   if (!isAllowedHeroMedia(file)) {
     throw new Error('허용 형식: 이미지(jpg/png/webp 등) 또는 영상(mp4/webm)')
   }
-  // 15MB limit (matches storage.rules)
-  if (file.size > 15 * 1024 * 1024) {
+
+  // 이미지는 업로드 전에 리사이즈 + WebP로 재인코딩해 용량을 줄인다.
+  // 영상은 그대로 둔다.
+  const uploadFile = file.type.startsWith('image/') ? await compressImage(file) : file
+
+  // 15MB limit (matches storage.rules) — 압축된 결과 기준으로 검사한다.
+  if (uploadFile.size > 15 * 1024 * 1024) {
     throw new Error('파일 용량은 15MB 이하여야 합니다.')
   }
 
@@ -49,12 +55,12 @@ export async function uploadMediaFile(file: File, folder = 'hero'): Promise<stri
   const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
   const storage = getStorage(app)
 
-  const safeName = file.name.replace(/[^\w.\-가-힣]/g, '_')
+  const safeName = uploadFile.name.replace(/[^\w.\-가-힣]/g, '_')
   const path = `uploads/${folder}/${Date.now()}_${safeName}`
   const storageRef = ref(storage, path)
   try {
-    await uploadBytes(storageRef, file, {
-      contentType: file.type || undefined,
+    await uploadBytes(storageRef, uploadFile, {
+      contentType: uploadFile.type || undefined,
     })
     return await getDownloadURL(storageRef)
   } catch (err) {
