@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { HeroSlide } from '../../types/content'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
@@ -20,9 +20,16 @@ export function HeroEditor({
 }) {
   const [form, setForm] = useState(slide)
   const [saving, setSaving] = useState(false)
+  const editingSlideId = useRef(slide.id)
 
+  // slide는 부모(HeroSlider)가 자동 회전·재조회로 언제든 새 객체를 내려줄 수 있다.
+  // 실제로 "다른 슬라이드"로 전환됐을 때(id 변경)만 폼을 리셋하고, 같은 슬라이드의
+  // 객체 참조만 바뀐 경우엔 입력 중이던 값을 덮어쓰지 않는다.
   useEffect(() => {
-    setForm(slide)
+    if (slide.id !== editingSlideId.current) {
+      editingSlideId.current = slide.id
+      setForm(slide)
+    }
   }, [slide])
 
   const resolveMedia = () => {

@@ -1,27 +1,25 @@
 import { useEffect, useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Settings } from 'lucide-react'
 import type { HeroSlide } from '../../types/content'
 import { Button } from '../../components/ui/button'
-import { EditableBlock } from '../../components/shared/EditableBlock'
 import { useAdminStore } from '../../store/admin-store'
 import { seedHeroSlides } from '../../data/seed'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { cn } from '../../lib/utils'
-import { HeroEditor } from './HeroEditor'
 import { HeroMediaBackground } from './HeroMediaBackground'
+import { HERO_MANAGE_PANEL_ID } from './hero-manage-panel-id'
 
 export { nextSlideIndex, prevSlideIndex } from './hero-slide-index'
 
 interface HeroSliderProps {
   slides: HeroSlide[]
-  onUpdated?: () => void
 }
 
-export function HeroSlider({ slides, onUpdated }: HeroSliderProps) {
+export function HeroSlider({ slides }: HeroSliderProps) {
   const [index, setIndex] = useState(0)
   const [entered, setEntered] = useState(false)
   const reducedMotion = usePrefersReducedMotion()
-  const pushToast = useAdminStore((s) => s.pushToast)
+  const isAdminMode = useAdminStore((s) => s.isAdminMode)
   const list = slides.length > 0 ? slides : seedHeroSlides
   const count = list.length
 
@@ -42,12 +40,15 @@ export function HeroSlider({ slides, onUpdated }: HeroSliderProps) {
   }, [index, reducedMotion])
 
   useEffect(() => {
-    if (count <= 1) return
+    // 관리자 모드에서는 자동 회전을 멈춘다 — 편집 모달이 열려 있는 동안
+    // 배경에서 슬라이드가 넘어가면 편집 중이던 입력값이 다른 슬라이드
+    // 내용으로 덮어써지는 문제가 있었다.
+    if (count <= 1 || isAdminMode) return
     const timer = window.setInterval(() => {
       setIndex((i) => (i + 1) % count)
     }, 6000)
     return () => window.clearInterval(timer)
-  }, [count])
+  }, [count, isAdminMode])
 
   useEffect(() => {
     if (index >= count) setIndex(0)
@@ -56,6 +57,13 @@ export function HeroSlider({ slides, onUpdated }: HeroSliderProps) {
   const current = list[index] ?? seedHeroSlides[0]!
   const go = (dir: -1 | 1) => setIndex((i) => (i + dir + count) % count)
 
+  const goToManagePanel = () => {
+    document.getElementById(HERO_MANAGE_PANEL_ID)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+
   const copyClass = () =>
     cn(
       'transition-[opacity,transform] duration-700 ease-out will-change-[opacity,transform]',
@@ -63,21 +71,19 @@ export function HeroSlider({ slides, onUpdated }: HeroSliderProps) {
     )
 
   return (
-    <EditableBlock
-      label="Hero 슬라이드"
-      className="relative"
-      renderEditor={(close) => (
-        <HeroEditor
-          slide={current}
-          onSaved={() => {
-            pushToast({ title: '슬라이드 저장됨', variant: 'success' })
-            onUpdated?.()
-            close()
-          }}
-          onError={(msg) => pushToast({ title: '저장 실패', description: msg, variant: 'error' })}
-        />
-      )}
-    >
+    <div className="group relative">
+      {isAdminMode ? (
+        <button
+          type="button"
+          onClick={goToManagePanel}
+          aria-label="Hero 슬라이드 관리로 이동"
+          className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-ink/80 px-2.5 py-1 text-xs font-medium text-cream opacity-100 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
+        >
+          <Settings className="h-3.5 w-3.5" />
+          관리로 이동
+        </button>
+      ) : null}
+
       <section className="relative h-[min(92vh,900px)] min-h-[520px] w-full overflow-hidden bg-[#2a211c]">
         <HeroMediaBackground slide={current} />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/15" />
@@ -156,6 +162,6 @@ export function HeroSlider({ slides, onUpdated }: HeroSliderProps) {
           </Button>
         </div>
       </section>
-    </EditableBlock>
+    </div>
   )
 }
