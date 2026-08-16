@@ -18,7 +18,8 @@ service firebase.storage {
     function isAllowedContentType() {
       return request.resource.contentType.matches('image/.*')
         || request.resource.contentType.matches('video/mp4')
-        || request.resource.contentType.matches('video/webm');
+        || request.resource.contentType.matches('video/webm')
+        || request.resource.contentType.matches('application/pdf');
     }
 
     // 앱 업로드 경로 (uploadMediaFile → uploads/{folder}/...)

@@ -180,6 +180,39 @@ export const PARTNER_LINKS = [
   { label: 'GMS 총회세계선교회', href: 'https://gms.kr' },
 ] as const
 
+export type PopupPosition = 'top' | 'center' | 'center-left' | 'center-right'
+export type PopupContentType = 'image' | 'pdf' | 'richtext'
+
+export interface SitePopup {
+  id: string
+  /** 관리자 목록에 표시되는 내부 식별용 이름. 방문자에게는 안 보임. */
+  label: string
+  enabled: boolean
+
+  /** ISO date string (YYYY-MM-DD). 이 범위 안에서만 노출. */
+  startDate: string
+  endDate: string
+
+  contentType: PopupContentType
+  /** image/pdf일 때 Storage 다운로드 URL */
+  mediaUrl?: string
+  /** richtext일 때 본문. WYSIWYG 에디터가 만든 HTML — 저장/조회 시 DOMPurify로 sanitize. */
+  contentHtml?: string
+  /** 팝업 상단 제목 (선택) */
+  title?: string
+  /** 클릭 시 이동할 링크 (선택) */
+  linkUrl?: string
+
+  position: PopupPosition
+  /** 여러 팝업이 동시에 활성 기간일 때 순차 노출 순서. 숫자가 클수록 먼저 뜬다. */
+  priority: number
+  /** "오늘 하루 보지 않기" 재노출 억제 기간(시간 단위). 0이면 매 방문마다 노출. */
+  hideForHours: number
+
+  createdAt: string
+  updatedAt: string
+}
+
 export const NAV_ITEMS = [
   { label: 'HOME', path: '/' },
   { label: '교회소개', path: '/about' },

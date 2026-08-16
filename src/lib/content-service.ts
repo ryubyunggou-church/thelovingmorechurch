@@ -39,6 +39,7 @@ import type {
   NewsPost,
   PastorGreeting,
   RouteIconType,
+  SitePopup,
   SiteSettings,
   StaffMember,
   WorshipScheduleItem,
@@ -314,6 +315,28 @@ export async function getEducationDepartments(): Promise<EducationDepartment[]> 
     place: d.place == null ? undefined : String(d.place),
   }))
   return orderEducationDepartments(remote ?? [])
+}
+
+/** 관리 화면·공개 렌더러 공용 — enabled 여부와 무관하게 전체를 반환한다 (필터링은 호출측 책임). */
+export async function getSitePopups(): Promise<SitePopup[]> {
+  const remote = await fetchCollection<SitePopup>('sitePopups', (id, d) => ({
+    id,
+    label: String(d.label ?? ''),
+    enabled: d.enabled !== false,
+    startDate: String(d.startDate ?? ''),
+    endDate: String(d.endDate ?? ''),
+    contentType: (d.contentType as SitePopup['contentType']) ?? 'richtext',
+    mediaUrl: d.mediaUrl == null ? undefined : String(d.mediaUrl),
+    contentHtml: d.contentHtml == null ? undefined : sanitizeHtml(String(d.contentHtml)),
+    title: d.title == null ? undefined : String(d.title),
+    linkUrl: d.linkUrl == null ? undefined : String(d.linkUrl),
+    position: (d.position as SitePopup['position']) ?? 'center',
+    priority: Number(d.priority ?? 0),
+    hideForHours: Number(d.hideForHours ?? 24),
+    createdAt: String(d.createdAt ?? ''),
+    updatedAt: String(d.updatedAt ?? ''),
+  }))
+  return remote ?? []
 }
 
 export async function getMissions(): Promise<MissionItem[]> {

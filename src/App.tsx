@@ -6,6 +6,8 @@ import { BackToTop } from './components/layout/BackToTop'
 import { ToastViewport } from './components/ui/toast-viewport'
 import { LoginModal } from './features/admin/LoginModal'
 import { AdminManageModal } from './features/admin/AdminManageModal'
+import { PopupManageModal } from './features/popup/PopupManageModal'
+import { PopupRenderer } from './features/popup/PopupRenderer'
 import { useAdminStore } from './store/admin-store'
 
 const HomePage = lazy(() =>
@@ -88,6 +90,8 @@ export default function App() {
         <BackToTop />
         <LoginModal />
         <AdminManageModal />
+        <PopupManageModal />
+        <PopupRenderer />
         <ToastViewport />
       </div>
     </BrowserRouter>

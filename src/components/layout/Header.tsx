@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Menu, X, LogOut, Users } from 'lucide-react'
+import { Menu, X, LogOut, Users, Megaphone } from 'lucide-react'
 import { NAV_ITEMS, SITE_NAME } from '../../types/content'
 import { useAdminStore } from '../../store/admin-store'
 import { Button } from '../ui/button'
@@ -13,6 +13,7 @@ export function Header() {
   const isAdminMode = useAdminStore((s) => s.isAdminMode)
   const admin = useAdminStore((s) => s.admin)
   const setAdminManageOpen = useAdminStore((s) => s.setAdminManageOpen)
+  const setPopupManageOpen = useAdminStore((s) => s.setPopupManageOpen)
   const logout = useAdminStore((s) => s.logout)
 
   const currentYear = new Date().getFullYear()
@@ -62,6 +63,15 @@ export function Header() {
                   관리자 관리
                 </Button>
               ) : null}
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden sm:inline-flex"
+                onClick={() => setPopupManageOpen(true)}
+              >
+                <Megaphone className="h-4 w-4" />
+                팝업 관리
+              </Button>
               <Button variant="secondary" size="sm" onClick={() => void logout()}>
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline">로그아웃</span>
@@ -109,6 +119,18 @@ export function Header() {
                 }}
               >
                 관리자 관리
+              </button>
+            ) : null}
+            {isAdminMode ? (
+              <button
+                type="button"
+                className="rounded-md px-3 py-3 text-left text-sm font-medium text-ink-muted"
+                onClick={() => {
+                  setOpen(false)
+                  setPopupManageOpen(true)
+                }}
+              >
+                팝업 관리
               </button>
             ) : null}
             {isAdminMode ? (
