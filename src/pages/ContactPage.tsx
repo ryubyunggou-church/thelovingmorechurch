@@ -73,8 +73,8 @@ export function ContactPage() {
                         />
                       )}
                     >
-                      <div className="h-full space-y-4 rounded-2xl border border-stone bg-white p-6 shadow-sm">
-                        <h2 className="font-serif text-xl font-semibold text-ink">교회 연락처</h2>
+                      <div className="h-full space-y-4 border border-paper-line p-6">
+                        <h2 className="font-serif text-xl font-semibold text-paper-text">교회 연락처</h2>
                         <InfoRow icon={MapPin} label="주소" value={contact.address} />
                         <InfoRow
                           icon={Phone}
@@ -129,18 +129,18 @@ function InfoRow({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <Icon className="mt-0.5 h-5 w-5 shrink-0 text-terracotta" />
+      <Icon className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" />
       <div>
-        <p className="text-xs font-semibold tracking-wide text-ink-muted">{label}</p>
+        <p className="text-xs font-semibold tracking-wide text-paper-muted">{label}</p>
         {href ? (
           <a
             href={href}
-            className="whitespace-pre-line text-sm text-ink underline-offset-2 transition hover:text-terracotta hover:underline"
+            className="whitespace-pre-line text-sm text-paper-text underline-offset-2 transition hover:text-gold-deep hover:underline"
           >
             {value}
           </a>
         ) : (
-          <p className="whitespace-pre-line text-sm text-ink">{value}</p>
+          <p className="whitespace-pre-line text-sm text-paper-text">{value}</p>
         )}
       </div>
     </div>

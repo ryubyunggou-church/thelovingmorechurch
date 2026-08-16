@@ -59,19 +59,19 @@ export function MissionListPanel({ items, type, heading, description, onUpdated 
     >
       <div className="mx-auto max-w-6xl px-1 py-2 sm:px-0 sm:py-4">
         <Reveal>
-          <div className="mb-8">
-            <p className="text-sm font-semibold text-terracotta">선교사역</p>
-            <h2 className="mt-1 font-serif text-2xl font-semibold text-ink sm:text-3xl">{heading}</h2>
-            <p className="mt-2 max-w-2xl text-sm text-ink-muted">{description}</p>
+          <div className="mb-10 border-b border-paper-line pb-6">
+            <p className="index-num text-xs font-semibold tracking-[0.14em] text-gold-deep">선교사역</p>
+            <h2 className="mt-2 font-serif text-2xl font-semibold text-paper-text sm:text-3xl">{heading}</h2>
+            <p className="mt-2 max-w-2xl text-sm text-paper-muted">{description}</p>
           </div>
         </Reveal>
 
         {list.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-[#c4ae8e]/70 bg-white/70 px-6 py-14 text-center">
-            <p className="text-sm text-ink-muted">등록된 사역이 없습니다.</p>
+          <div className="border border-dashed border-paper-line px-6 py-14 text-center">
+            <p className="text-sm text-paper-muted">등록된 사역이 없습니다.</p>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
             {list.map((m, i) => (
               <Reveal key={m.id} delay={i * 50}>
                 <MissionCard item={m} />
@@ -89,32 +89,34 @@ function MissionCard({ item }: { item: MissionItem }) {
   const region = item.region?.trim()
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-stone bg-[#fffdf9] shadow-[0_8px_24px_-10px_rgba(59,47,42,0.12)]">
+    <article className="group">
       {image ? (
-        <img
-          src={image}
-          alt={item.name}
-          className="aspect-[16/10] w-full object-cover"
-          loading="lazy"
-        />
+        <div className="overflow-hidden">
+          <img
+            src={image}
+            alt={item.name}
+            className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+            loading="lazy"
+          />
+        </div>
       ) : (
         <div
-          className="flex aspect-[16/10] items-center justify-center bg-gradient-to-br from-[#f7efe4] to-[#e4d5be] text-terracotta/50"
+          className="flex aspect-[16/10] items-center justify-center bg-paper-dim text-gold/50"
           aria-hidden
         >
           <MapPin className="h-8 w-8" />
         </div>
       )}
-      <div className="p-5">
+      <div className="border-t border-paper-line pt-4 mt-4">
         {region ? (
-          <p className="inline-flex items-center gap-1 text-xs font-semibold text-terracotta">
+          <p className="inline-flex items-center gap-1 text-xs font-semibold text-gold-deep">
             <MapPin className="h-3.5 w-3.5" aria-hidden />
             {region}
           </p>
         ) : null}
-        <h3 className="mt-1 font-serif text-lg font-semibold text-ink">{item.name}</h3>
+        <h3 className="mt-1 font-serif text-lg font-semibold text-paper-text">{item.name}</h3>
         {item.description.trim() ? (
-          <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-muted">
+          <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-paper-muted">
             {item.description}
           </p>
         ) : null}

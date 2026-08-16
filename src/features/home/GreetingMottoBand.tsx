@@ -14,9 +14,9 @@ interface Props {
  */
 export function GreetingMottoBand({ greeting, motto, onUpdated }: Props) {
   return (
-    <section className="bg-cream py-14 sm:py-16">
+    <section className="bg-paper py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid items-stretch gap-8 md:grid-cols-[1.15fr_0.85fr] md:gap-10 lg:gap-12">
+        <div className="grid items-stretch gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-14 lg:gap-20">
           <div className="min-w-0">
             <PastorGreetingSection greeting={greeting} onUpdated={onUpdated} compact />
           </div>

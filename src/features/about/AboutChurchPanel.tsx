@@ -40,7 +40,7 @@ export function AboutChurchPanel({ data, onUpdated }: Props) {
           {/* md+: 전경 2 / 글 1 · 모바일: 사진 위 → 글 아래 */}
           <div className="grid items-stretch gap-6 md:grid-cols-3 md:gap-8 lg:gap-10">
             <Reveal className="md:col-span-2">
-              <div className="h-full overflow-hidden rounded-2xl border border-stone/60 shadow-md">
+              <div className="h-full overflow-hidden">
                 <img
                   src={data.heroImageUrl}
                   alt="교회전경"
@@ -50,11 +50,11 @@ export function AboutChurchPanel({ data, onUpdated }: Props) {
               </div>
             </Reveal>
             <Reveal delay={80} className="md:col-span-1">
-              <div className="flex h-full flex-col justify-center md:py-2">
-                <h2 className="font-serif text-2xl font-semibold text-ink sm:text-3xl">
+              <div className="flex h-full flex-col justify-center border-l border-paper-line pl-6 md:py-2 md:pl-8">
+                <h2 className="font-serif text-2xl font-semibold text-paper-text sm:text-3xl">
                   {data.title}
                 </h2>
-                <div className="mt-4 whitespace-pre-line text-sm leading-relaxed text-ink-muted sm:text-[15px]">
+                <div className="mt-4 whitespace-pre-line text-sm leading-relaxed text-paper-muted sm:text-[15px]">
                   {data.body}
                 </div>
               </div>

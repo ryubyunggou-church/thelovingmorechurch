@@ -173,9 +173,9 @@ export function HeroManagePanel({ slides, onUpdated }: Props) {
   return (
     <div id={HERO_MANAGE_PANEL_ID} className="mx-auto max-w-6xl space-y-4 px-4 pb-10 pt-6 sm:px-6">
       <div>
-        <p className="text-sm font-semibold text-terracotta">Hero 슬라이드 관리</p>
-        <h2 className="mt-1 font-serif text-xl font-semibold text-ink">슬라이드 추가/삭제</h2>
-        <p className="mt-2 text-sm text-ink-muted">
+        <p className="text-sm font-semibold text-gold">Hero 슬라이드 관리</p>
+        <h2 className="mt-1 font-serif text-xl font-semibold text-paper-text">슬라이드 추가/삭제</h2>
+        <p className="mt-2 text-sm text-paper-muted">
           왼쪽 핸들을 드래그해 순서를 바꾸거나, 「편집」으로 내용을 수정하세요. 최소 1개의
           슬라이드는 유지되어야 합니다.
         </p>
@@ -195,9 +195,9 @@ export function HeroManagePanel({ slides, onUpdated }: Props) {
               onDragOver={(e) => onDragOver(e, idx)}
               onDrop={(e) => onDrop(e, idx)}
               className={cn(
-                'flex items-center justify-between gap-3 rounded-lg border border-stone/60 bg-white/60 px-4 py-3 transition-colors',
+                'flex items-center justify-between gap-3 rounded-lg border border-paper-line/60 bg-paper/60 px-4 py-3 transition-colors',
                 dragIndex === idx && 'opacity-60',
-                overIndex === idx && dragIndex !== idx && 'ring-2 ring-terracotta/50',
+                overIndex === idx && dragIndex !== idx && 'ring-2 ring-gold/50',
               )}
             >
               <div className="flex min-w-0 items-center gap-2">
@@ -205,14 +205,14 @@ export function HeroManagePanel({ slides, onUpdated }: Props) {
                   draggable
                   onDragStart={(e) => onDragStart(e, idx)}
                   onDragEnd={onDragEnd}
-                  className="inline-flex shrink-0 cursor-grab touch-none rounded-md p-1 text-ink-muted hover:bg-cream/50 active:cursor-grabbing"
+                  className="inline-flex shrink-0 cursor-grab touch-none rounded-md p-1 text-paper-muted hover:bg-paper/50 active:cursor-grabbing"
                   aria-label="드래그하여 순서 변경"
                   role="button"
                   tabIndex={0}
                 >
                   <GripVertical className="h-5 w-5" />
                 </span>
-                <span className="min-w-0 truncate text-sm font-medium text-ink">
+                <span className="min-w-0 truncate text-sm font-medium text-paper-text">
                   {slide.title || '(제목 없음)'}
                 </span>
               </div>
@@ -234,7 +234,7 @@ export function HeroManagePanel({ slides, onUpdated }: Props) {
                   disabled={deletingId === slide.id}
                   onClick={() => requestDelete(slide.id)}
                   className={cn(
-                    'border-red-200 bg-cream/80 text-red-800 hover:bg-red-50',
+                    'border-wine/30 bg-paper/80 text-wine-deep hover:bg-wine/10',
                     isConfirming && 'bg-red-50',
                   )}
                 >

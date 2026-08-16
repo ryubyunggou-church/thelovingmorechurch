@@ -55,7 +55,7 @@ export function PopupRenderer() {
         <div
           aria-hidden="true"
           className={cn(
-            'pointer-events-none fixed z-40 h-[min(70vh,32rem)] w-[min(92vw,32rem)] scale-[0.97] rounded-xl border border-stone bg-cream opacity-90 shadow-xl',
+            'pointer-events-none fixed z-40 h-[min(70vh,32rem)] w-[min(92vw,32rem)] scale-[0.97] border border-paper-line bg-paper opacity-90 shadow-xl',
             popupPeekPositionClass(current.position),
           )}
         />
@@ -67,16 +67,14 @@ export function PopupRenderer() {
           if (!open) close()
         }}
       >
-        <DialogContent
-          className={cn('z-50 border-t-4 border-t-terracotta', popupPositionClass(current.position))}
-        >
-          <div className="mb-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-terracotta/10 px-2.5 py-1 text-xs font-semibold text-terracotta-dark">
+        <DialogContent className={cn('z-50', popupPositionClass(current.position))}>
+          <div className="mb-1 inline-flex w-fit items-center gap-1.5 text-xs font-semibold tracking-wide text-gold-deep">
             <Megaphone className="h-3.5 w-3.5" />
             공지
           </div>
           <DialogTitle
             className={cn(
-              'font-serif text-xl font-semibold text-ink',
+              'font-serif text-xl font-semibold text-paper-text',
               !current.title && 'sr-only',
             )}
           >
@@ -93,10 +91,10 @@ export function PopupRenderer() {
             {current.contentType === 'richtext' && current.contentHtml ? (
               <div
                 className={cn(
-                  'text-sm leading-relaxed text-ink',
-                  '[&_a]:text-terracotta [&_a]:underline',
-                  '[&_blockquote]:border-l-2 [&_blockquote]:border-terracotta/40 [&_blockquote]:pl-3 [&_blockquote]:text-ink-muted',
-                  '[&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-ink',
+                  'text-sm leading-relaxed text-paper-text',
+                  '[&_a]:text-gold-deep [&_a]:underline',
+                  '[&_blockquote]:border-l-2 [&_blockquote]:border-gold/40 [&_blockquote]:pl-3 [&_blockquote]:text-paper-muted',
+                  '[&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-paper-text',
                   '[&_ol]:list-decimal [&_ol]:pl-5',
                   '[&_p]:mt-2 [&_p:first-child]:mt-0',
                   '[&_ul]:list-disc [&_ul]:pl-5',
@@ -108,10 +106,10 @@ export function PopupRenderer() {
           </div>
 
           {next ? (
-            <p className="mt-3 text-xs text-ink-muted">다음 공지가 이어서 표시됩니다.</p>
+            <p className="mt-3 text-xs text-paper-muted">다음 공지가 이어서 표시됩니다.</p>
           ) : null}
 
-          <div className="mt-5 flex justify-end border-t border-stone/60 pt-4">
+          <div className="mt-5 flex justify-end border-t border-paper-line pt-4">
             <Button size="sm" onClick={close}>
               닫기
             </Button>
@@ -127,7 +125,7 @@ function PopupImageBody({ popup }: { popup: SitePopup }) {
     <img
       src={popup.mediaUrl}
       alt={popup.title || popup.label}
-      className="w-full rounded-md border border-stone/60"
+      className="w-full border border-paper-line"
     />
   )
   if (!popup.linkUrl) return img
@@ -144,17 +142,17 @@ function PopupPdfBody({ url, linkUrl }: { url: string; linkUrl?: string }) {
       <object
         data={url}
         type="application/pdf"
-        className="h-[65vh] w-full rounded-md border border-stone/60"
+        className="h-[65vh] w-full border border-paper-line"
       >
-        <p className="p-4 text-sm text-ink-muted">
+        <p className="p-4 text-sm text-paper-muted">
           이 브라우저에서는 PDF 미리보기를 지원하지 않습니다.{' '}
-          <a href={url} target="_blank" rel="noreferrer" className="text-terracotta underline">
+          <a href={url} target="_blank" rel="noreferrer" className="text-gold-deep underline">
             새 탭에서 PDF 열기
           </a>
         </p>
       </object>
       {linkUrl ? (
-        <a href={linkUrl} className="inline-block text-sm font-medium text-terracotta underline">
+        <a href={linkUrl} className="inline-block text-sm font-medium text-gold-deep underline">
           자세히 보기
         </a>
       ) : null}

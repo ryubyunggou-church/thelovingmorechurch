@@ -4,20 +4,20 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta/40 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-terracotta text-cream hover:bg-terracotta-dark',
-        secondary: 'bg-cream-dark text-ink hover:bg-stone',
-        outline: 'border border-stone bg-transparent hover:bg-cream-dark',
-        ghost: 'hover:bg-cream-dark',
-        link: 'text-terracotta underline-offset-4 hover:underline',
+        default: 'bg-gold text-ink hover:bg-gold-deep hover:text-paper',
+        secondary: 'bg-ink text-paper hover:bg-ink-soft',
+        outline: 'border border-paper-line bg-transparent text-paper-text hover:border-gold-deep/50 hover:bg-paper-dim',
+        ghost: 'text-paper-text hover:bg-paper-dim',
+        link: 'text-gold-deep underline-offset-4 hover:underline',
       },
       size: {
         default: 'h-10 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-11 rounded-md px-8',
+        sm: 'h-8 rounded-sm px-3 text-xs',
+        lg: 'h-11 rounded-sm px-8',
         icon: 'h-10 w-10',
       },
     },

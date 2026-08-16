@@ -11,7 +11,7 @@ export function TabsList({
   return (
     <TabsPrimitive.List
       className={cn(
-        'inline-flex h-11 w-full flex-wrap items-center justify-start gap-1 rounded-lg bg-cream-dark p-1 text-ink-muted sm:w-auto',
+        'flex w-full flex-wrap items-stretch gap-x-6 gap-y-1 border-b border-paper-line',
         className,
       )}
       {...props}
@@ -26,7 +26,9 @@ export function TabsTrigger({
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all data-[state=active]:bg-cream data-[state=active]:text-terracotta data-[state=active]:shadow-sm',
+        'relative -mb-px inline-flex items-center whitespace-nowrap border-b-2 border-transparent py-3 text-sm font-medium text-paper-muted transition-colors',
+        'hover:text-paper-text',
+        'data-[state=active]:border-gold data-[state=active]:text-paper-text',
         className,
       )}
       {...props}
@@ -38,5 +40,5 @@ export function TabsContent({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>) {
-  return <TabsPrimitive.Content className={cn('mt-6 focus-visible:outline-none', className)} {...props} />
+  return <TabsPrimitive.Content className={cn('mt-8 focus-visible:outline-none', className)} {...props} />
 }

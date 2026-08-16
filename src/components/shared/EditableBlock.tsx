@@ -23,7 +23,7 @@ export function EditableBlock({ label, children, className, renderEditor }: Edit
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-ink/80 px-2.5 py-1 text-xs font-medium text-cream opacity-100 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
+          className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-sm bg-ink/85 px-2.5 py-1 text-xs font-medium text-gold opacity-100 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
           aria-label={`${label} 편집`}
         >
           <Pencil className="h-3.5 w-3.5" />
@@ -40,7 +40,7 @@ export function EditableBlock({ label, children, className, renderEditor }: Edit
             </DialogDescription>
           </DialogHeader>
           <div className="min-h-0">{renderEditor(() => setOpen(false))}</div>
-          <div className="mt-4 flex justify-end border-t border-stone/60 pt-3">
+          <div className="mt-4 flex justify-end border-t border-paper-line/60 pt-3">
             <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
               닫기
             </Button>

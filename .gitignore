@@ -43,3 +43,6 @@ functions/node_modules
 # Local-only asset staging — 용량이 크고 아직 기능에 연결 안 된 샘플
 # 이미지라 저장소/Storage에 올리지 않고 로컬에만 보관한다.
 assets-staging/
+
+# impeccable 스킬 QA 산출물(스크린샷 등) — 저장소에 커밋하지 않음
+.impeccable/

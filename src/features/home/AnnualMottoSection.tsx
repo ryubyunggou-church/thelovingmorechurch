@@ -38,24 +38,20 @@ export function AnnualMottoSection({ motto, onUpdated }: Props) {
       )}
     >
       <Reveal className="h-full">
-        <article className="relative flex h-full min-h-[280px] flex-col overflow-hidden rounded-2xl border border-stone/70 bg-gradient-to-b from-cream to-cream-dark px-6 py-7 shadow-sm sm:px-7 sm:py-8">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-6 -top-6 h-28 w-28 rounded-full bg-terracotta/10 blur-2xl"
-          />
-          <p className="text-xs font-semibold tracking-[0.12em] text-terracotta">
+        <article className="relative flex h-full min-h-[280px] flex-col border-l border-paper-line pl-6 sm:pl-8">
+          <p className="index-num text-xs font-semibold tracking-[0.14em] text-gold-deep">
             {displayYear}년도 표어
           </p>
-          <h2 className="mt-3 font-serif text-xl font-semibold leading-snug text-ink sm:text-2xl">
+          <h2 className="mt-3 font-serif text-2xl font-semibold leading-snug text-paper-text sm:text-[1.75rem]">
             {motto.motto}
           </h2>
-          <p className="mt-2 text-sm font-medium text-ink-muted">{motto.scripture}</p>
+          <p className="mt-2 text-sm font-medium text-paper-muted">{motto.scripture}</p>
 
-          <ol className="mt-6 space-y-2.5 border-t border-stone/80 pt-5">
+          <ol className="mt-7 space-y-3 border-t border-paper-line pt-6">
             {practices.slice(0, 3).map((line, i) => (
-              <li key={i} className="flex gap-2.5 text-sm leading-relaxed text-ink">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-terracotta/15 text-[11px] font-semibold text-terracotta">
-                  {i + 1}
+              <li key={i} className="flex items-baseline gap-3 text-sm leading-relaxed text-paper-text">
+                <span className="index-num shrink-0 font-serif text-xs text-gold-deep">
+                  {String(i + 1).padStart(2, '0')}
                 </span>
                 <span>{line}</span>
               </li>

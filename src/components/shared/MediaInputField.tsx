@@ -128,7 +128,7 @@ export function MediaInputField({
           onClick={switchToUrl}
           className={cn(
             'inline-flex h-6 w-6 items-center justify-center rounded transition',
-            mode === 'url' ? 'opacity-100 ring-1 ring-terracotta/40' : 'opacity-70 hover:opacity-100',
+            mode === 'url' ? 'opacity-100 ring-1 ring-gold/40' : 'opacity-70 hover:opacity-100',
             'disabled:cursor-not-allowed disabled:opacity-40',
           )}
         >
@@ -146,8 +146,8 @@ export function MediaInputField({
           className={cn(
             'inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border transition',
             mode === 'file'
-              ? 'border-terracotta bg-cream-dark ring-1 ring-terracotta/30'
-              : 'border-stone bg-cream hover:bg-cream-dark',
+              ? 'border-gold bg-paper-dim ring-1 ring-gold/30'
+              : 'border-paper-line bg-paper hover:bg-paper-dim',
             'disabled:cursor-not-allowed disabled:opacity-50',
           )}
         >
@@ -178,8 +178,8 @@ export function MediaInputField({
           ) : (
             <div
               className={cn(
-                'flex h-10 items-center rounded-md border border-stone bg-cream px-3 text-sm',
-                uploading ? 'text-ink-muted' : 'text-ink',
+                'flex h-10 items-center rounded-md border border-paper-line bg-paper px-3 text-sm',
+                uploading ? 'text-paper-muted' : 'text-paper-text',
               )}
             >
               {uploading
@@ -201,7 +201,7 @@ export function MediaInputField({
       />
 
       {effectiveUrl && !uploading ? (
-        <p className="mt-1 truncate text-[11px] text-ink-muted" title={effectiveUrl}>
+        <p className="mt-1 truncate text-[11px] text-paper-muted" title={effectiveUrl}>
           {value.mediaUrl.trim() ? '현재 경로: ' : '유지될 기본 경로: '}
           {effectiveUrl}
         </p>

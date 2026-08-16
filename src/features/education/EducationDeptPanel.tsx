@@ -41,7 +41,7 @@ export function EducationDeptPanel({ dept, onUpdated }: Props) {
         <div className="mx-auto w-full max-w-6xl px-1 sm:px-0">
           <div className="grid items-start gap-6 md:grid-cols-3 md:gap-8 lg:gap-10">
             <Reveal className="md:col-span-2">
-              <div className="overflow-hidden rounded-2xl border border-stone/60 shadow-md">
+              <div className="overflow-hidden">
                 <img
                   src={dept.image}
                   alt={dept.name}
@@ -51,35 +51,36 @@ export function EducationDeptPanel({ dept, onUpdated }: Props) {
               </div>
             </Reveal>
             <Reveal delay={80} className="md:col-span-1">
-              <div className="flex h-full flex-col justify-center md:py-2">
-                <p className="text-sm font-semibold tracking-wide text-terracotta">교육부서</p>
-                <h2 className="mt-1 font-serif text-2xl font-semibold text-ink sm:text-3xl">
+              <div className="flex h-full flex-col justify-center border-l border-paper-line pl-6 md:py-2 md:pl-8">
+                <p className="index-num text-xs font-semibold tracking-[0.14em] text-gold-deep">교육부서</p>
+                <h2 className="mt-2 font-serif text-2xl font-semibold text-paper-text sm:text-3xl">
                   {dept.name}
                 </h2>
 
                 {age || place ? (
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-paper-muted">
                     {age ? (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-terracotta/20 bg-[#fff8f3] px-2.5 py-1 text-xs font-medium text-terracotta-dark">
-                        <Users className="h-3.5 w-3.5" aria-hidden />
+                      <span className="inline-flex items-center gap-1">
+                        <Users className="h-3.5 w-3.5 text-gold-deep" aria-hidden />
                         {age}
                       </span>
                     ) : null}
+                    {age && place ? <span aria-hidden>·</span> : null}
                     {place ? (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-stone bg-cream px-2.5 py-1 text-xs font-medium text-ink-muted">
-                        <MapPin className="h-3.5 w-3.5 text-terracotta/70" aria-hidden />
+                      <span className="inline-flex items-center gap-1">
+                        <MapPin className="h-3.5 w-3.5 text-gold-deep" aria-hidden />
                         {place}
                       </span>
                     ) : null}
                   </div>
                 ) : null}
 
-                <div className="mt-4 whitespace-pre-line text-sm leading-relaxed text-ink-muted sm:text-[15px]">
+                <div className="mt-4 whitespace-pre-line text-sm leading-relaxed text-paper-muted sm:text-[15px]">
                   {dept.missionText}
                 </div>
 
                 {dept.scheduleInfo.trim() ? (
-                  <p className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-terracotta">
+                  <p className="mt-6 inline-flex items-center gap-1.5 border-t border-paper-line pt-4 text-sm font-semibold text-gold-deep">
                     <CalendarDays className="h-4 w-4" aria-hidden />
                     모임 {dept.scheduleInfo}
                   </p>

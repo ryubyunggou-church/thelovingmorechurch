@@ -33,23 +33,20 @@ export function ParkingPanel({ contact, onUpdated }: Props) {
         />
       )}
     >
-      <div className="space-y-6">
-        <h2 className="flex items-center gap-2 font-serif text-xl font-semibold text-ink">
-          <Car className="h-5 w-5 text-terracotta" />
+      <div className="space-y-8">
+        <h2 className="flex items-center gap-2 border-b border-paper-line pb-6 font-serif text-xl font-semibold text-paper-text">
+          <Car className="h-5 w-5 text-gold-deep" />
           교회 주차장 이용 시 주차 요령
         </h2>
 
         {photos.length > 0 ? (
           <div className="grid gap-3 sm:grid-cols-2">
             {photos.slice(0, 2).map((url) => (
-              <div
-                key={url}
-                className="group overflow-hidden rounded-2xl border border-stone shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_-12px_rgba(196,107,62,0.4)]"
-              >
+              <div key={url} className="group overflow-hidden">
                 <img
                   src={url}
                   alt=""
-                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                   loading="lazy"
                 />
               </div>
@@ -58,15 +55,15 @@ export function ParkingPanel({ contact, onUpdated }: Props) {
         ) : null}
 
         {contact.parkingNotices.length > 0 ? (
-          <ul className="list-inside list-disc space-y-2 text-sm leading-relaxed text-ink-muted sm:columns-2 sm:gap-8">
+          <ul className="space-y-2 text-sm leading-relaxed text-paper-muted sm:columns-2 sm:gap-8">
             {contact.parkingNotices.map((notice) => (
-              <li key={notice} className="break-keep">
+              <li key={notice} className="break-keep border-t border-paper-line pt-2 first:border-t-0 first:pt-0">
                 {notice}
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-ink-muted">등록된 주차 안내가 없습니다.</p>
+          <p className="text-sm text-paper-muted">등록된 주차 안내가 없습니다.</p>
         )}
       </div>
     </EditableBlock>

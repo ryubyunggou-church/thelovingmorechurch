@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Settings } from 'lucide-react'
 import type { HeroSlide } from '../../types/content'
-import { Button } from '../../components/ui/button'
 import { useAdminStore } from '../../store/admin-store'
 import { seedHeroSlides } from '../../data/seed'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
@@ -77,30 +76,30 @@ export function HeroSlider({ slides }: HeroSliderProps) {
           type="button"
           onClick={goToManagePanel}
           aria-label="Hero 슬라이드 관리로 이동"
-          className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-ink/80 px-2.5 py-1 text-xs font-medium text-cream opacity-100 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
+          className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-sm bg-ink/85 px-2.5 py-1 text-xs font-medium text-gold opacity-100 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
         >
           <Settings className="h-3.5 w-3.5" />
           관리로 이동
         </button>
       ) : null}
 
-      <section className="relative h-[min(92vh,900px)] min-h-[520px] w-full overflow-hidden bg-[#2a211c]">
+      <section className="relative h-[min(92vh,900px)] min-h-[560px] w-full overflow-hidden bg-ink">
         <HeroMediaBackground slide={current} />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/15" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink from-10% via-ink/55 via-45% to-transparent" />
 
-        <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-4 pb-20 pt-28 sm:px-6 sm:pb-28">
+        <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-4 pb-20 pt-28 sm:px-6 sm:pb-24">
           <span
             className={cn(
-              'mb-4 inline-flex w-fit rounded-full bg-cream/15 px-3 py-1 text-xs font-semibold tracking-wide text-cream backdrop-blur',
+              'mb-5 flex w-fit items-center gap-2.5 text-xs font-semibold tracking-[0.16em] text-gold',
               copyClass(),
             )}
-            style={reducedMotion ? undefined : { transitionDelay: entered ? '0ms' : '0ms' }}
           >
+            <span aria-hidden className="h-px w-8 bg-gold" />
             {current.tag}
           </span>
           <h1
             className={cn(
-              'max-w-3xl font-serif text-3xl font-semibold leading-tight text-cream sm:text-5xl',
+              'max-w-3xl font-serif text-4xl font-semibold leading-[1.15] text-paper sm:text-6xl',
               copyClass(),
             )}
             style={reducedMotion ? undefined : { transitionDelay: entered ? '80ms' : '0ms' }}
@@ -108,7 +107,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
             {current.title}
           </h1>
           <p
-            className={cn('mt-4 max-w-2xl text-sm text-cream/90 sm:text-lg', copyClass())}
+            className={cn('mt-5 max-w-xl text-sm text-ink-muted sm:text-lg', copyClass())}
             style={reducedMotion ? undefined : { transitionDelay: entered ? '140ms' : '0ms' }}
           >
             {current.subtitle}
@@ -117,49 +116,48 @@ export function HeroSlider({ slides }: HeroSliderProps) {
             <a
               href={current.linkUrl}
               className={cn(
-                'mt-6 inline-flex w-fit rounded-md bg-terracotta px-5 py-2.5 text-sm font-medium text-cream hover:bg-terracotta-dark',
+                'mt-8 inline-flex w-fit items-center gap-2 border-b border-gold pb-1 text-sm font-medium tracking-wide text-paper transition hover:gap-3 hover:text-gold',
                 copyClass(),
               )}
               style={reducedMotion ? undefined : { transitionDelay: entered ? '200ms' : '0ms' }}
             >
               자세히 보기
+              <ChevronRight className="h-4 w-4" />
             </a>
           ) : null}
         </div>
 
-        <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
-          <Button
-            size="icon"
-            variant="secondary"
-            className="h-9 w-9 rounded-full bg-cream/90"
+        <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center gap-4 sm:bottom-10">
+          <button
+            type="button"
             onClick={() => go(-1)}
             aria-label="이전 슬라이드"
+            className="text-ink-muted transition hover:text-gold"
           >
             <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex gap-1.5">
+          </button>
+          <div className="flex items-center gap-2">
             {list.map((s, i) => (
               <button
                 key={s.id}
                 type="button"
                 aria-label={`슬라이드 ${i + 1}`}
                 className={cn(
-                  'h-2 w-2 rounded-full transition',
-                  i === index ? 'bg-cream' : 'bg-cream/40',
+                  'h-[3px] rounded-full transition-all',
+                  i === index ? 'w-6 bg-gold' : 'w-3 bg-paper/30 hover:bg-paper/50',
                 )}
                 onClick={() => setIndex(i)}
               />
             ))}
           </div>
-          <Button
-            size="icon"
-            variant="secondary"
-            className="h-9 w-9 rounded-full bg-cream/90"
+          <button
+            type="button"
             onClick={() => go(1)}
             aria-label="다음 슬라이드"
+            className="text-ink-muted transition hover:text-gold"
           >
             <ChevronRight className="h-5 w-5" />
-          </Button>
+          </button>
         </div>
       </section>
     </div>

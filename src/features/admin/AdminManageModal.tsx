@@ -100,18 +100,18 @@ export function AdminManageModal() {
         </form>
 
         <div className="mt-2">
-          <p className="mb-2 text-sm font-medium text-ink">등록된 관리자</p>
-          <ul className="divide-y divide-stone rounded-lg border border-stone">
+          <p className="mb-2 text-sm font-medium text-paper-text">등록된 관리자</p>
+          <ul className="divide-y divide-paper-line rounded-lg border border-paper-line">
             {admins.length === 0 ? (
-              <li className="px-4 py-3 text-sm text-ink-muted">
+              <li className="px-4 py-3 text-sm text-paper-muted">
                 등록된 관리자가 없거나 조회에 실패했습니다.
               </li>
             ) : (
               admins.map((a) => (
                 <li key={a.uid} className="flex items-center justify-between gap-3 px-4 py-3">
                   <div>
-                    <p className="text-sm font-medium text-ink">{a.email || a.uid}</p>
-                    <p className="text-xs text-ink-muted">
+                    <p className="text-sm font-medium text-paper-text">{a.email || a.uid}</p>
+                    <p className="text-xs text-paper-muted">
                       {a.role === 'super' ? '최고관리자' : '부관리자'}
                     </p>
                   </div>

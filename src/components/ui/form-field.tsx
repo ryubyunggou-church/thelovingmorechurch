@@ -29,17 +29,17 @@ export function FormField({
         {leading ? <span className="inline-flex shrink-0 items-center">{leading}</span> : null}
         <label
           htmlFor={htmlFor}
-          className="shrink-0 text-sm font-medium text-ink"
+          className="shrink-0 text-sm font-medium text-paper-text"
         >
           {label}
-          {required ? <span className="ml-0.5 text-terracotta">*</span> : null}
+          {required ? <span className="ml-0.5 text-wine">*</span> : null}
         </label>
         {hint ? (
           <span
-            className="min-w-0 flex-1 truncate text-xs text-ink-muted"
+            className="min-w-0 flex-1 truncate text-xs text-paper-muted"
             title={hint}
           >
-            <span className="mx-1 text-stone" aria-hidden>
+            <span className="mx-1 text-paper-line" aria-hidden>
               ·
             </span>
             {hint}

@@ -1,16 +1,26 @@
 @import 'tailwindcss';
 
+/*
+ * "성소의 빛(Sanctuary Light)" — 스테인드글라스·주보 색인·놋쇠 명패에서 끌어온
+ * 팔레트. ink(짙은 예배당 어둠)를 중심 서페이스로 쓰고 paper(주보 갱지 톤)는
+ * 정독이 필요한 콘텐츠에만, gold/wine은 스테인드글라스 조각처럼 절제해 쓴다.
+ */
 @theme {
-  --color-cream: #faf6f0;
-  --color-cream-dark: #f1ebe1;
-  --color-stone: #e4d9cb;
-  /* 푸터 전용: cream(#faf6f0) 대비 확실한 웜 토프 (본문과 분리) */
-  --color-footer: #d8c4a8;
-  --color-footer-border: #c4ae8e;
-  --color-ink: #3b2f2a;
-  --color-ink-muted: #6b5b52;
-  --color-terracotta: #c46b3e;
-  --color-terracotta-dark: #a55630;
+  --color-ink: #17130f;
+  --color-ink-soft: #221b15;
+  --color-ink-line: #3d3428;
+  --color-ink-muted: #c7bea9;
+
+  --color-paper: #f1ede3;
+  --color-paper-dim: #e7e1d2;
+  --color-paper-line: #dad2be;
+  --color-paper-text: #1c1712;
+  --color-paper-muted: #5c5344;
+
+  --color-gold: #c89b3c;
+  --color-gold-deep: #93701f;
+  --color-wine: #7c2f3a;
+  --color-wine-deep: #5e2029;
 
   --font-serif: 'Noto Serif KR', 'Georgia', serif;
   --font-sans: 'Noto Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif;
@@ -25,8 +35,8 @@
     margin: 0;
     min-width: 320px;
     font-family: var(--font-sans);
-    background: var(--color-cream);
-    color: var(--color-ink);
+    background: var(--color-paper);
+    color: var(--color-paper-text);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -38,6 +48,16 @@
     max-width: 100%;
     display: block;
   }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
 }
 
 @layer utilities {
@@ -48,23 +68,29 @@
   .prose h1,
   .prose h2,
   .prose h3 {
-    color: var(--color-ink);
+    color: var(--color-paper-text);
     font-family: var(--font-serif);
   }
 
   .prose a {
-    color: var(--color-terracotta);
+    color: var(--color-gold-deep);
+  }
+
+  /* 색인 숫자 — 주보의 찬송 번호처럼 tabular + 절제된 트래킹 */
+  .index-num {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
   }
 }
 
 /* 푸터 배경 강제 — 유틸/캐시와 무관하게 항상 적용 */
 .site-footer {
-  background-color: #d8c4a8 !important;
-  border-top: 1px solid #c4ae8e !important;
+  background-color: #17130f !important;
+  border-top: 1px solid #3d3428 !important;
 }
 
 .site-footer__rule {
-  border-top: 1px solid #c4ae8e !important;
+  border-top: 1px solid #3d3428 !important;
 }
 
 /* Radix Tooltip — fade + soft scale (exit animation uses keyframes so Radix waits) */

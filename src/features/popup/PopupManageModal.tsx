@@ -149,9 +149,9 @@ export function PopupManageModal() {
             {adding ? '추가 중…' : '새 팝업 추가'}
           </Button>
 
-          <div className="mt-3 overflow-x-auto rounded-lg border border-stone">
+          <div className="mt-3 overflow-x-auto rounded-lg border border-paper-line">
             <table className="w-full min-w-[640px] text-left text-sm">
-              <thead className="bg-cream-dark text-xs text-ink-muted">
+              <thead className="bg-paper-dim text-xs text-paper-muted">
                 <tr>
                   <th className="px-3 py-2 font-medium">이름</th>
                   <th className="px-3 py-2 font-medium">기간</th>
@@ -162,10 +162,10 @@ export function PopupManageModal() {
                   <th className="px-3 py-2 font-medium">작업</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-stone">
+              <tbody className="divide-y divide-paper-line">
                 {popups.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-3 py-6 text-center text-ink-muted">
+                    <td colSpan={7} className="px-3 py-6 text-center text-paper-muted">
                       {loading ? '불러오는 중…' : '등록된 팝업이 없습니다.'}
                     </td>
                   </tr>
@@ -174,26 +174,26 @@ export function PopupManageModal() {
                     const isConfirming = confirmingId === popup.id
                     return (
                       <tr key={popup.id}>
-                        <td className="max-w-[10rem] truncate px-3 py-2 font-medium text-ink">
+                        <td className="max-w-[10rem] truncate px-3 py-2 font-medium text-paper-text">
                           {popup.label || '(이름 없음)'}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-2 text-ink-muted">
+                        <td className="whitespace-nowrap px-3 py-2 text-paper-muted">
                           {popup.startDate} ~ {popup.endDate}
                         </td>
-                        <td className="px-3 py-2 text-ink-muted">
+                        <td className="px-3 py-2 text-paper-muted">
                           {CONTENT_TYPE_LABEL[popup.contentType]}
                         </td>
-                        <td className="px-3 py-2 text-ink-muted">
+                        <td className="px-3 py-2 text-paper-muted">
                           {POSITION_LABEL[popup.position]}
                         </td>
-                        <td className="px-3 py-2 text-ink-muted">{popup.priority}</td>
+                        <td className="px-3 py-2 text-paper-muted">{popup.priority}</td>
                         <td className="px-3 py-2">
                           {popup.enabled ? (
-                            <span className="rounded-full bg-terracotta/10 px-2 py-0.5 text-xs font-medium text-terracotta-dark">
+                            <span className="rounded-full bg-gold/10 px-2 py-0.5 text-xs font-medium text-gold-deep">
                               켜짐
                             </span>
                           ) : (
-                            <span className="rounded-full bg-stone/40 px-2 py-0.5 text-xs font-medium text-ink-muted">
+                            <span className="rounded-full bg-paper-line/40 px-2 py-0.5 text-xs font-medium text-paper-muted">
                               꺼짐
                             </span>
                           )}
@@ -216,7 +216,7 @@ export function PopupManageModal() {
                               disabled={deletingId === popup.id}
                               onClick={() => requestDelete(popup.id)}
                               className={cn(
-                                'border-red-200 bg-cream/80 text-red-800 hover:bg-red-50',
+                                'border-wine/30 bg-paper/80 text-wine-deep hover:bg-wine/10',
                                 isConfirming && 'bg-red-50',
                               )}
                             >

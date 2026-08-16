@@ -51,7 +51,7 @@ function ScrollToTop() {
 
 function PageFallback() {
   return (
-    <div className="flex min-h-[40vh] items-center justify-center text-sm text-ink-muted">
+    <div className="flex min-h-[40vh] items-center justify-center text-sm text-paper-muted">
       페이지를 불러오는 중…
     </div>
   )
@@ -68,7 +68,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="flex min-h-screen flex-col bg-cream text-ink">
+      <div className="flex min-h-screen flex-col bg-paper text-paper-text">
         <Header />
         <main className="flex-1">
           <Suspense fallback={<PageFallback />}>

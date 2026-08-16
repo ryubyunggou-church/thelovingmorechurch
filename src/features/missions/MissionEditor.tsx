@@ -89,7 +89,7 @@ export function MissionEditor({ items, type, onSave, onError }: Props) {
 
   return (
     <div className="space-y-4">
-      <p className="text-xs text-ink-muted">
+      <p className="text-xs text-paper-muted">
         왼쪽 핸들을 드래그해 순서를 바꾸거나, 추가·삭제한 뒤 저장하세요. 목록이 길면 모달 안에서
         스크롤됩니다.
       </p>
@@ -102,9 +102,9 @@ export function MissionEditor({ items, type, onSave, onError }: Props) {
             onDrop={(e) => onDrop(e, idx)}
             className={cn(
               'space-y-3 rounded-xl border p-3 transition-colors',
-              'border-[#c4ae8e]/70 bg-[#e4d5be]',
+              'border-paper-line bg-paper-dim',
               dragIndex === idx && 'opacity-60',
-              overIndex === idx && dragIndex !== idx && 'ring-2 ring-terracotta/50',
+              overIndex === idx && dragIndex !== idx && 'ring-2 ring-gold/50',
             )}
           >
             <div className="flex items-center justify-between gap-2">
@@ -113,20 +113,20 @@ export function MissionEditor({ items, type, onSave, onError }: Props) {
                   draggable
                   onDragStart={(e) => onDragStart(e, idx)}
                   onDragEnd={onDragEnd}
-                  className="inline-flex cursor-grab touch-none rounded-md p-1 text-ink-muted hover:bg-cream/50 active:cursor-grabbing"
+                  className="inline-flex cursor-grab touch-none rounded-md p-1 text-paper-muted hover:bg-paper/50 active:cursor-grabbing"
                   aria-label="드래그하여 순서 변경"
                   role="button"
                   tabIndex={0}
                 >
                   <GripVertical className="h-5 w-5" />
                 </span>
-                <p className="text-xs font-semibold text-terracotta">사역 #{idx + 1}</p>
+                <p className="text-xs font-semibold text-gold">사역 #{idx + 1}</p>
               </div>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="shrink-0 border-red-200 bg-cream/80 text-red-800 hover:bg-red-50"
+                className="shrink-0 border-wine/30 bg-paper/80 text-wine-deep hover:bg-wine/10"
                 onClick={() => removeAt(idx)}
               >
                 <Trash2 className="h-3.5 w-3.5" />
@@ -150,7 +150,7 @@ export function MissionEditor({ items, type, onSave, onError }: Props) {
                 value={item.name}
                 onChange={(e) => updateAt(idx, { name: e.target.value })}
                 placeholder="이름"
-                className="bg-cream"
+                className="bg-paper"
               />
             </FormField>
             <FormField label="지역" htmlFor={`ms-region-${item.id}`} hint="예: 서울 동대문구, 동남아시아">
@@ -159,13 +159,13 @@ export function MissionEditor({ items, type, onSave, onError }: Props) {
                 value={item.region ?? ''}
                 onChange={(e) => updateAt(idx, { region: e.target.value })}
                 placeholder="지역"
-                className="bg-cream"
+                className="bg-paper"
               />
             </FormField>
             <FormField label="설명" htmlFor={`ms-desc-${item.id}`} hint="사역 소개·기도 제목">
               <Textarea
                 id={`ms-desc-${item.id}`}
-                className="min-h-[88px] bg-cream"
+                className="min-h-[88px] bg-paper"
                 value={item.description}
                 onChange={(e) => updateAt(idx, { description: e.target.value })}
                 placeholder="설명"
@@ -176,12 +176,12 @@ export function MissionEditor({ items, type, onSave, onError }: Props) {
       </div>
 
       {draft.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-[#c4ae8e] bg-[#e4d5be]/50 px-3 py-6 text-center text-sm text-ink-muted">
+        <p className="rounded-lg border border-dashed border-paper-line bg-paper-dim/50 px-3 py-6 text-center text-sm text-paper-muted">
           등록된 사역이 없습니다. 아래 「사역 추가」를 눌러 주세요.
         </p>
       ) : null}
 
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-stone/60 pt-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-paper-line/60 pt-3">
         <Button type="button" variant="outline" onClick={addItem}>
           <Plus className="h-4 w-4" />
           사역 추가

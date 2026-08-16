@@ -52,25 +52,19 @@ export function PastorGreetingSection({ greeting, onUpdated, compact = true }: P
         <article
           className={
             compact
-              ? 'flex h-full flex-col gap-5 sm:gap-6'
+              ? 'flex h-full flex-col gap-6 sm:gap-7'
               : 'grid items-center gap-10 md:grid-cols-[240px_1fr]'
           }
         >
           {/* Pull-quote */}
-          <blockquote className="relative border-l-[3px] border-terracotta pl-4 sm:pl-5">
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -left-1 -top-3 font-serif text-5xl leading-none text-terracotta/25 sm:text-6xl"
-            >
-              “
-            </span>
-            <p className="font-serif text-lg font-medium leading-snug text-ink sm:text-xl">
+          <blockquote className="border-t border-gold pt-4">
+            <p className="font-serif text-xl font-medium leading-snug text-paper-text sm:text-2xl">
               {quote}
             </p>
           </blockquote>
 
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
-            <div className="mx-auto w-36 shrink-0 overflow-hidden rounded-xl shadow-md sm:mx-0 sm:w-40">
+            <div className="mx-auto w-36 shrink-0 overflow-hidden sm:mx-0 sm:w-40">
               <img
                 ref={photoParallaxRef}
                 src={greeting.photoUrl}
@@ -80,11 +74,13 @@ export function PastorGreetingSection({ greeting, onUpdated, compact = true }: P
               />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold tracking-wide text-terracotta">담임목사 인사말</p>
-              <h2 className="mt-1 font-serif text-xl font-semibold text-ink sm:text-2xl">
+              <p className="index-num text-xs font-semibold tracking-[0.14em] text-gold-deep">
+                담임목사 인사말
+              </p>
+              <h2 className="mt-1 font-serif text-xl font-semibold text-paper-text sm:text-2xl">
                 {greeting.pastorName}
               </h2>
-              <p className="mt-3 line-clamp-6 text-sm leading-relaxed text-ink-muted sm:line-clamp-8 sm:text-[15px]">
+              <p className="mt-3 line-clamp-6 text-sm leading-relaxed text-paper-muted sm:line-clamp-8 sm:text-[15px]">
                 {greeting.message}
               </p>
             </div>

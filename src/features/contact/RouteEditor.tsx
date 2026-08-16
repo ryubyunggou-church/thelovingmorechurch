@@ -81,7 +81,7 @@ export function RouteEditor({ routes, onSave }: Props) {
 
   return (
     <div className="space-y-4">
-      <p className="text-xs text-ink-muted">
+      <p className="text-xs text-paper-muted">
         왼쪽 핸들을 드래그해 순서를 바꾸거나, 추가·삭제한 뒤 저장하세요. 아이콘은 지하철/버스/도보
         중 하나를 고르면 방문자 화면에서 해당 그룹으로 묶여 표시됩니다.
       </p>
@@ -94,9 +94,9 @@ export function RouteEditor({ routes, onSave }: Props) {
             onDrop={(e) => onDrop(e, idx)}
             className={cn(
               'space-y-3 rounded-xl border p-3 transition-colors',
-              'border-[#c4ae8e]/70 bg-[#e4d5be]',
+              'border-paper-line bg-paper-dim',
               dragIndex === idx && 'opacity-60',
-              overIndex === idx && dragIndex !== idx && 'ring-2 ring-terracotta/50',
+              overIndex === idx && dragIndex !== idx && 'ring-2 ring-gold/50',
             )}
           >
             <div className="flex items-center justify-between gap-2">
@@ -105,20 +105,20 @@ export function RouteEditor({ routes, onSave }: Props) {
                   draggable
                   onDragStart={(e) => onDragStart(e, idx)}
                   onDragEnd={onDragEnd}
-                  className="inline-flex cursor-grab touch-none rounded-md p-1 text-ink-muted hover:bg-cream/50 active:cursor-grabbing"
+                  className="inline-flex cursor-grab touch-none rounded-md p-1 text-paper-muted hover:bg-paper/50 active:cursor-grabbing"
                   aria-label="드래그하여 순서 변경"
                   role="button"
                   tabIndex={0}
                 >
                   <GripVertical className="h-5 w-5" />
                 </span>
-                <p className="text-xs font-semibold text-terracotta">경로 #{idx + 1}</p>
+                <p className="text-xs font-semibold text-gold">경로 #{idx + 1}</p>
               </div>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="shrink-0 border-red-200 bg-cream/80 text-red-800 hover:bg-red-50"
+                className="shrink-0 border-wine/30 bg-paper/80 text-wine-deep hover:bg-wine/10"
                 onClick={() => removeAt(idx)}
               >
                 <Trash2 className="h-3.5 w-3.5" />
@@ -138,8 +138,8 @@ export function RouteEditor({ routes, onSave }: Props) {
                     className={cn(
                       'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition',
                       route.iconType === iconType
-                        ? 'border-terracotta bg-terracotta text-cream'
-                        : 'border-stone bg-cream text-ink-muted hover:bg-cream-dark',
+                        ? 'border-gold bg-gold text-paper'
+                        : 'border-paper-line bg-paper text-paper-muted hover:bg-paper-dim',
                     )}
                   >
                     <RouteIcon iconType={iconType} className="h-3.5 w-3.5" />
@@ -160,13 +160,13 @@ export function RouteEditor({ routes, onSave }: Props) {
                 value={route.title}
                 onChange={(e) => updateAt(idx, { title: e.target.value })}
                 placeholder="제목"
-                className="bg-cream"
+                className="bg-paper"
               />
             </FormField>
             <FormField label="경로 설명" htmlFor={`route-desc-${route.id}`} required>
               <Textarea
                 id={`route-desc-${route.id}`}
-                className="min-h-[72px] bg-cream"
+                className="min-h-[72px] bg-paper"
                 value={route.description}
                 onChange={(e) => updateAt(idx, { description: e.target.value })}
                 placeholder="예: 정자역(2번 출구) → 220번 버스 환승 → ○○ 정류장 하차"
@@ -177,12 +177,12 @@ export function RouteEditor({ routes, onSave }: Props) {
       </div>
 
       {draft.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-[#c4ae8e] bg-[#e4d5be]/50 px-3 py-6 text-center text-sm text-ink-muted">
+        <p className="rounded-lg border border-dashed border-paper-line bg-paper-dim/50 px-3 py-6 text-center text-sm text-paper-muted">
           등록된 경로 안내가 없습니다. 아래 「경로 추가」를 눌러 주세요.
         </p>
       ) : null}
 
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-stone/60 pt-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-paper-line/60 pt-3">
         <Button type="button" variant="outline" onClick={addItem}>
           <Plus className="h-4 w-4" />
           경로 추가

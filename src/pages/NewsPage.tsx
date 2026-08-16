@@ -52,33 +52,29 @@ export function NewsPage() {
           </div>
         ) : null}
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-6 gap-y-10 border-t border-paper-line pt-10 sm:grid-cols-2 lg:grid-cols-3">
           {pageItems.map((post) => (
-            <Link
-              key={post.id}
-              to={`/news/${post.id}`}
-              className="group overflow-hidden rounded-2xl border border-stone bg-cream shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <div className="aspect-[16/10] overflow-hidden bg-stone">
+            <Link key={post.id} to={`/news/${post.id}`} className="group block">
+              <div className="aspect-[16/10] overflow-hidden bg-paper-line">
                 {post.thumbnail ? (
                   <img
                     src={post.thumbnail}
                     alt=""
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                     loading="lazy"
                   />
                 ) : null}
               </div>
-              <div className="p-5">
+              <div className="border-t border-paper-line pt-4 mt-4">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs text-ink-muted">{formatDate(post.createdAt)}</p>
+                  <p className="index-num text-xs text-paper-muted">{formatDate(post.createdAt)}</p>
                   {!post.isPublished ? (
-                    <span className="rounded bg-stone px-2 py-0.5 text-[10px] font-semibold text-ink-muted">
+                    <span className="text-[10px] font-semibold tracking-wide text-wine">
                       임시저장
                     </span>
                   ) : null}
                 </div>
-                <h2 className="mt-2 line-clamp-2 font-medium text-ink group-hover:text-terracotta">
+                <h2 className="mt-1.5 line-clamp-2 font-serif text-lg font-medium text-paper-text group-hover:text-gold-deep">
                   {post.title}
                 </h2>
               </div>
@@ -96,7 +92,7 @@ export function NewsPage() {
             >
               이전
             </Button>
-            <span className="text-sm text-ink-muted">
+            <span className="text-sm text-paper-muted">
               {page} / {totalPages}
             </span>
             <Button

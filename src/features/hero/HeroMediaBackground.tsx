@@ -26,7 +26,7 @@ export function HeroMediaBackground({ slide }: { slide: HeroSlide }) {
       )
     }
     return (
-      <div className="absolute inset-0 overflow-hidden bg-[#2a211c]">
+      <div className="absolute inset-0 overflow-hidden bg-ink">
         <iframe
           key={slide.id + embed}
           src={embed}

@@ -15,8 +15,8 @@ export const TooltipContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        'ui-tooltip-content z-50 max-w-[min(20rem,calc(100vw-2rem))] rounded-lg border border-[#c4ae8e]/40',
-        'bg-ink px-3.5 py-2.5 text-left text-xs leading-relaxed text-cream shadow-lg',
+        'ui-tooltip-content z-50 max-w-[min(20rem,calc(100vw-2rem))] rounded-sm border border-ink-line',
+        'bg-ink px-3.5 py-2.5 text-left text-xs leading-relaxed text-paper shadow-lg',
         'will-change-[opacity,transform]',
         className,
       )}

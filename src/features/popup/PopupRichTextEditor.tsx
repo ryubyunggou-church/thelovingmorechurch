@@ -38,7 +38,7 @@ export default function PopupRichTextEditor({ value, onChange }: Props) {
   })
 
   if (!editor) {
-    return <div className="h-40 rounded-md border border-stone bg-cream" />
+    return <div className="h-40 rounded-md border border-paper-line bg-paper" />
   }
 
   const setLink = () => {
@@ -118,8 +118,8 @@ export default function PopupRichTextEditor({ value, onChange }: Props) {
   ]
 
   return (
-    <div className="rounded-md border border-stone bg-cream">
-      <div className="flex flex-wrap items-center gap-1 border-b border-stone px-2 py-1.5">
+    <div className="rounded-md border border-paper-line bg-paper">
+      <div className="flex flex-wrap items-center gap-1 border-b border-paper-line px-2 py-1.5">
         {buttons.map((btn) => (
           <button
             key={btn.label}
@@ -130,7 +130,7 @@ export default function PopupRichTextEditor({ value, onChange }: Props) {
             onClick={btn.onClick}
             className={cn(
               'inline-flex h-7 w-7 items-center justify-center rounded transition',
-              btn.active ? 'bg-terracotta/15 text-terracotta-dark' : 'text-ink-muted hover:bg-cream-dark',
+              btn.active ? 'bg-gold/15 text-gold-deep' : 'text-paper-muted hover:bg-paper-dim',
             )}
           >
             {btn.icon}
@@ -140,10 +140,10 @@ export default function PopupRichTextEditor({ value, onChange }: Props) {
       <EditorContent
         editor={editor}
         className={cn(
-          'px-3 py-2 text-sm leading-relaxed text-ink',
+          'px-3 py-2 text-sm leading-relaxed text-paper-text',
           '[&_.ProseMirror]:min-h-[140px] [&_.ProseMirror]:outline-none',
-          '[&_.ProseMirror_a]:text-terracotta [&_.ProseMirror_a]:underline',
-          '[&_.ProseMirror_blockquote]:border-l-2 [&_.ProseMirror_blockquote]:border-terracotta/40 [&_.ProseMirror_blockquote]:pl-3 [&_.ProseMirror_blockquote]:text-ink-muted',
+          '[&_.ProseMirror_a]:text-gold [&_.ProseMirror_a]:underline',
+          '[&_.ProseMirror_blockquote]:border-l-2 [&_.ProseMirror_blockquote]:border-gold/40 [&_.ProseMirror_blockquote]:pl-3 [&_.ProseMirror_blockquote]:text-paper-muted',
           '[&_.ProseMirror_h2]:text-lg [&_.ProseMirror_h2]:font-semibold',
           '[&_.ProseMirror_ol]:list-decimal [&_.ProseMirror_ol]:pl-5',
           '[&_.ProseMirror_ul]:list-disc [&_.ProseMirror_ul]:pl-5',

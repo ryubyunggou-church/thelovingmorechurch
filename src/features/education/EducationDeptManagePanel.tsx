@@ -133,9 +133,9 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
   return (
     <div className="mx-auto max-w-2xl space-y-6 py-6">
       <div>
-        <p className="text-sm font-semibold text-terracotta">부서 관리</p>
-        <h2 className="mt-1 font-serif text-2xl font-semibold text-ink">부서추가/삭제</h2>
-        <p className="mt-2 text-sm text-ink-muted">
+        <p className="text-sm font-semibold text-gold">부서 관리</p>
+        <h2 className="mt-1 font-serif text-2xl font-semibold text-paper-text">부서추가/삭제</h2>
+        <p className="mt-2 text-sm text-paper-muted">
           기본 4개 부서(유치부·유초등부·중고등부·청년가족부)는 삭제할 수 없습니다. 새로 추가한
           부서만 삭제할 수 있습니다. 부서명을 클릭하면 수정할 수 있습니다.
         </p>
@@ -155,7 +155,7 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
           return (
             <li
               key={dept.id}
-              className="flex items-center justify-between gap-3 rounded-lg border border-stone/60 bg-white/60 px-4 py-3"
+              className="flex items-center justify-between gap-3 rounded-lg border border-paper-line/60 bg-paper/60 px-4 py-3"
             >
               {isEditing ? (
                 <div className="flex min-w-0 flex-1 items-center gap-1.5">
@@ -178,7 +178,7 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
                     aria-label="저장"
                     disabled={isSaving}
                     onClick={() => void saveName(dept)}
-                    className="h-8 w-8 shrink-0 border-terracotta/30 bg-cream/80 p-0 text-terracotta hover:bg-terracotta/10"
+                    className="h-8 w-8 shrink-0 border-gold/30 bg-paper/80 p-0 text-gold hover:bg-gold/10"
                   >
                     <Check className="h-3.5 w-3.5" />
                   </Button>
@@ -189,7 +189,7 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
                     aria-label="취소"
                     disabled={isSaving}
                     onClick={cancelEditing}
-                    className="h-8 w-8 shrink-0 border-stone bg-cream/80 p-0 text-ink-muted hover:bg-stone/20"
+                    className="h-8 w-8 shrink-0 border-paper-line bg-paper/80 p-0 text-paper-muted hover:bg-paper-line/20"
                   >
                     <X className="h-3.5 w-3.5" />
                   </Button>
@@ -200,17 +200,17 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
                   onClick={() => startEditing(dept)}
                   className="group flex min-w-0 flex-1 items-center gap-1.5 text-left"
                 >
-                  <span className="min-w-0 truncate text-sm font-medium text-ink">
+                  <span className="min-w-0 truncate text-sm font-medium text-paper-text">
                     {dept.name || '(제목 없음)'}
                     {isDefault ? (
-                      <span className="ml-2 text-xs font-normal text-ink-muted">기본 부서</span>
+                      <span className="ml-2 text-xs font-normal text-paper-muted">기본 부서</span>
                     ) : null}
                   </span>
-                  <Pencil className="h-3.5 w-3.5 shrink-0 text-ink-muted opacity-0 transition group-hover:opacity-100" />
+                  <Pencil className="h-3.5 w-3.5 shrink-0 text-paper-muted opacity-0 transition group-hover:opacity-100" />
                 </button>
               )}
               {isDefault ? (
-                <span className="shrink-0 text-xs text-ink-muted">삭제 불가</span>
+                <span className="shrink-0 text-xs text-paper-muted">삭제 불가</span>
               ) : (
                 <Button
                   type="button"
@@ -219,7 +219,7 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
                   disabled={deletingId === dept.id}
                   onClick={() => requestDelete(dept.id)}
                   className={cn(
-                    'shrink-0 border-red-200 bg-cream/80 text-red-800 hover:bg-red-50',
+                    'shrink-0 border-wine/30 bg-paper/80 text-wine-deep hover:bg-wine/10',
                     isConfirming && 'bg-red-50',
                   )}
                 >

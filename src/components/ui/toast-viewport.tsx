@@ -13,10 +13,10 @@ export function ToastViewport() {
           type="button"
           onClick={() => dismissToast(t.id)}
           className={cn(
-            'pointer-events-auto rounded-lg border px-4 py-3 text-left shadow-lg transition',
-            t.variant === 'success' && 'border-emerald-200 bg-emerald-50 text-emerald-900',
-            t.variant === 'error' && 'border-red-200 bg-red-50 text-red-900',
-            (!t.variant || t.variant === 'default') && 'border-stone bg-cream text-ink',
+            'pointer-events-auto rounded-sm border px-4 py-3 text-left shadow-xl transition',
+            t.variant === 'success' && 'border-emerald-800/40 bg-ink text-emerald-300',
+            t.variant === 'error' && 'border-wine/60 bg-ink text-[#e3a3ab]',
+            (!t.variant || t.variant === 'default') && 'border-ink-line bg-ink text-paper',
           )}
         >
           <div className="text-sm font-semibold">{t.title}</div>

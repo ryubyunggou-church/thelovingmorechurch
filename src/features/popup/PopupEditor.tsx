@@ -81,12 +81,12 @@ export function PopupEditor({
         />
       </FormField>
 
-      <label className="flex items-center gap-2 text-sm font-medium text-ink">
+      <label className="flex items-center gap-2 text-sm font-medium text-paper-text">
         <input
           type="checkbox"
           checked={form.enabled}
           onChange={(e) => setForm({ ...form, enabled: e.target.checked })}
-          className="h-4 w-4 rounded border-stone accent-terracotta"
+          className="h-4 w-4 rounded border-paper-line accent-gold"
         />
         노출 활성화
       </label>
@@ -117,7 +117,7 @@ export function PopupEditor({
           onChange={(e) =>
             setForm({ ...form, contentType: e.target.value as PopupContentType })
           }
-          className="flex h-10 w-full rounded-md border border-stone bg-cream px-3 text-sm text-ink"
+          className="flex h-10 w-full rounded-md border border-paper-line bg-paper px-3 text-sm text-paper-text"
         >
           {(Object.keys(CONTENT_TYPE_LABEL) as PopupContentType[]).map((key) => (
             <option key={key} value={key}>
@@ -153,7 +153,7 @@ export function PopupEditor({
 
       {form.contentType === 'richtext' ? (
         <FormField label="내용" htmlFor="popup-content" hint="제목 6~10단어, 본문 2줄 이내 권장">
-          <Suspense fallback={<div className="h-40 rounded-md border border-stone bg-cream" />}>
+          <Suspense fallback={<div className="h-40 rounded-md border border-paper-line bg-paper" />}>
             <RichTextEditor
               value={form.contentHtml ?? ''}
               onChange={(html) => setForm({ ...form, contentHtml: html })}
@@ -189,7 +189,7 @@ export function PopupEditor({
             id="popup-position"
             value={form.position}
             onChange={(e) => setForm({ ...form, position: e.target.value as PopupPosition })}
-            className="flex h-10 w-full rounded-md border border-stone bg-cream px-3 text-sm text-ink"
+            className="flex h-10 w-full rounded-md border border-paper-line bg-paper px-3 text-sm text-paper-text"
           >
             {(Object.keys(POSITION_LABEL) as PopupPosition[]).map((key) => (
               <option key={key} value={key}>

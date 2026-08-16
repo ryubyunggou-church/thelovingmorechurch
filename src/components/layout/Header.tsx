@@ -20,13 +20,13 @@ export function Header() {
   const anniversary = Math.max(0, currentYear - FOUNDED_YEAR)
 
   return (
-    <header className="sticky top-0 z-40 border-b border-stone/70 bg-cream/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[4.5rem] sm:px-6">
+    <header className="sticky top-0 z-40 bg-ink">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[4.75rem] sm:px-6">
         <Link to="/" className="flex min-w-0 items-center">
           <img
             src="/logo-image/Logo-01-ko-투명.png"
             alt={SITE_NAME}
-            className="h-10 w-auto sm:h-12"
+            className="h-10 w-auto brightness-0 invert sm:h-12"
           />
         </Link>
 
@@ -38,8 +38,8 @@ export function Header() {
               end={item.path === '/'}
               className={({ isActive }) =>
                 cn(
-                  'rounded-md px-2.5 py-2 text-sm font-medium text-ink-muted transition hover:text-terracotta',
-                  isActive && 'bg-cream-dark text-terracotta',
+                  'border-b-2 border-transparent px-3 py-2 text-[13px] font-medium tracking-[0.06em] text-ink-muted transition hover:text-paper',
+                  isActive && 'border-gold text-paper',
                 )
               }
             >
@@ -56,7 +56,7 @@ export function Header() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="hidden sm:inline-flex"
+                  className="hidden border-ink-line text-paper hover:bg-ink-soft sm:inline-flex"
                   onClick={() => setAdminManageOpen(true)}
                 >
                   <Users className="h-4 w-4" />
@@ -66,13 +66,13 @@ export function Header() {
               <Button
                 variant="outline"
                 size="sm"
-                className="hidden sm:inline-flex"
+                className="hidden border-ink-line text-paper hover:bg-ink-soft sm:inline-flex"
                 onClick={() => setPopupManageOpen(true)}
               >
                 <Megaphone className="h-4 w-4" />
                 팝업 관리
               </Button>
-              <Button variant="secondary" size="sm" onClick={() => void logout()}>
+              <Button variant="default" size="sm" onClick={() => void logout()}>
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline">로그아웃</span>
               </Button>
@@ -81,7 +81,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="text-paper hover:bg-ink-soft lg:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="메뉴"
           >
@@ -91,7 +91,7 @@ export function Header() {
       </div>
 
       {open ? (
-        <div className="border-t border-stone/70 bg-cream lg:hidden">
+        <div className="border-t border-ink-line bg-ink lg:hidden">
           <nav className="mx-auto flex max-w-6xl flex-col px-4 py-3">
             {NAV_ITEMS.map((item) => (
               <NavLink
@@ -101,8 +101,8 @@ export function Header() {
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
                   cn(
-                    'rounded-md px-3 py-3 text-sm font-medium text-ink-muted',
-                    isActive && 'bg-cream-dark text-terracotta',
+                    'rounded-sm px-3 py-3 text-sm font-medium text-ink-muted',
+                    isActive && 'bg-ink-soft text-gold',
                   )
                 }
               >
@@ -112,7 +112,7 @@ export function Header() {
             {isAdminMode && admin?.role === 'super' ? (
               <button
                 type="button"
-                className="rounded-md px-3 py-3 text-left text-sm font-medium text-ink-muted"
+                className="rounded-sm px-3 py-3 text-left text-sm font-medium text-ink-muted"
                 onClick={() => {
                   setOpen(false)
                   setAdminManageOpen(true)
@@ -124,7 +124,7 @@ export function Header() {
             {isAdminMode ? (
               <button
                 type="button"
-                className="rounded-md px-3 py-3 text-left text-sm font-medium text-ink-muted"
+                className="rounded-sm px-3 py-3 text-left text-sm font-medium text-ink-muted"
                 onClick={() => {
                   setOpen(false)
                   setPopupManageOpen(true)
@@ -136,7 +136,7 @@ export function Header() {
             {isAdminMode ? (
               <button
                 type="button"
-                className="rounded-md px-3 py-3 text-left text-sm font-medium text-ink-muted"
+                className="rounded-sm px-3 py-3 text-left text-sm font-medium text-ink-muted"
                 onClick={() => {
                   setOpen(false)
                   void logout()
@@ -149,7 +149,7 @@ export function Header() {
         </div>
       ) : null}
 
-      <div className="bg-terracotta px-4 py-1.5 text-center text-sm font-medium text-cream sm:text-sm">
+      <div className="border-t border-ink-line bg-ink-soft px-4 py-1.5 text-center text-xs tracking-wide text-ink-muted sm:text-[13px]">
         {isAdminMode ? (
           <span>
             관리자 모드 활성화 · 편집 가능 영역에 연필 아이콘이 표시됩니다
@@ -157,7 +157,9 @@ export function Header() {
           </span>
         ) : (
           <span>
-            교회설립 제 {anniversary}주년 &lsquo;Since {FOUNDED_YEAR} ~ {currentYear}&rsquo;
+            교회설립 제 <span className="text-gold">{anniversary}</span>주년
+            <span className="mx-2 text-ink-line" aria-hidden>·</span>
+            Since {FOUNDED_YEAR} – {currentYear}
           </span>
         )}
       </div>

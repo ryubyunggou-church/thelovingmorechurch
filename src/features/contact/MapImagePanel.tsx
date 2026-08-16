@@ -30,7 +30,7 @@ export function MapImagePanel({ contact, onUpdated }: Props) {
       loading="lazy"
     />
   ) : (
-    <div className="flex h-[280px] items-center justify-center text-sm text-ink-muted">
+    <div className="flex h-[280px] items-center justify-center text-sm text-paper-muted">
       지도 이미지를 관리자 모드에서 업로드해 주세요.
     </div>
   )
@@ -51,7 +51,7 @@ export function MapImagePanel({ contact, onUpdated }: Props) {
         />
       )}
     >
-      <div className="h-full min-h-[280px] overflow-hidden rounded-2xl border border-stone bg-cream-dark">
+      <div className="h-full min-h-[280px] overflow-hidden border border-paper-line bg-paper-dim">
         {link && image ? (
           <a href={link} target="_blank" rel="noreferrer" className="block h-full">
             {body}

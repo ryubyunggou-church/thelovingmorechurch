@@ -35,8 +35,7 @@ export const seedSiteSettings: SiteSettings = {
 export const seedHeroSlides: HeroSlide[] = [
   {
     id: 'hero-1',
-    mediaUrl:
-      'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1920&q=80',
+    mediaUrl: '/photos/church-exterior-1.webp',
     mediaType: 'image',
     tag: '2026년 표어',
     title: '옛 사람을 벗고 새사람을 입자',
@@ -46,8 +45,7 @@ export const seedHeroSlides: HeroSlide[] = [
   },
   {
     id: 'hero-2',
-    mediaUrl:
-      'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1920&q=80',
+    mediaUrl: '/photos/church-exterior-2.webp',
     mediaType: 'image',
     tag: '주일예배',
     title: '함께 예배하며 새 힘을 얻습니다',
@@ -58,8 +56,7 @@ export const seedHeroSlides: HeroSlide[] = [
   },
   {
     id: 'hero-3',
-    mediaUrl:
-      'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1920&q=80',
+    mediaUrl: '/photos/mission-cambodia.webp',
     mediaType: 'image',
     tag: '다음세대',
     title: '다음세대를 세우는 교회',
@@ -72,8 +69,7 @@ export const seedHeroSlides: HeroSlide[] = [
 
 export const seedPastorGreeting: PastorGreeting = {
   id: 'main',
-  photoUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80',
+  photoUrl: '/photos/pastor-ryu.webp',
   pastorName: '유병구 목사',
   quote: '지친 마음은 주님께 내려놓고, 서로를 향해 따뜻한 위로와 격려를 건네는 믿음의 공동체가 되기를 소망합니다.',
   message:
@@ -106,7 +102,7 @@ export const seedContact: ContactInfo = {
   fax: '(02)453-7361',
   email: 'ryubyunggou@gmail.com',
   siteUrl: 'https://www.tlmc.kr',
-  mapImageUrl: '',
+  mapImageUrl: '/photos/directions-map.webp',
   mapLinkUrl: '',
   routes: [
     {
@@ -165,8 +161,7 @@ export const seedAboutTabs: AboutTab[] = [
 /** /about 교회소개 — 전경 + 본문 placeholder */
 export const seedAboutChurch: AboutChurch = {
   id: 'main',
-  heroImageUrl:
-    'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1600&q=80',
+  heroImageUrl: '/photos/church-exterior-1.webp',
   title: '교회소개',
   body: `대한예수교장로회 사랑하는교회는 예수 그리스도의 십자가 복음을 중심으로, 예배·교육·선교·교제를 통해 하나님의 나라를 이 땅에 이루고자 합니다.
 
@@ -179,8 +174,7 @@ export const seedAboutChurch: AboutChurch = {
 /** /about 담임목사소개 — 인물 + 학력/경력 placeholder */
 export const seedAboutPastor: AboutPastor = {
   id: 'main',
-  photoUrl:
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+  photoUrl: '/photos/pastor-ryu.webp',
   name: '유병구 목사',
   title: '담임목사',
   education: [
@@ -201,32 +195,28 @@ export const seedStaff: StaffMember[] = [
     id: 's1',
     name: '유병구',
     role: '담임목사',
-    photoUrl:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+    photoUrl: '/photos/pastor-ryu.webp',
     order: 1,
   },
   {
     id: 's2',
     name: '이○○',
     role: '부목사',
-    photoUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
+    photoUrl: '/photos/avatar-placeholder.svg',
     order: 2,
   },
   {
     id: 's3',
     name: '박○○',
     role: '전도사',
-    photoUrl:
-      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
+    photoUrl: '/photos/avatar-placeholder.svg',
     order: 3,
   },
   {
     id: 's4',
     name: '최○○',
     role: '교육전도사',
-    photoUrl:
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80',
+    photoUrl: '/photos/avatar-placeholder.svg',
     order: 4,
   },
 ]
@@ -354,23 +344,21 @@ export const seedMissions: MissionItem[] = [
   {
     id: 'm3',
     type: 'overseas',
-    name: '해외 선교지 A',
+    name: '몽골 선교',
     description:
-      '파송 선교사와 현지 사역을 후원하고 중보하는 선교지입니다. (placeholder)',
+      '파송 선교사와 현지 사역을 후원하고 중보하는 몽골 선교지입니다. (placeholder)',
     order: 1,
-    region: '동남아시아',
-    image:
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80',
+    region: '몽골',
+    image: '/photos/mission-mongolia.webp',
   },
   {
     id: 'm4',
     type: 'overseas',
-    name: '해외 선교지 B',
-    description: '단기 선교와 중보 기도로 함께하는 선교지입니다. (placeholder)',
+    name: '캄보디아 선교',
+    description: '단기 선교와 중보 기도로 함께하는 캄보디아 선교지입니다. (placeholder)',
     order: 2,
-    region: '중앙아시아',
-    image:
-      'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80',
+    region: '캄보디아',
+    image: '/photos/mission-cambodia.webp',
   },
 ]
 

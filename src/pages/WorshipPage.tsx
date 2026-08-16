@@ -160,7 +160,7 @@ function WorshipEditor({
 
   return (
     <div className="space-y-4">
-      <p className="text-xs text-ink-muted">
+      <p className="text-xs text-paper-muted">
         왼쪽 핸들을 드래그해 순서를 바꾸거나, 추가·삭제한 뒤 저장하세요. 목록이 길면 모달 안에서
         스크롤됩니다.
       </p>
@@ -172,11 +172,10 @@ function WorshipEditor({
             onDragOver={(e) => onDragOver(e, idx)}
             onDrop={(e) => onDrop(e, idx)}
             className={cn(
-              'space-y-3 rounded-xl border p-3 transition-colors',
-              // 카드 배경: cream보다 진한 토프 계열로 구분
-              'border-[#c4ae8e]/70 bg-[#e4d5be]',
+              'space-y-3 rounded-sm border p-3 transition-colors',
+              'border-paper-line bg-paper-dim',
               dragIndex === idx && 'opacity-60',
-              overIndex === idx && dragIndex !== idx && 'ring-2 ring-terracotta/50',
+              overIndex === idx && dragIndex !== idx && 'ring-2 ring-gold/50',
             )}
           >
             <div className="flex items-center justify-between gap-2">
@@ -185,20 +184,20 @@ function WorshipEditor({
                   draggable
                   onDragStart={(e) => onDragStart(e, idx)}
                   onDragEnd={onDragEnd}
-                  className="inline-flex cursor-grab touch-none rounded-md p-1 text-ink-muted hover:bg-cream/50 active:cursor-grabbing"
+                  className="inline-flex cursor-grab touch-none rounded-sm p-1 text-paper-muted hover:bg-paper/60 active:cursor-grabbing"
                   aria-label="드래그하여 순서 변경"
                   role="button"
                   tabIndex={0}
                 >
                   <GripVertical className="h-5 w-5" />
                 </span>
-                <p className="text-xs font-semibold text-terracotta">예배 #{idx + 1}</p>
+                <p className="text-xs font-semibold text-gold-deep">예배 #{idx + 1}</p>
               </div>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="shrink-0 border-red-200 bg-cream/80 text-red-800 hover:bg-red-50"
+                className="shrink-0 border-wine/30 bg-paper/80 text-wine-deep hover:bg-wine/10"
                 onClick={() => removeAt(idx)}
               >
                 <Trash2 className="h-3.5 w-3.5" />
@@ -212,7 +211,7 @@ function WorshipEditor({
                 value={item.name}
                 onChange={(e) => updateAt(idx, { name: e.target.value })}
                 placeholder="예배명"
-                className="bg-cream"
+                className="bg-paper"
               />
             </FormField>
             <FormField label="시간" htmlFor={`w-time-${item.id}`} hint="예: 오전 11:00">
@@ -221,7 +220,7 @@ function WorshipEditor({
                 value={item.time}
                 onChange={(e) => updateAt(idx, { time: e.target.value })}
                 placeholder="시간"
-                className="bg-cream"
+                className="bg-paper"
               />
             </FormField>
             <FormField label="비고" htmlFor={`w-note-${item.id}`} hint="장소·요일 등 부가 정보">
@@ -230,7 +229,7 @@ function WorshipEditor({
                 value={item.note}
                 onChange={(e) => updateAt(idx, { note: e.target.value })}
                 placeholder="비고"
-                className="bg-cream"
+                className="bg-paper"
               />
             </FormField>
           </div>
@@ -238,12 +237,12 @@ function WorshipEditor({
       </div>
 
       {draft.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-[#c4ae8e] bg-[#e4d5be]/50 px-3 py-6 text-center text-sm text-ink-muted">
+        <p className="rounded-sm border border-dashed border-paper-line bg-paper-dim/50 px-3 py-6 text-center text-sm text-paper-muted">
           등록된 예배가 없습니다. 아래 「예배 추가」를 눌러 주세요.
         </p>
       ) : null}
 
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-stone/60 pt-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-paper-line pt-3">
         <Button type="button" variant="outline" onClick={addItem}>
           <Plus className="h-4 w-4" />
           예배 추가

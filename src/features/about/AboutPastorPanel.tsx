@@ -38,7 +38,7 @@ export function AboutPastorPanel({ data, onUpdated }: Props) {
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="grid items-start gap-8 md:grid-cols-[minmax(200px,280px)_1fr] md:gap-12">
             <Reveal>
-              <div className="mx-auto w-48 overflow-hidden rounded-2xl border border-stone/50 shadow-md sm:w-56 md:mx-0 md:w-full">
+              <div className="mx-auto w-48 overflow-hidden sm:w-56 md:mx-0 md:w-full">
                 <img
                   src={data.photoUrl}
                   alt={data.name}
@@ -49,15 +49,15 @@ export function AboutPastorPanel({ data, onUpdated }: Props) {
             </Reveal>
             <Reveal delay={90}>
               <div>
-                <p className="text-sm font-semibold tracking-wide text-terracotta">담임목사소개</p>
-                <h2 className="mt-1 font-serif text-2xl font-semibold text-ink sm:text-3xl">
+                <p className="index-num text-xs font-semibold tracking-[0.14em] text-gold-deep">담임목사소개</p>
+                <h2 className="mt-2 font-serif text-2xl font-semibold text-paper-text sm:text-3xl">
                   {data.name}
                 </h2>
-                <p className="mt-1 text-sm text-ink-muted">{data.title}</p>
+                <p className="mt-1 text-sm text-paper-muted">{data.title}</p>
 
-                <section className="mt-8">
-                  <h3 className="text-sm font-semibold text-ink">학력</h3>
-                  <ul className="mt-2 list-inside list-disc space-y-1.5 text-sm leading-relaxed text-ink-muted">
+                <section className="mt-8 border-t border-paper-line pt-6">
+                  <h3 className="text-sm font-semibold text-paper-text">학력</h3>
+                  <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-paper-muted">
                     {data.education.map((line) => (
                       <li key={line}>{line}</li>
                     ))}
@@ -65,8 +65,8 @@ export function AboutPastorPanel({ data, onUpdated }: Props) {
                 </section>
 
                 <section className="mt-6">
-                  <h3 className="text-sm font-semibold text-ink">경력</h3>
-                  <ul className="mt-2 list-inside list-disc space-y-1.5 text-sm leading-relaxed text-ink-muted">
+                  <h3 className="text-sm font-semibold text-paper-text">경력</h3>
+                  <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-paper-muted">
                     {data.career.map((line) => (
                       <li key={line}>{line}</li>
                     ))}
@@ -75,8 +75,8 @@ export function AboutPastorPanel({ data, onUpdated }: Props) {
 
                 {data.notes ? (
                   <section className="mt-6">
-                    <h3 className="text-sm font-semibold text-ink">기타</h3>
-                    <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-muted">
+                    <h3 className="text-sm font-semibold text-paper-text">기타</h3>
+                    <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-paper-muted">
                       {data.notes}
                     </p>
                   </section>

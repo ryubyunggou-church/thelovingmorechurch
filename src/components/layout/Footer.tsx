@@ -21,59 +21,59 @@ export function Footer() {
 
   return (
     <footer className="site-footer mt-auto">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="flex flex-col items-center text-center">
+      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+        <div className="grid gap-10 sm:grid-cols-[auto_1fr] sm:items-start sm:gap-14">
           <img
             src="/logo-image/Logo-01-ko-투명.png"
             alt={SITE_NAME}
-            className="mb-5 h-12 w-auto opacity-90 sm:h-14"
+            className="h-12 w-auto brightness-0 invert sm:h-14"
           />
 
-          <address className="not-italic max-w-2xl space-y-1.5 text-sm leading-relaxed text-ink-muted">
-            <p className="text-ink">
-              <span className="tabular-nums">{FOOTER_CONTACT.postal}</span>{' '}
+          <address className="not-italic max-w-xl space-y-1.5 text-sm leading-relaxed text-ink-muted">
+            <p className="text-paper">
+              <span className="index-num">{FOOTER_CONTACT.postal}</span>{' '}
               {FOOTER_CONTACT.addressKo}
             </p>
             <p className="text-xs sm:text-sm">{FOOTER_CONTACT.addressEn}</p>
             <p className="pt-1">
-              <span className="font-medium text-ink">Tel</span> :{' '}
+              <span className="font-medium text-paper">Tel</span> :{' '}
               <a
                 href={toTelHref(FOOTER_CONTACT.tel)}
-                className="underline-offset-2 transition hover:text-terracotta hover:underline"
+                className="underline-offset-2 transition hover:text-gold hover:underline"
               >
                 {FOOTER_CONTACT.tel}
               </a>
-              <span className="mx-2 text-stone" aria-hidden>
+              <span className="mx-2 text-ink-line" aria-hidden>
                 |
               </span>
-              <span className="font-medium text-ink">Fax</span> : {FOOTER_CONTACT.fax}
+              <span className="font-medium text-paper">Fax</span> : {FOOTER_CONTACT.fax}
             </p>
           </address>
         </div>
 
-        <div className="site-footer__rule mx-auto mt-10 max-w-3xl pt-6">
-          <p className="text-center text-xs leading-relaxed text-ink-muted sm:text-[13px]">
+        <div className="site-footer__rule mt-12 pt-6">
+          <p className="text-center text-xs leading-relaxed text-ink-muted sm:text-left sm:text-[13px]">
             © {FOUNDED_YEAR}-{currentYear} {SITE_NAME}. All rights reserved.
-            <span className="mx-1.5 text-[#c4ae8e]" aria-hidden>
+            <span className="mx-1.5 text-ink-line" aria-hidden>
               |
             </span>
             Email :{' '}
             <a
               href={`mailto:${FOOTER_CONTACT.email}`}
-              className="text-ink underline-offset-2 transition hover:text-terracotta hover:underline"
+              className="text-paper underline-offset-2 transition hover:text-gold hover:underline"
             >
               {FOOTER_CONTACT.email}
             </a>
             {!isAdminMode ? (
               <>
-                <span className="mx-1.5 text-[#c4ae8e]" aria-hidden>
+                <span className="mx-1.5 text-ink-line" aria-hidden>
                   |
                 </span>
                 <button
                   type="button"
                   onClick={() => setLoginOpen(true)}
                   aria-label="관리자 로그인"
-                  className="text-ink-muted underline-offset-2 transition hover:text-terracotta hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta/40"
+                  className="text-ink-muted underline-offset-2 transition hover:text-gold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
                 >
                   Admin
                 </button>

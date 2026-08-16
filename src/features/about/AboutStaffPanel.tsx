@@ -27,8 +27,7 @@ export function AboutStaffPanel({ members, onUpdated }: Props) {
       await saveDocument('staffMembers', id, {
         name: '새 사역자',
         role: '직분',
-        photoUrl:
-          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+        photoUrl: '/photos/avatar-placeholder.svg',
         order: maxOrder + 1,
       })
       pushToast({ title: '사역자가 추가되었습니다', variant: 'success' })
@@ -45,10 +44,10 @@ export function AboutStaffPanel({ members, onUpdated }: Props) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <Reveal>
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-3 border-b border-paper-line pb-6">
           <div>
-            <p className="text-sm font-semibold text-terracotta">함께 섬기는 이들</p>
-            <h2 className="mt-1 font-serif text-2xl font-semibold text-ink sm:text-3xl">
+            <p className="index-num text-xs font-semibold tracking-[0.14em] text-gold-deep">함께 섬기는 이들</p>
+            <h2 className="mt-2 font-serif text-2xl font-semibold text-paper-text sm:text-3xl">
               사역자소개
             </h2>
           </div>
@@ -62,9 +61,9 @@ export function AboutStaffPanel({ members, onUpdated }: Props) {
       </Reveal>
 
       {sorted.length === 0 ? (
-        <p className="text-sm text-ink-muted">등록된 사역자가 없습니다.</p>
+        <p className="text-sm text-paper-muted">등록된 사역자가 없습니다.</p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {sorted.map((m, i) => (
             <Reveal key={m.id} delay={i * 50}>
               <StaffCard member={m} onUpdated={onUpdated} />
@@ -105,16 +104,18 @@ function StaffCard({
         />
       )}
     >
-      <article className="overflow-hidden rounded-2xl border border-stone bg-cream shadow-sm transition hover:shadow-md">
-        <img
-          src={member.photoUrl}
-          alt={member.name}
-          className="aspect-[3/4] w-full object-cover"
-          loading="lazy"
-        />
-        <div className="p-4">
-          <p className="text-xs font-semibold text-terracotta">{member.role}</p>
-          <h3 className="mt-1 font-medium text-ink">{member.name}</h3>
+      <article className="group">
+        <div className="overflow-hidden">
+          <img
+            src={member.photoUrl}
+            alt={member.name}
+            className="aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+            loading="lazy"
+          />
+        </div>
+        <div className="border-t border-paper-line pt-3 mt-3">
+          <p className="text-xs font-semibold tracking-wide text-gold-deep">{member.role}</p>
+          <h3 className="mt-0.5 font-serif font-medium text-paper-text">{member.name}</h3>
         </div>
       </article>
     </EditableBlock>

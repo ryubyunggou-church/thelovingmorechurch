@@ -76,12 +76,12 @@ export function LoginModal() {
               required
             />
           </FormField>
-          <label className="flex items-center gap-2 text-sm text-ink-muted">
+          <label className="flex items-center gap-2 text-sm text-paper-muted">
             <input
               type="checkbox"
               checked={rememberEmail}
               onChange={(e) => setRememberEmail(e.target.checked)}
-              className="h-4 w-4 rounded border-stone accent-terracotta"
+              className="h-4 w-4 rounded border-paper-line accent-gold"
             />
             이메일 기억하기
           </label>

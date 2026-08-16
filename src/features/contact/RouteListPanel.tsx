@@ -49,22 +49,17 @@ export function RouteListPanel({ routes, onUpdated }: Props) {
           if (group.length === 0) return null
           return (
             <div key={iconType}>
-              <h3 className="mb-3 flex items-center gap-2 font-serif text-lg font-semibold text-ink">
-                <RouteIcon iconType={iconType} className="h-5 w-5 text-terracotta" />
+              <h3 className="mb-3 flex items-center gap-2 font-serif text-lg font-semibold text-paper-text">
+                <RouteIcon iconType={iconType} className="h-5 w-5 text-gold-deep" />
                 {GROUP_TITLES[iconType]}
               </h3>
-              <ul className="space-y-3">
+              <ul className="divide-y divide-paper-line border-y border-paper-line">
                 {group.map((route) => (
-                  <li
-                    key={route.id}
-                    className="flex items-start gap-3 rounded-xl border border-stone bg-white p-4 shadow-sm"
-                  >
-                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-terracotta/10 text-terracotta">
-                      <RouteIcon iconType={iconType} className="h-4 w-4" />
-                    </span>
+                  <li key={route.id} className="flex items-start gap-3 py-4">
+                    <RouteIcon iconType={iconType} className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" />
                     <div className="min-w-0">
-                      <p className="font-medium text-ink">{route.title}</p>
-                      <p className="mt-0.5 whitespace-pre-line text-sm text-ink-muted">
+                      <p className="font-medium text-paper-text">{route.title}</p>
+                      <p className="mt-0.5 whitespace-pre-line text-sm text-paper-muted">
                         {route.description}
                       </p>
                     </div>
@@ -75,7 +70,7 @@ export function RouteListPanel({ routes, onUpdated }: Props) {
           )
         })}
         {routes.length === 0 ? (
-          <p className="text-sm text-ink-muted">등록된 경로 안내가 없습니다.</p>
+          <p className="text-sm text-paper-muted">등록된 경로 안내가 없습니다.</p>
         ) : null}
       </div>
     </EditableBlock>

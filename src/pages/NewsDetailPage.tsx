@@ -82,7 +82,7 @@ export function NewsDetailPage() {
   if (loading) {
     return (
       <PageShell title="교회소식" current="교회소식">
-        <p className="text-sm text-ink-muted">불러오는 중…</p>
+        <p className="text-sm text-paper-muted">불러오는 중…</p>
       </PageShell>
     )
   }
@@ -90,7 +90,7 @@ export function NewsDetailPage() {
   if (!post) {
     return (
       <PageShell title="교회소식" current="교회소식">
-        <p className="text-sm text-ink-muted">게시글을 찾을 수 없습니다.</p>
+        <p className="text-sm text-paper-muted">게시글을 찾을 수 없습니다.</p>
         <Button asChild variant="outline" className="mt-4">
           <Link to="/news">목록으로</Link>
         </Button>
@@ -104,19 +104,15 @@ export function NewsDetailPage() {
       <PageShell title="교회소식" description={formatDate(post.createdAt)} current="교회소식">
         <article className="mx-auto max-w-3xl">
           {post.thumbnail ? (
-            <img
-              src={post.thumbnail}
-              alt=""
-              className="mb-8 aspect-[16/9] w-full rounded-2xl object-cover"
-            />
+            <img src={post.thumbnail} alt="" className="mb-10 aspect-[16/9] w-full object-cover" />
           ) : null}
-          <h1 className="font-serif text-3xl font-semibold text-ink">{post.title}</h1>
-          <p className="mt-2 text-sm text-ink-muted">{formatDate(post.createdAt)}</p>
+          <h1 className="font-serif text-3xl font-semibold text-paper-text sm:text-4xl">{post.title}</h1>
+          <p className="index-num mt-3 text-sm text-paper-muted">{formatDate(post.createdAt)}</p>
           <div
-            className="prose prose-stone mt-8 max-w-none text-ink-muted"
+            className="prose mt-10 max-w-none border-t border-paper-line pt-10 text-paper-muted"
             dangerouslySetInnerHTML={{ __html: post.contentHtml }}
           />
-          <div className="mt-10 flex flex-wrap items-center gap-2">
+          <div className="mt-12 flex flex-wrap items-center gap-2 border-t border-paper-line pt-8">
             <Button asChild variant="outline">
               <Link to="/news">목록으로</Link>
             </Button>
@@ -131,8 +127,8 @@ export function NewsDetailPage() {
                   disabled={deleting}
                   onClick={requestDelete}
                   className={cn(
-                    'border-red-200 bg-cream/80 text-red-800 hover:bg-red-50',
-                    confirmingDelete && 'bg-red-50',
+                    'border-wine/30 bg-paper/80 text-wine-deep hover:bg-wine/10',
+                    confirmingDelete && 'bg-wine/10',
                   )}
                 >
                   {confirmingDelete ? '한 번 더 클릭하면 삭제됩니다' : '삭제'}
