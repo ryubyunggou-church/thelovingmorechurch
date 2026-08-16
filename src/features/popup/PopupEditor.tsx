@@ -15,11 +15,10 @@ const CONTENT_TYPE_LABEL: Record<PopupContentType, string> = {
 }
 
 const POSITION_LABEL: Record<PopupPosition, string> = {
-  center: '중앙',
   top: '상단',
-  'bottom-sheet': '하단 시트',
-  'corner-br': '우하단 코너',
-  'corner-bl': '좌하단 코너',
+  center: '중앙',
+  'center-left': '중앙(좌)',
+  'center-right': '중앙(우)',
 }
 
 export function PopupEditor({

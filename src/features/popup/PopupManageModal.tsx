@@ -24,11 +24,10 @@ const CONTENT_TYPE_LABEL: Record<SitePopup['contentType'], string> = {
 }
 
 const POSITION_LABEL: Record<SitePopup['position'], string> = {
-  center: '중앙',
   top: '상단',
-  'bottom-sheet': '하단 시트',
-  'corner-br': '우하단',
-  'corner-bl': '좌하단',
+  center: '중앙',
+  'center-left': '중앙(좌)',
+  'center-right': '중앙(우)',
 }
 
 /** 관리자 전역 — Header의 「팝업 관리」 버튼으로 열리는 사이트 팝업 CRUD 모달. 표 형태 목록. */

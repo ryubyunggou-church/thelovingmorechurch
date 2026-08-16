@@ -180,7 +180,7 @@ export const PARTNER_LINKS = [
   { label: 'GMS 총회세계선교회', href: 'https://gms.kr' },
 ] as const
 
-export type PopupPosition = 'center' | 'top' | 'bottom-sheet' | 'corner-br' | 'corner-bl'
+export type PopupPosition = 'top' | 'center' | 'center-left' | 'center-right'
 export type PopupContentType = 'image' | 'pdf' | 'richtext'
 
 export interface SitePopup {
