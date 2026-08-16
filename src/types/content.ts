@@ -181,7 +181,7 @@ export const PARTNER_LINKS = [
 ] as const
 
 export type PopupPosition = 'center' | 'top' | 'bottom-sheet' | 'corner-br' | 'corner-bl'
-export type PopupContentType = 'image' | 'pdf' | 'markdown'
+export type PopupContentType = 'image' | 'pdf' | 'richtext'
 
 export interface SitePopup {
   id: string
@@ -196,8 +196,8 @@ export interface SitePopup {
   contentType: PopupContentType
   /** image/pdf일 때 Storage 다운로드 URL */
   mediaUrl?: string
-  /** markdown일 때 본문 */
-  markdownBody?: string
+  /** richtext일 때 본문. WYSIWYG 에디터가 만든 HTML — 저장/조회 시 DOMPurify로 sanitize. */
+  contentHtml?: string
   /** 팝업 상단 제목 (선택) */
   title?: string
   /** 클릭 시 이동할 링크 (선택) */

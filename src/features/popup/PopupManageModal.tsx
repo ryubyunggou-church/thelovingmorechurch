@@ -20,7 +20,7 @@ const CONFIRM_TIMEOUT_MS = 4000
 const CONTENT_TYPE_LABEL: Record<SitePopup['contentType'], string> = {
   image: '이미지',
   pdf: 'PDF',
-  markdown: '텍스트',
+  richtext: '텍스트',
 }
 
 const POSITION_LABEL: Record<SitePopup['position'], string> = {
@@ -77,7 +77,7 @@ export function PopupManageModal() {
         endDate: blank.endDate,
         contentType: blank.contentType,
         mediaUrl: blank.mediaUrl,
-        markdownBody: blank.markdownBody,
+        contentHtml: blank.contentHtml,
         title: blank.title,
         linkUrl: blank.linkUrl,
         position: blank.position,

@@ -1,17 +1,13 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Megaphone } from 'lucide-react'
 import type { SitePopup } from '../../types/content'
 import { getSitePopups } from '../../lib/content-service'
-import {
-  getActivePopupQueue,
-  hidePopupFor,
-  isPopupHiddenNow,
-} from '../../lib/popup-visibility'
+import { getActivePopupQueue, hidePopupFor, isPopupHiddenNow } from '../../lib/popup-visibility'
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from '../../components/ui/dialog'
+import { Button } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
 import { popupPositionClass } from './popup-position'
-
-const PopupMarkdownBody = lazy(() => import('./PopupMarkdownBody'))
 
 function todayStr(): string {
   return new Date().toISOString().slice(0, 10)
@@ -60,31 +56,64 @@ export function PopupRenderer() {
         if (!open) close()
       }}
     >
-      <DialogContent className={popupPositionClass(current.position)}>
-        <DialogHeader>
-          <DialogTitle className={cn(!current.title && 'sr-only')}>
-            {current.title || current.label}
-          </DialogTitle>
-        </DialogHeader>
+      <DialogContent
+        className={cn('border-t-4 border-t-terracotta', popupPositionClass(current.position))}
+      >
+        <div className="mb-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-terracotta/10 px-2.5 py-1 text-xs font-semibold text-terracotta-dark">
+          <Megaphone className="h-3.5 w-3.5" />
+          공지
+        </div>
+        <DialogTitle
+          className={cn(
+            'font-serif text-xl font-semibold text-ink',
+            !current.title && 'sr-only',
+          )}
+        >
+          {current.title || current.label}
+        </DialogTitle>
 
-        {current.contentType === 'image' && current.mediaUrl ? (
-          <PopupImageBody popup={current} />
-        ) : null}
-        {current.contentType === 'pdf' && current.mediaUrl ? (
-          <PopupPdfBody url={current.mediaUrl} linkUrl={current.linkUrl} />
-        ) : null}
-        {current.contentType === 'markdown' && current.markdownBody ? (
-          <Suspense fallback={null}>
-            <PopupMarkdownBody>{current.markdownBody}</PopupMarkdownBody>
-          </Suspense>
-        ) : null}
+        <div className="mt-3">
+          {current.contentType === 'image' && current.mediaUrl ? (
+            <PopupImageBody popup={current} />
+          ) : null}
+          {current.contentType === 'pdf' && current.mediaUrl ? (
+            <PopupPdfBody url={current.mediaUrl} linkUrl={current.linkUrl} />
+          ) : null}
+          {current.contentType === 'richtext' && current.contentHtml ? (
+            <div
+              className={cn(
+                'text-sm leading-relaxed text-ink',
+                '[&_a]:text-terracotta [&_a]:underline',
+                '[&_blockquote]:border-l-2 [&_blockquote]:border-terracotta/40 [&_blockquote]:pl-3 [&_blockquote]:text-ink-muted',
+                '[&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-ink',
+                '[&_ol]:list-decimal [&_ol]:pl-5',
+                '[&_p]:mt-2 [&_p:first-child]:mt-0',
+                '[&_ul]:list-disc [&_ul]:pl-5',
+              )}
+              // eslint-disable-next-line react/no-danger -- SitePopup.contentHtml은 저장·조회 시 DOMPurify로 sanitize 됨 (News와 동일 파이프라인)
+              dangerouslySetInnerHTML={{ __html: current.contentHtml }}
+            />
+          ) : null}
+        </div>
+
+        <div className="mt-5 flex justify-end border-t border-stone/60 pt-4">
+          <Button size="sm" onClick={close}>
+            닫기
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   )
 }
 
 function PopupImageBody({ popup }: { popup: SitePopup }) {
-  const img = <img src={popup.mediaUrl} alt={popup.title || popup.label} className="w-full rounded-md" />
+  const img = (
+    <img
+      src={popup.mediaUrl}
+      alt={popup.title || popup.label}
+      className="w-full rounded-md border border-stone/60"
+    />
+  )
   if (!popup.linkUrl) return img
   return (
     <a href={popup.linkUrl} className="block">

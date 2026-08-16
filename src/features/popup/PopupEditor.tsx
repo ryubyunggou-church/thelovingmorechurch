@@ -6,15 +6,12 @@ import { Button } from '../../components/ui/button'
 import { MediaInputField } from '../../components/shared/MediaInputField'
 import { saveDocument } from '../../lib/content-service'
 
-const MDEditor = lazy(async () => {
-  await import('@uiw/react-md-editor/markdown-editor.css')
-  return import('@uiw/react-md-editor')
-})
+const RichTextEditor = lazy(() => import('./PopupRichTextEditor'))
 
 const CONTENT_TYPE_LABEL: Record<PopupContentType, string> = {
+  richtext: '일반 텍스트',
   image: '이미지',
   pdf: 'PDF',
-  markdown: '텍스트(Markdown)',
 }
 
 const POSITION_LABEL: Record<PopupPosition, string> = {
@@ -59,7 +56,7 @@ export function PopupEditor({
         endDate: form.endDate,
         contentType: form.contentType,
         mediaUrl: form.mediaUrl ?? '',
-        markdownBody: form.markdownBody ?? '',
+        contentHtml: form.contentHtml ?? '',
         title: (form.title ?? '').trim(),
         linkUrl: (form.linkUrl ?? '').trim(),
         position: form.position,
@@ -155,17 +152,14 @@ export function PopupEditor({
         />
       ) : null}
 
-      {form.contentType === 'markdown' ? (
-        <FormField label="내용" htmlFor="popup-markdown" hint="제목 6~10단어, 본문 2줄 이내 권장">
-          <div data-color-mode="light">
-            <Suspense fallback={<div className="h-40 rounded-md border border-stone bg-cream" />}>
-              <MDEditor
-                value={form.markdownBody ?? ''}
-                onChange={(v) => setForm({ ...form, markdownBody: v ?? '' })}
-                height={220}
-              />
-            </Suspense>
-          </div>
+      {form.contentType === 'richtext' ? (
+        <FormField label="내용" htmlFor="popup-content" hint="제목 6~10단어, 본문 2줄 이내 권장">
+          <Suspense fallback={<div className="h-40 rounded-md border border-stone bg-cream" />}>
+            <RichTextEditor
+              value={form.contentHtml ?? ''}
+              onChange={(html) => setForm({ ...form, contentHtml: html })}
+            />
+          </Suspense>
         </FormField>
       ) : null}
 

@@ -8,13 +8,13 @@ describe('nextSitePopupId', () => {
 })
 
 describe('createBlankSitePopup', () => {
-  it('creates a disabled markdown popup defaulting to today', () => {
+  it('creates a disabled richtext popup defaulting to today', () => {
     const now = new Date('2026-08-16T03:00:00.000Z').getTime()
     const popup = createBlankSitePopup(now)
 
     expect(popup.id).toBe(`popup_${now}`)
     expect(popup.enabled).toBe(false)
-    expect(popup.contentType).toBe('markdown')
+    expect(popup.contentType).toBe('richtext')
     expect(popup.startDate).toBe('2026-08-16')
     expect(popup.endDate).toBe('2026-08-16')
     expect(popup.position).toBe('center')
