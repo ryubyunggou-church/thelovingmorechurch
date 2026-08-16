@@ -83,6 +83,11 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    match /sitePopups/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // News: published posts public; drafts admin-only; write admin-only
     match /newsPosts/{id} {
       allow read: if resource.data.isPublished == true || isAdmin();

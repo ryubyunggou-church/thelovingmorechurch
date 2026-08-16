@@ -23,9 +23,11 @@ interface AdminState {
   loading: boolean
   loginOpen: boolean
   adminManageOpen: boolean
+  popupManageOpen: boolean
   toasts: ToastItem[]
   setLoginOpen: (open: boolean) => void
   setAdminManageOpen: (open: boolean) => void
+  setPopupManageOpen: (open: boolean) => void
   initAuth: () => () => void
   login: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
@@ -98,10 +100,12 @@ export const useAdminStore = create<AdminState>((set, get) => ({
   loading: true,
   loginOpen: false,
   adminManageOpen: false,
+  popupManageOpen: false,
   toasts: [],
 
   setLoginOpen: (open) => set({ loginOpen: open }),
   setAdminManageOpen: (open) => set({ adminManageOpen: open }),
+  setPopupManageOpen: (open) => set({ popupManageOpen: open }),
 
   initAuth: () => {
     if (!auth || !isFirebaseConfigured) {

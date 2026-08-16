@@ -24,6 +24,8 @@ interface MediaInputFieldProps {
   className?: string
   /** 이미지 전용 (인사말·썸네일 등) */
   imageOnly?: boolean
+  /** PDF 전용 (팝업 등). mediaType은 의미 없는 값('image')으로 고정해 넘긴다 — 호출측에서 무시. */
+  pdfOnly?: boolean
 }
 
 type Mode = 'url' | 'file'
@@ -44,14 +46,22 @@ export function MediaInputField({
   required,
   className,
   imageOnly = false,
+  pdfOnly = false,
 }: MediaInputFieldProps) {
   const resolvedAccept =
-    accept ?? (imageOnly ? 'image/*' : 'image/*,video/mp4,video/webm,.mp4,.webm')
+    accept ??
+    (pdfOnly
+      ? 'application/pdf'
+      : imageOnly
+        ? 'image/*'
+        : 'image/*,video/mp4,video/webm,.mp4,.webm')
   const resolvedHint =
     hint ??
-    (imageOnly
-      ? '폴더=로컬 이미지 업로드 · URL=이미지 경로 직접 입력 · 비우면 현재 이미지 유지 · 최대 15MB'
-      : '이미지·mp4/webm(파일/URL) 또는 유튜브 URL. 파일 업로드 최대 15MB. 비우면 현재 경로 유지.')
+    (pdfOnly
+      ? '폴더=로컬 PDF 업로드 · URL=PDF 경로 직접 입력 · 비우면 현재 파일 유지 · 최대 15MB'
+      : imageOnly
+        ? '폴더=로컬 이미지 업로드 · URL=이미지 경로 직접 입력 · 비우면 현재 이미지 유지 · 최대 15MB'
+        : '이미지·mp4/webm(파일/URL) 또는 유튜브 URL. 파일 업로드 최대 15MB. 비우면 현재 경로 유지.')
 
   const inputId = useId()
   const fileRef = useRef<HTMLInputElement>(null)
@@ -79,6 +89,10 @@ export function MediaInputField({
       onError?.('이미지 파일만 업로드할 수 있습니다.')
       return
     }
+    if (pdfOnly && file.type !== 'application/pdf') {
+      onError?.('PDF 파일만 업로드할 수 있습니다.')
+      return
+    }
 
     setMode('file')
     setFileName(file.name)
@@ -87,7 +101,8 @@ export function MediaInputField({
       const url = await uploadMediaFile(file, folder)
       onChange({
         mediaUrl: url,
-        mediaType: imageOnly ? 'image' : resolveMediaKind(url, detectMediaType(file.name)),
+        mediaType:
+          imageOnly || pdfOnly ? 'image' : resolveMediaKind(url, detectMediaType(file.name)),
       })
     } catch (err) {
       setFileName(null)
@@ -155,9 +170,8 @@ export function MediaInputField({
                 const mediaUrl = e.target.value
                 onChange({
                   mediaUrl,
-                  mediaType: imageOnly
-                    ? 'image'
-                    : detectMediaType(mediaUrl || defaultUrl),
+                  mediaType:
+                    imageOnly || pdfOnly ? 'image' : detectMediaType(mediaUrl || defaultUrl),
                 })
               }}
             />
