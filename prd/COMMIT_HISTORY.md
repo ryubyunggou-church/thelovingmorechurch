@@ -8,6 +8,16 @@
 
 | 해시 | 날짜 | 내용 |
 |------|------|------|
+| `f7b134f` | 2026-08-16 | feat(hero): Hero 슬라이드 관리 패널 추가 — 통합 편집/삭제/D&D 순서변경 |
+| `7627e53` | 2026-08-15 | chore: assets-staging/ 로컬 전용으로 gitignore 처리 |
+| `1089bef` | 2026-08-15 | Merge feat/image-upload-compression: 이미지 업로드 전 자동 리사이즈 + WebP 압축 |
+| `b1d1448` | 2026-08-15 | feat(storage): 이미지 업로드 전 자동 리사이즈 + WebP 압축 |
+| `4b47148` | 2026-08-15 | fix(worship,layout,education): 예배안내 안내문구 제거·탑바 폰트 확대·부서명 인라인 수정 |
+| `e48ab29` | 2026-08-14 | perf(hosting): Firebase Storage SDK를 업로드 시점까지 지연 로드 |
+| `c751184` | 2026-08-14 | chore(functions): Node 24 런타임 + firebase-functions/admin 최신화 |
+| `9cef3e6` | 2026-08-14 | fix(home): 남경기노회 협력기관 링크 URL 갱신 |
+| `f4e7dc8` | 2026-08-14 | ci: Firebase 자동배포 GitHub Actions 워크플로우 추가 |
+| `a2b98ab` | 2026-08-14 | docs: COMMIT_HISTORY에 호버효과·스크롤 리셋 커밋 기록 |
 | `74c67d5` | 2026-08-14 | fix(app): 라우트 이동 시 스크롤 위치 리셋 — 페이지 상단 잘림 방지 |
 | `9ccb121` | 2026-08-14 | feat(contact): 주차안내 사진에 호버 애니메이션 + 블러 그림자 적용 |
 | `8eae226` | 2026-08-14 | feat(contact,footer): 전화/이메일에 tel:/mailto: 링크 추가 |
