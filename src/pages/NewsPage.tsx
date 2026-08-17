@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { PageShell } from '../components/layout/PageShell'
 import { Seo } from '../components/shared/Seo'
 import { Button } from '../components/ui/button'
@@ -12,8 +13,9 @@ import {
 } from '../components/ui/dialog'
 import { NewsEditorForm } from '../features/news/NewsEditorForm'
 import { getNewsPosts, saveDocument } from '../lib/content-service'
+import { getPageNumbers } from '../lib/pagination'
 import { sanitizeHtml } from '../lib/sanitize'
-import { formatDate } from '../lib/utils'
+import { cn, formatDate } from '../lib/utils'
 import type { NewsPost } from '../types/content'
 import { seedNews } from '../data/seed'
 import { useAdminStore } from '../store/admin-store'
@@ -83,27 +85,57 @@ export function NewsPage() {
         </div>
 
         {totalPages > 1 ? (
-          <div className="mt-10 flex items-center justify-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
+          <nav
+            aria-label="교회소식 페이지 이동"
+            className="mt-12 flex items-center justify-center gap-1"
+          >
+            <button
+              type="button"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
+              aria-label="이전 페이지"
+              className="inline-flex h-8 w-8 items-center justify-center text-paper-muted transition hover:text-gold-deep disabled:pointer-events-none disabled:opacity-30"
             >
-              이전
-            </Button>
-            <span className="text-sm text-paper-muted">
-              {page} / {totalPages}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+
+            {getPageNumbers(page, totalPages).map((token, i) =>
+              token === 'ellipsis' ? (
+                <span
+                  key={`ellipsis-${i}`}
+                  aria-hidden
+                  className="index-num inline-flex h-8 w-8 items-center justify-center text-sm text-paper-muted"
+                >
+                  …
+                </span>
+              ) : (
+                <button
+                  key={token}
+                  type="button"
+                  aria-current={token === page ? 'page' : undefined}
+                  onClick={() => setPage(token)}
+                  className={cn(
+                    'index-num inline-flex h-8 w-8 items-center justify-center text-sm transition',
+                    token === page
+                      ? 'font-semibold text-gold-deep'
+                      : 'text-paper-muted hover:text-paper-text',
+                  )}
+                >
+                  {token}
+                </button>
+              ),
+            )}
+
+            <button
+              type="button"
               disabled={page >= totalPages}
               onClick={() => setPage((p) => p + 1)}
+              aria-label="다음 페이지"
+              className="inline-flex h-8 w-8 items-center justify-center text-paper-muted transition hover:text-gold-deep disabled:pointer-events-none disabled:opacity-30"
             >
-              다음
-            </Button>
-          </div>
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </nav>
         ) : null}
 
         <Dialog open={editorOpen} onOpenChange={setEditorOpen}>
