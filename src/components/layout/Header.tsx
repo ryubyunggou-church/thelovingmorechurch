@@ -38,12 +38,24 @@ export function Header() {
               end={item.path === '/'}
               className={({ isActive }) =>
                 cn(
-                  'border-b-2 border-transparent px-3 py-2 text-[13px] font-medium tracking-[0.06em] text-ink-muted transition hover:text-paper',
-                  isActive && 'border-gold text-paper',
+                  'group relative px-3 py-2 text-[13px] font-medium tracking-[0.06em] text-ink-muted transition-colors hover:text-paper',
+                  isActive && 'text-paper',
                 )
               }
             >
-              {item.label}
+              {({ isActive }) => (
+                <>
+                  {item.label}
+                  {/* 밑줄: 평소엔 접힌 채 대기하다가 호버 시 0.5초에 걸쳐 살짝 튕기며 펼쳐진다 */}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      'pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-center scale-x-0 bg-gold transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-x-100',
+                      isActive && 'scale-x-100',
+                    )}
+                  />
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
