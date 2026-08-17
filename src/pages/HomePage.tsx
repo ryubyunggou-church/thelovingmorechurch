@@ -12,12 +12,7 @@ import {
   getPastorGreeting,
 } from '../lib/content-service'
 import type { AnnualMotto, HeroSlide, NewsPost, PastorGreeting } from '../types/content'
-import {
-  seedAnnualMotto,
-  seedHeroSlides,
-  seedNews,
-  seedPastorGreeting,
-} from '../data/seed'
+import { seedAnnualMotto, seedNews, seedPastorGreeting } from '../data/seed'
 import { useAdminStore } from '../store/admin-store'
 
 /**
@@ -28,9 +23,16 @@ import { useAdminStore } from '../store/admin-store'
  */
 let cachedHeroSlides: HeroSlide[] | null = null
 
+/** 세션 내 첫 로딩 동안 노출: seed 사진 대신 중립 스켈레톤을 보여줘 실제 콘텐츠로 오인되지 않게 한다. */
+function HeroSkeleton() {
+  return (
+    <div className="relative h-[min(92vh,900px)] min-h-[560px] w-full animate-pulse overflow-hidden bg-ink" />
+  )
+}
+
 export function HomePage() {
   const isAdminMode = useAdminStore((s) => s.isAdminMode)
-  const [slides, setSlides] = useState<HeroSlide[]>(cachedHeroSlides ?? seedHeroSlides)
+  const [slides, setSlides] = useState<HeroSlide[] | null>(cachedHeroSlides)
   const [greeting, setGreeting] = useState<PastorGreeting>(seedPastorGreeting)
   const [motto, setMotto] = useState<AnnualMotto>(seedAnnualMotto)
   const [news, setNews] = useState<NewsPost[]>(seedNews)
@@ -56,8 +58,8 @@ export function HomePage() {
   return (
     <>
       <Seo title="HOME" path="/" description="대한예수교장로회 사랑하는교회 공식 홈페이지" />
-      <HeroSlider slides={slides} />
-      {isAdminMode ? (
+      {slides ? <HeroSlider slides={slides} /> : <HeroSkeleton />}
+      {isAdminMode && slides ? (
         <HeroManagePanel slides={slides} onUpdated={() => void reload()} />
       ) : null}
       <GreetingMottoBand
