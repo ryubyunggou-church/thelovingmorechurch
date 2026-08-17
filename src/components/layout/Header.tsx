@@ -24,9 +24,9 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[4.75rem] sm:px-6">
         <Link to="/" className="flex min-w-0 items-center">
           <img
-            src="/logo-image/Logo-01-ko-투명.png"
+            src="/logo-image/logo-full-color.png"
             alt={SITE_NAME}
-            className="h-10 w-auto brightness-0 invert sm:h-12"
+            className="h-10 w-auto sm:h-12"
           />
         </Link>
 

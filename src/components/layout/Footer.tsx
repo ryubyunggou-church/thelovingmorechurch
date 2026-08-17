@@ -24,9 +24,9 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
         <div className="grid gap-10 sm:grid-cols-[auto_1fr] sm:items-start sm:gap-14">
           <img
-            src="/logo-image/Logo-01-ko-투명.png"
+            src="/logo-image/logo-full-color.png"
             alt={SITE_NAME}
-            className="h-12 w-auto brightness-0 invert sm:h-14"
+            className="h-12 w-auto sm:h-14"
           />
 
           <address className="not-italic max-w-xl space-y-1.5 text-sm leading-relaxed text-ink-muted">
