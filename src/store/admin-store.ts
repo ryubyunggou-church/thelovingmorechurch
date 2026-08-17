@@ -6,7 +6,7 @@ import {
   type User,
 } from 'firebase/auth'
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore'
-import { auth, db, isFirebaseConfigured } from '../lib/firebase'
+import { app, auth, db, isFirebaseConfigured } from '../lib/firebase'
 import type { AdminDoc, AdminRole } from '../types/content'
 
 interface ToastItem {
@@ -34,8 +34,24 @@ interface AdminState {
   pushToast: (toast: Omit<ToastItem, 'id'>) => void
   dismissToast: (id: string) => void
   listAdmins: () => Promise<AdminDoc[]>
-  addSubAdminLocal: (email: string) => Promise<void>
+  addSubAdmin: (email: string, password: string) => Promise<void>
   removeSubAdminLocal: (uid: string) => Promise<void>
+}
+
+function mapFunctionsError(err: unknown): string {
+  if (err && typeof err === 'object' && 'code' in err) {
+    const code = String((err as { code: string }).code)
+    const message = 'message' in err ? String((err as { message?: string }).message ?? '') : ''
+    if (code === 'functions/not-found') {
+      return 'addSubAdmin Cloud Function이 배포되지 않았습니다. Firebase 프로젝트가 Blaze 요금제인지, functions 배포가 완료됐는지 확인해 주세요.'
+    }
+    if (code === 'functions/unauthenticated' || code === 'functions/permission-denied') {
+      return message || '권한이 없습니다. 최고관리자로 로그인했는지 확인해 주세요.'
+    }
+    if (message) return message
+  }
+  if (err instanceof Error) return err.message
+  return '부관리자 등록에 실패했습니다.'
 }
 
 function mapAuthError(err: unknown): string {
@@ -204,26 +220,27 @@ export const useAdminStore = create<AdminState>((set, get) => ({
     })
   },
 
-  addSubAdminLocal: async (email) => {
-    const { admin, listAdmins, pushToast } = get()
-    if (!db || !admin || admin.role !== 'super') {
+  /**
+   * Cloud Function addSubAdmin 호출 — 해당 이메일의 Firebase Auth 계정이 있으면 그대로
+   * 연결하고, 없으면 여기서 받은 비밀번호로 새 계정을 만든다(Admin SDK 필요, 클라이언트
+   * 단독으로는 타인 명의 Auth 계정을 생성할 수 없음).
+   */
+  addSubAdmin: async (email, password) => {
+    const { admin, pushToast } = get()
+    if (!app || !auth?.currentUser) {
+      throw new Error('관리자로 로그인한 뒤에 부관리자를 등록할 수 있습니다.')
+    }
+    if (!admin || admin.role !== 'super') {
       throw new Error('최고관리자만 부관리자를 등록할 수 있습니다.')
     }
-    const admins = await listAdmins()
-    const subCount = admins.filter((a) => a.role === 'sub').length
-    if (subCount >= 3) {
-      throw new Error('부관리자는 최대 3명까지 등록 가능합니다')
+    const { getFunctions, httpsCallable } = await import('firebase/functions')
+    const functions = getFunctions(app)
+    try {
+      await httpsCallable(functions, 'addSubAdmin')({ email, password })
+    } catch (err) {
+      throw new Error(mapFunctionsError(err))
     }
-    const id = `invite_${btoa(email).replace(/=+/g, '')}`
-    const { setDoc, doc: fsDoc } = await import('firebase/firestore')
-    await setDoc(fsDoc(db, 'admins', id), {
-      email,
-      role: 'sub',
-      invitedBy: admin.uid,
-      createdAt: new Date().toISOString(),
-      pending: true,
-    })
-    pushToast({ title: '부관리자 초대 등록', description: email, variant: 'success' })
+    pushToast({ title: '부관리자 등록 완료', description: email, variant: 'success' })
   },
 
   removeSubAdminLocal: async (uid) => {

@@ -30,6 +30,7 @@ export const addSubAdmin = onCall(async (request) => {
   const email = String(request.data?.email ?? '')
     .trim()
     .toLowerCase()
+  const password = String(request.data?.password ?? '')
   if (!email) throw new HttpsError('invalid-argument', '이메일이 필요합니다.')
 
   const subs = await db.collection('admins').where('role', '==', 'sub').get()
@@ -37,14 +38,28 @@ export const addSubAdmin = onCall(async (request) => {
     throw new HttpsError('failed-precondition', '부관리자는 최대 3명까지 등록 가능합니다')
   }
 
+  // 해당 이메일의 Auth 계정이 이미 있으면 그대로 쓰고, 없으면 비밀번호로 새로 만든다
+  // (클라이언트 SDK는 타인 명의 Auth 계정을 만들 수 없어 Admin SDK가 필요한 지점).
   let user
   try {
     user = await getAuth().getUserByEmail(email)
   } catch {
-    throw new HttpsError(
-      'not-found',
-      '해당 이메일로 Firebase Auth 계정이 없습니다. 먼저 계정을 생성한 뒤 초대해 주세요.',
-    )
+    if (password.length < 6) {
+      throw new HttpsError(
+        'invalid-argument',
+        '해당 이메일의 계정이 없습니다. 6자 이상의 비밀번호를 입력해 새 계정을 만들어 주세요.',
+      )
+    }
+    try {
+      user = await getAuth().createUser({ email, password })
+    } catch (err) {
+      const code = err instanceof Object && 'code' in err ? String(err.code) : ''
+      if (code === 'auth/email-already-exists') {
+        user = await getAuth().getUserByEmail(email)
+      } else {
+        throw new HttpsError('internal', 'Auth 계정 생성에 실패했습니다.')
+      }
+    }
   }
 
   await db.collection('admins').doc(user.uid).set({

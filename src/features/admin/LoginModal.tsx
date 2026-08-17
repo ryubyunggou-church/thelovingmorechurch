@@ -9,6 +9,7 @@ import {
 } from '../../components/ui/dialog'
 import { FormField } from '../../components/ui/form-field'
 import { Input } from '../../components/ui/input'
+import { PasswordInput } from '../../components/ui/password-input'
 import { Button } from '../../components/ui/button'
 
 const REMEMBERED_EMAIL_KEY = 'admin-remembered-email'
@@ -91,9 +92,8 @@ export function LoginModal() {
             required
             hint="Google 계정 비밀번호가 아닌, Auth에 설정한 비밀번호"
           >
-            <Input
+            <PasswordInput
               id="admin-password"
-              type="password"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
