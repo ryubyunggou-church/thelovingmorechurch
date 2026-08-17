@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Menu, X, LogOut, Users, Megaphone } from 'lucide-react'
 import { NAV_ITEMS, SITE_NAME } from '../../types/content'
@@ -7,9 +7,35 @@ import { Button } from '../ui/button'
 import { cn } from '../../lib/utils'
 
 const FOUNDED_YEAR = 2005
+/** 닫힘 애니메이션(mobile-menu-rollup) 길이와 반드시 맞춰야 한다 — index.css 참고 */
+const MENU_CLOSE_ANIMATION_MS = 200
 
 export function Header() {
   const [open, setOpen] = useState(false)
+  /** true인 동안은 '말려 올라가는' 종료 애니메이션 재생 중 — 애니메이션이 끝나야 실제로 언마운트한다 */
+  const [closing, setClosing] = useState(false)
+  const closeTimerRef = useRef<number | null>(null)
+
+  const closeMenu = useCallback(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) {
+      setOpen(false)
+      return
+    }
+    setClosing(true)
+    if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current)
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpen(false)
+      setClosing(false)
+    }, MENU_CLOSE_ANIMATION_MS)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current)
+    }
+  }, [])
+
   const isAdminMode = useAdminStore((s) => s.isAdminMode)
   const admin = useAdminStore((s) => s.admin)
   const setAdminManageOpen = useAdminStore((s) => s.setAdminManageOpen)
@@ -93,8 +119,8 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-paper hover:bg-ink-soft lg:hidden"
-            onClick={() => setOpen((v) => !v)}
+            className="relative z-50 text-paper hover:bg-ink-soft lg:hidden"
+            onClick={() => (open ? closeMenu() : setOpen(true))}
             aria-label="메뉴"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -102,19 +128,24 @@ export function Header() {
         </div>
       </div>
 
-      {open ? (
+      {open || closing ? (
         <>
           {/* 배경 스크림: 바깥을 탭하면 메뉴 닫힘 */}
           <div
             aria-hidden
-            className="fixed inset-0 z-30 bg-ink/50 lg:hidden"
-            onClick={() => setOpen(false)}
+            className={cn(
+              'fixed inset-0 z-30 bg-ink/50 transition-opacity duration-200 lg:hidden',
+              closing && 'opacity-0',
+            )}
+            onClick={closeMenu}
           />
           <div
             className={cn(
               'absolute right-4 top-[calc(100%+0.5rem)] z-50 w-[min(62vw,280px)]',
-              'origin-top-right overflow-hidden rounded-lg border border-ink-line bg-ink-soft shadow-2xl',
-              'motion-safe:animate-[mobile-menu-in_180ms_cubic-bezier(0.16,1,0.3,1)_both] lg:hidden',
+              'origin-top overflow-hidden rounded-lg border border-ink-line bg-ink-soft shadow-2xl lg:hidden',
+              closing
+                ? 'motion-safe:animate-[mobile-menu-rollup_200ms_cubic-bezier(0.4,0,1,1)_both]'
+                : 'motion-safe:animate-[mobile-menu-unfurl_240ms_cubic-bezier(0.16,1,0.3,1)_both]',
             )}
           >
             <nav className="flex flex-col py-2">
@@ -123,7 +154,7 @@ export function Header() {
                   key={item.path}
                   to={item.path}
                   end={item.path === '/'}
-                  onClick={() => setOpen(false)}
+                  onClick={closeMenu}
                   className={({ isActive }) =>
                     cn(
                       'group relative flex items-center px-5 py-3 text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper',
@@ -150,7 +181,7 @@ export function Header() {
                   type="button"
                   className="border-t border-ink-line px-5 py-3 text-left text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper"
                   onClick={() => {
-                    setOpen(false)
+                    closeMenu()
                     setAdminManageOpen(true)
                   }}
                 >
@@ -162,7 +193,7 @@ export function Header() {
                   type="button"
                   className="px-5 py-3 text-left text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper"
                   onClick={() => {
-                    setOpen(false)
+                    closeMenu()
                     setPopupManageOpen(true)
                   }}
                 >
@@ -174,7 +205,7 @@ export function Header() {
                   type="button"
                   className="px-5 py-3 text-left text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper"
                   onClick={() => {
-                    setOpen(false)
+                    closeMenu()
                     void logout()
                   }}
                 >
