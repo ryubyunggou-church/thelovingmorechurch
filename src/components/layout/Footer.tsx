@@ -52,7 +52,7 @@ export function Footer() {
         </div>
 
         <div className="site-footer__rule mt-12 pt-6">
-          <p className="text-center text-xs leading-relaxed text-ink-muted sm:text-left sm:text-[13px]">
+          <p className="text-right text-xs leading-relaxed text-ink-muted sm:text-[13px]">
             © {FOUNDED_YEAR}-{currentYear} {SITE_NAME}. All rights reserved.
             <span className="mx-1.5 text-ink-line" aria-hidden>
               |
