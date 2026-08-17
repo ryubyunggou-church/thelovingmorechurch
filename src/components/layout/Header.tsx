@@ -50,7 +50,7 @@ export function Header() {
                   <span
                     aria-hidden
                     className={cn(
-                      'pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-center scale-x-0 bg-gold transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-x-100',
+                      'pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-center scale-x-0 bg-gold transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-x-100 group-hover:bg-[#84f5a2]',
                       isActive && 'scale-x-100',
                     )}
                   />
