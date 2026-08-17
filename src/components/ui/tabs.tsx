@@ -21,18 +21,31 @@ export function TabsList({
 
 export function TabsTrigger({
   className,
+  children,
   ...props
 }: React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>) {
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'relative -mb-px inline-flex items-center whitespace-nowrap border-b-2 border-transparent py-3 text-sm font-medium text-paper-muted transition-colors',
+        'group relative inline-flex items-center whitespace-nowrap py-3 text-sm font-medium text-paper-muted transition-colors',
         'hover:text-paper-text',
-        'data-[state=active]:border-gold data-[state=active]:text-paper-text',
+        'data-[state=active]:text-paper-text',
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+      {/* 밑줄: 헤더 Topbar 메뉴와 동일한 바운스 애니메이션 — 활성 탭은 골드로 고정, 호버 시 0.5초에
+          걸쳐 살짝 튕기며 #84f5a2로 펼쳐진다 */}
+      <span
+        aria-hidden
+        className={cn(
+          'pointer-events-none absolute inset-x-0 -bottom-px h-[2px] origin-center scale-x-0 bg-gold transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+          'group-hover:scale-x-100 group-hover:bg-[#84f5a2]',
+          'group-data-[state=active]:scale-x-100',
+        )}
+      />
+    </TabsPrimitive.Trigger>
   )
 }
 
