@@ -54,7 +54,7 @@ export function PartnerSpotlightRail() {
               >
                 <div
                   className={cn(
-                    'relative flex w-full items-center justify-center border bg-paper transition-[box-shadow,border-color,padding] duration-300',
+                    'relative flex w-full items-center justify-center overflow-hidden rounded-[30px] border bg-paper transition-[box-shadow,border-color,padding] duration-300',
                     active
                       ? 'border-gold/40 px-4 py-7 shadow-xl shadow-black/30 sm:px-6 sm:py-9'
                       : 'border-paper-line/40 px-3 py-5 opacity-60 sm:py-6',
