@@ -103,62 +103,87 @@ export function Header() {
       </div>
 
       {open ? (
-        <div className="border-t border-ink-line bg-ink lg:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col px-4 py-3">
-            {NAV_ITEMS.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                end={item.path === '/'}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  cn(
-                    'rounded-sm px-3 py-3 text-sm font-medium text-ink-muted',
-                    isActive && 'bg-ink-soft text-gold',
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-            {isAdminMode && admin?.role === 'super' ? (
-              <button
-                type="button"
-                className="rounded-sm px-3 py-3 text-left text-sm font-medium text-ink-muted"
-                onClick={() => {
-                  setOpen(false)
-                  setAdminManageOpen(true)
-                }}
-              >
-                관리자 관리
-              </button>
-            ) : null}
-            {isAdminMode ? (
-              <button
-                type="button"
-                className="rounded-sm px-3 py-3 text-left text-sm font-medium text-ink-muted"
-                onClick={() => {
-                  setOpen(false)
-                  setPopupManageOpen(true)
-                }}
-              >
-                팝업 관리
-              </button>
-            ) : null}
-            {isAdminMode ? (
-              <button
-                type="button"
-                className="rounded-sm px-3 py-3 text-left text-sm font-medium text-ink-muted"
-                onClick={() => {
-                  setOpen(false)
-                  void logout()
-                }}
-              >
-                로그아웃
-              </button>
-            ) : null}
-          </nav>
-        </div>
+        <>
+          {/* 배경 스크림: 바깥을 탭하면 메뉴 닫힘 */}
+          <div
+            aria-hidden
+            className="fixed inset-0 z-30 bg-ink/50 lg:hidden"
+            onClick={() => setOpen(false)}
+          />
+          <div
+            className={cn(
+              'absolute right-4 top-[calc(100%+0.5rem)] z-50 w-[min(62vw,280px)]',
+              'origin-top-right overflow-hidden rounded-lg border border-ink-line bg-ink-soft shadow-2xl',
+              'motion-safe:animate-[mobile-menu-in_180ms_cubic-bezier(0.16,1,0.3,1)_both] lg:hidden',
+            )}
+          >
+            <nav className="flex flex-col py-2">
+              {NAV_ITEMS.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.path === '/'}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    cn(
+                      'group relative flex items-center px-5 py-3 text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper',
+                      isActive && 'bg-ink text-gold',
+                    )
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span
+                        aria-hidden
+                        className={cn(
+                          'absolute inset-y-2 left-0 w-[3px] origin-center scale-y-0 rounded-full bg-gold transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-y-100 group-hover:bg-[#fa8a52]',
+                          isActive && 'scale-y-100',
+                        )}
+                      />
+                      {item.label}
+                    </>
+                  )}
+                </NavLink>
+              ))}
+              {isAdminMode && admin?.role === 'super' ? (
+                <button
+                  type="button"
+                  className="border-t border-ink-line px-5 py-3 text-left text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper"
+                  onClick={() => {
+                    setOpen(false)
+                    setAdminManageOpen(true)
+                  }}
+                >
+                  관리자 관리
+                </button>
+              ) : null}
+              {isAdminMode ? (
+                <button
+                  type="button"
+                  className="px-5 py-3 text-left text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper"
+                  onClick={() => {
+                    setOpen(false)
+                    setPopupManageOpen(true)
+                  }}
+                >
+                  팝업 관리
+                </button>
+              ) : null}
+              {isAdminMode ? (
+                <button
+                  type="button"
+                  className="px-5 py-3 text-left text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper"
+                  onClick={() => {
+                    setOpen(false)
+                    void logout()
+                  }}
+                >
+                  로그아웃
+                </button>
+              ) : null}
+            </nav>
+          </div>
+        </>
       ) : null}
 
       <div className="border-t border-ink-line bg-ink-soft px-4 py-1.5 text-center text-xs tracking-wide text-ink-muted sm:text-[13px]">
