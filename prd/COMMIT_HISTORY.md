@@ -8,6 +8,7 @@
 
 | 해시 | 날짜 | 내용 |
 |------|------|------|
+| `4c19425` | 2026-08-18 | ci: main push 자동 Firebase 배포 비활성 — 수동(workflow_dispatch)만 허용 |
 | `22321ca` | 2026-08-18 | merge: experiment/home-ui-ux-pro-max — HOME 시각 파일럿 (가독성·터치·협력기관 호버/파스텔) |
 | `b52544d` | 2026-08-18 | feat(home): HOME ui-ux-pro-max 파일럿 — 가독성·터치·협력기관 호버 안정화 |
 | `3c7dd7c` | 2026-08-16 | feat(admin): 로그인 이메일 기억하기 + 로그인 완료 시 페이지 상단 이동 |
