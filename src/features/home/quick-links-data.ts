@@ -54,18 +54,24 @@ export const partners = [
     href: PARTNER_LINKS[0].href,
     role: '교단 · 총회',
     logo: '/logo-image/총회-logo-투명.png',
+    /** 호버 플레이트 — 총회 엠블럼 보라와 맞춘 진한 라일락 파스텔 */
+    hoverPlate: '#c4b5d4',
   },
   {
     label: PARTNER_LINKS[1].label,
     href: PARTNER_LINKS[1].href,
     role: '지역 · 노회',
     logo: '/logo-image/남경기노회_logo_투명.png',
+    /** 호버 플레이트 — 흑색 로고 대비용 진한 세이지 파스텔 */
+    hoverPlate: '#a8c0a8',
   },
   {
     label: PARTNER_LINKS[2].label,
     href: PARTNER_LINKS[2].href,
     role: '세계 · 선교',
     logo: '/logo-image/GMS-logo-투명.png',
+    /** 호버 플레이트 — 파란 엠블럼과 구분되는 진한 살구 파스텔 */
+    hoverPlate: '#d4b59a',
   },
 ] as const
 
