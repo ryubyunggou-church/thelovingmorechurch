@@ -17,7 +17,7 @@ React + Vite + TypeScript + Firebase 기반 교회 공식 홈페이지. 방문�
 | Firebase 프로젝트 ID | `tlmchurch` |
 | Firebase 콘솔 | https://console.firebase.google.com/project/tlmchurch/overview |
 | Hosting 배포 주소 | https://tlmchurch.web.app |
-| CI/CD | GitHub Actions — `main` push 시 자동 빌드·배포, PR 시 미리보기 채널 배포 (`.github/workflows/`) |
+| CI/CD | 배포는 **수동** (`npx firebase deploy` 또는 Actions `workflow_dispatch`). PR 미리보기 채널 워크플로우는 유지 (`.github/workflows/`) |
 
 ## 스택
 
@@ -94,15 +94,18 @@ npm run dev
 
 ## 배포
 
-**GitHub Actions(권장)** — `main` 브랜치에 push하면 자동으로 lint → test → build 후 Firestore
-rules/indexes, Storage rules, Functions, Hosting까지 배포됩니다. PR을 열면 Hosting 미리보기
-채널이 자동 생성됩니다. 워크플로우가 정상 작동하려면 저장소 시크릿에 `FIREBASE_SERVICE_ACCOUNT`
-(Firebase 콘솔 > 프로젝트 설정 > 서비스 계정에서 발급한 JSON 키)가 등록되어 있어야 합니다.
+**수동 배포만 사용** — `main` push 시 자동 배포는 비활성입니다. Hosting/Rules 등은 로컬에서
+직접 배포하거나, GitHub Actions의 `Deploy to Firebase (manual)` 워크플로우를
+`workflow_dispatch`로 실행합니다. PR을 열면 Hosting 미리보기 채널은 기존처럼 생성될 수
+있습니다(시크릿 `FIREBASE_SERVICE_ACCOUNT` 필요).
 
-**수동 배포**
+**로컬 수동 배포**
 
 ```bash
 npm run build
+npx firebase deploy --only hosting --project tlmchurch
+
+# Rules / Storage까지 함께
 npx firebase deploy --only hosting,firestore:rules,firestore:indexes,storage --project tlmchurch
 
 # Functions — Blaze(종량제) 요금제 전환 필요

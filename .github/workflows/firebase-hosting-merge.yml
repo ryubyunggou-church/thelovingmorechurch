@@ -1,8 +1,8 @@
-name: Deploy to Firebase (main)
+name: Deploy to Firebase (manual)
 
+# 자동 push 배포 비활성 — 수동 실행만 허용 (Actions > Run workflow)
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
