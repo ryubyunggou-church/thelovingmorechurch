@@ -6,9 +6,8 @@
     text-anchor="middle"
     font-family="-apple-system, 'SF Pro Display', 'Segoe UI', 'Noto Sans KR', Helvetica, Arial, sans-serif"
     font-size="108"
-    font-weight="500"
-    font-style="italic"
-    fill="#d81e06"
+    font-weight="800"
+    fill="#000000"
   >the</text>
   <text
     x="256"
