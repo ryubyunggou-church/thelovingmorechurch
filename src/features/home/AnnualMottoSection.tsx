@@ -45,11 +45,11 @@ export function AnnualMottoSection({ motto, onUpdated }: Props) {
           <h2 className="mt-3 font-serif text-2xl font-semibold leading-snug text-paper-text sm:text-[1.75rem]">
             {motto.motto}
           </h2>
-          <p className="mt-2 text-sm font-medium text-paper-muted">{motto.scripture}</p>
+          <p className="mt-2 text-base font-medium text-paper-muted">{motto.scripture}</p>
 
-          <ol className="mt-7 space-y-3 border-t border-paper-line pt-6">
+          <ol className="mt-7 space-y-3.5 border-t border-paper-line pt-6">
             {practices.slice(0, 3).map((line, i) => (
-              <li key={i} className="flex items-baseline gap-3 text-sm leading-relaxed text-paper-text">
+              <li key={i} className="flex items-baseline gap-3 text-base leading-relaxed text-paper-text">
                 <span className="index-num shrink-0 font-serif text-xs text-gold-deep">
                   {String(i + 1).padStart(2, '0')}
                 </span>

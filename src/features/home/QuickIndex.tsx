@@ -41,10 +41,10 @@ export function QuickIndex() {
             >
               <Link
                 to={item.href}
-                className="group flex items-center gap-5 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40 sm:gap-8 sm:py-6"
+                className="group flex min-h-14 cursor-pointer items-center gap-5 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40 sm:gap-8 sm:py-6"
               >
                 <span
-                  className="index-num shrink-0 font-serif text-lg text-paper-line transition-colors group-hover:text-gold sm:text-xl"
+                  className="index-num shrink-0 font-serif text-lg text-paper-muted transition-colors duration-200 group-hover:text-gold sm:text-xl"
                   aria-hidden
                 >
                   {String(i + 1).padStart(2, '0')}
@@ -54,7 +54,7 @@ export function QuickIndex() {
                   <img
                     src={item.image}
                     alt=""
-                    className="h-full w-full object-cover grayscale-[0.25] transition duration-500 group-hover:grayscale-0"
+                    className="h-full w-full object-cover grayscale-[0.25] transition-[filter] duration-200 group-hover:grayscale-0"
                     loading="lazy"
                   />
                 </span>
@@ -66,10 +66,10 @@ export function QuickIndex() {
                     </span>
                     <span className="hidden text-sm text-paper-muted sm:inline">{item.desc}</span>
                   </span>
-                  <span className="mt-1 block text-xs text-gold-deep sm:text-sm">{item.live()}</span>
+                  <span className="mt-1 block text-sm text-gold-deep">{item.live()}</span>
                 </span>
 
-                <ArrowUpRight className="h-5 w-5 shrink-0 text-paper-muted transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold" />
+                <ArrowUpRight className="h-5 w-5 shrink-0 text-paper-muted transition-[color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold" />
               </Link>
             </li>
           ))}

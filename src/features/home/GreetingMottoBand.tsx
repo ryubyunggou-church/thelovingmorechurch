@@ -16,7 +16,7 @@ export function GreetingMottoBand({ greeting, motto, onUpdated }: Props) {
   return (
     <section className="bg-paper py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid items-stretch gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-14 lg:gap-20">
+        <div className="grid items-stretch gap-12 md:grid-cols-[1.15fr_0.85fr] md:gap-16 lg:gap-20">
           <div className="min-w-0">
             <PastorGreetingSection greeting={greeting} onUpdated={onUpdated} compact />
           </div>

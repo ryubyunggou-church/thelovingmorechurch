@@ -80,7 +80,7 @@ export function PastorGreetingSection({ greeting, onUpdated, compact = true }: P
               <h2 className="mt-1 font-serif text-xl font-semibold text-paper-text sm:text-2xl">
                 {greeting.pastorName}
               </h2>
-              <p className="mt-3 line-clamp-6 text-sm leading-relaxed text-paper-muted sm:line-clamp-8 sm:text-[15px]">
+              <p className="mt-3 line-clamp-6 text-base leading-relaxed text-paper-muted sm:line-clamp-8">
                 {greeting.message}
               </p>
             </div>
