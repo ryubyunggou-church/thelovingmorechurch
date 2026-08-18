@@ -13,7 +13,7 @@ export default defineConfig({
       includeAssets: ['icons/apple-touch-icon.png', 'icons/app-icon.svg'],
       manifest: {
         name: '대한예수교장로회 사랑하는교회',
-        short_name: 'the LOVE',
+        short_name: '사랑하는교회',
         description:
           '대한예수교장로회 사랑하는교회 공식 홈페이지 — 예배안내, 교육부서, 선교사역, 교회소식, 오시는길',
         lang: 'ko',
