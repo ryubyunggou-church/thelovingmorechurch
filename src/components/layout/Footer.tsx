@@ -68,6 +68,11 @@ export function Footer() {
           </div>
 
           <nav aria-label="바로가기" className="min-w-0 sm:pt-1">
+            <p className="mb-3">
+              <span className="inline-flex items-center rounded-full border border-gold/55 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-gold">
+                Quick Link
+              </span>
+            </p>
             <ul className="grid grid-flow-col grid-cols-2 grid-rows-3 gap-x-10 gap-y-1">
               {FOOTER_LINKS.map((item) => (
                 <li key={item.path}>
