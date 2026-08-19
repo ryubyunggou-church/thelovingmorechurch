@@ -37,9 +37,9 @@ export function Footer() {
   return (
     <footer className="site-footer mt-auto">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-        {/* 2열: 연락처(+저작권 메타) | 바로가기 */}
-        <div className="grid gap-10 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-14 lg:gap-20">
-          <div className="min-w-0 space-y-6">
+        {/* 2열 stretch: 좌측 메타 하단 = Quick Link 메뉴 마지막 행 기준선 */}
+        <div className="grid gap-10 sm:grid-cols-[1fr_auto] sm:items-stretch sm:gap-14 lg:gap-20">
+          <div className="flex min-w-0 flex-col">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
               <img
                 src="/logo-image/logo-full-color.png"
@@ -68,28 +68,29 @@ export function Footer() {
               </address>
             </div>
 
-            <p className="text-xs leading-relaxed text-ink-muted sm:text-[13px]">
+            {/* BackToTop default 버튼 바탕(bg-gold)과 동일 톤 */}
+            <p className="mt-auto pt-8 text-xs leading-relaxed text-gold sm:pt-10 sm:text-[13px]">
               © {FOUNDED_YEAR}-{currentYear} {SITE_NAME}. All rights reserved.
-              <span className="mx-1.5 text-ink-line" aria-hidden>
+              <span className="mx-1.5 text-gold/45" aria-hidden>
                 |
               </span>
               Email :{' '}
               <a
                 href={`mailto:${FOOTER_CONTACT.email}`}
-                className="text-paper underline-offset-2 transition-colors duration-200 hover:text-gold hover:underline"
+                className="text-gold underline-offset-2 transition-colors duration-200 hover:text-paper hover:underline"
               >
                 {FOOTER_CONTACT.email}
               </a>
               {!isAdminMode ? (
                 <>
-                  <span className="mx-1.5 text-ink-line" aria-hidden>
+                  <span className="mx-1.5 text-gold/45" aria-hidden>
                     |
                   </span>
                   <button
                     type="button"
                     onClick={() => setLoginOpen(true)}
                     aria-label="관리자 로그인"
-                    className="text-ink-muted underline-offset-2 transition-colors duration-200 hover:text-gold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
+                    className="text-gold underline-offset-2 transition-colors duration-200 hover:text-paper hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
                   >
                     Admin
                   </button>
@@ -98,7 +99,7 @@ export function Footer() {
             </p>
           </div>
 
-          <nav aria-label="바로가기" className="min-w-0 sm:pt-1">
+          <nav aria-label="바로가기" className="flex min-w-0 flex-col sm:pt-1">
             <p className="mb-3 flex justify-center">
               <span className="inline-flex items-center rounded-full border border-gold/55 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-gold">
                 Quick Link
