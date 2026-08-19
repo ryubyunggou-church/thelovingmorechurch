@@ -16,16 +16,17 @@ const FOOTER_CONTACT = {
 const FOUNDED_YEAR = 2005
 
 /**
- * 푸터 바로가기 5개 — 첨부 레이아웃 기준(2열)
- * 좌: 예배안내 / 교육부서 / 선교사역
- * 우: 오시는길 / 교회소식
+ * 푸터 바로가기 6개 — 2열(grid-flow-col)
+ * 1열: 교회소개 / 예배안내 / 교육부서
+ * 2열: 선교사역 / 교회소식 / 오시는길
  */
 const FOOTER_LINKS = [
+  { label: '교회소개', path: '/about' },
   { label: '예배안내', path: '/worship' },
   { label: '교육부서', path: '/education' },
   { label: '선교사역', path: '/missions' },
-  { label: '오시는길', path: '/contact' },
   { label: '교회소식', path: '/news' },
+  { label: '오시는길', path: '/contact' },
 ] as const
 
 export function Footer() {
