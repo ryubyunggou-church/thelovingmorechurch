@@ -8,6 +8,7 @@
 
 | 해시 | 날짜 | 내용 |
 |------|------|------|
+| `be491fa` | 2026-08-19 | feat(footer): 바로가기 링크 + 협력기관 로고 복구 |
 | `4c19425` | 2026-08-18 | ci: main push 자동 Firebase 배포 비활성 — 수동(workflow_dispatch)만 허용 |
 | `22321ca` | 2026-08-18 | merge: experiment/home-ui-ux-pro-max — HOME 시각 파일럿 (가독성·터치·협력기관 호버/파스텔) |
 | `b52544d` | 2026-08-18 | feat(home): HOME ui-ux-pro-max 파일럿 — 가독성·터치·협력기관 호버 안정화 |
