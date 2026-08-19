@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom'
-import { NAV_ITEMS, PARTNER_LINKS, SITE_NAME } from '../../types/content'
-import { partners } from '../../features/home/quick-links-data'
+import { NavLink } from 'react-router-dom'
+import { SITE_NAME } from '../../types/content'
 import { useAdminStore } from '../../store/admin-store'
-import { toTelHref } from '../../lib/utils'
+import { cn, toTelHref } from '../../lib/utils'
 
 /** 푸터 고정 연락처 (공식 소재지) */
 const FOOTER_CONTACT = {
@@ -16,8 +15,18 @@ const FOOTER_CONTACT = {
 
 const FOUNDED_YEAR = 2005
 
-/** 푸터 바로가기 — 헤더 대메뉴와 동일 (HOME 포함) */
-const FOOTER_LINKS = NAV_ITEMS
+/**
+ * 푸터 바로가기 5개 — 첨부 레이아웃 기준(2열)
+ * 좌: 예배안내 / 교육부서 / 선교사역
+ * 우: 오시는길 / 교회소식
+ */
+const FOOTER_LINKS = [
+  { label: '예배안내', path: '/worship' },
+  { label: '교육부서', path: '/education' },
+  { label: '선교사역', path: '/missions' },
+  { label: '오시는길', path: '/contact' },
+  { label: '교회소식', path: '/news' },
+] as const
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -27,8 +36,8 @@ export function Footer() {
   return (
     <footer className="site-footer mt-auto">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.75fr)_auto] lg:items-start lg:gap-12">
-          {/* 연락처 */}
+        {/* 2열: 연락처 | 바로가기 (첨부샷과 동일) */}
+        <div className="grid gap-10 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-14 lg:gap-20">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
             <img
               src="/logo-image/logo-full-color.png"
@@ -57,47 +66,37 @@ export function Footer() {
             </address>
           </div>
 
-          {/* 바로가기 — 빨간 점선 자리(마크업 없이 링크만) */}
-          <nav aria-label="바로가기" className="min-w-0">
-            <p className="index-num text-xs font-semibold tracking-[0.14em] text-gold">바로가기</p>
-            <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2.5 sm:grid-cols-1">
+          <nav aria-label="바로가기" className="min-w-0 sm:pt-1">
+            <ul className="grid grid-flow-col grid-cols-2 grid-rows-3 gap-x-10 gap-y-1">
               {FOOTER_LINKS.map((item) => (
                 <li key={item.path}>
-                  <Link
+                  <NavLink
                     to={item.path}
-                    className="inline-flex min-h-9 cursor-pointer items-center text-sm text-ink-muted transition-colors duration-200 hover:text-gold"
+                    className={({ isActive }) =>
+                      cn(
+                        'group relative inline-flex min-h-9 cursor-pointer items-center px-0.5 py-1.5 text-sm font-medium tracking-[0.04em] text-ink-muted transition-colors hover:text-paper',
+                        isActive && 'text-paper',
+                      )
+                    }
                   >
-                    {item.label}
-                  </Link>
+                    {({ isActive }) => (
+                      <>
+                        {item.label}
+                        {/* Topbar와 동일: 호버 시 scale-x 언더바 (금→민트) */}
+                        <span
+                          aria-hidden
+                          className={cn(
+                            'pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-center scale-x-0 bg-gold transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-x-100 group-hover:bg-[#84f5a2]',
+                            isActive && 'scale-x-100',
+                          )}
+                        />
+                      </>
+                    )}
+                  </NavLink>
                 </li>
               ))}
             </ul>
           </nav>
-
-          {/* 협력기관 — 홈과 동일 3곳 */}
-          <div className="min-w-0 lg:justify-self-end">
-            <p className="index-num text-xs font-semibold tracking-[0.14em] text-gold">협력기관</p>
-            <ul className="mt-4 flex flex-wrap items-center gap-3 sm:gap-4">
-              {partners.map((p, i) => (
-                <li key={p.href}>
-                  <a
-                    href={p.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    title={PARTNER_LINKS[i]?.label ?? p.label}
-                    className="inline-flex h-12 cursor-pointer items-center rounded-2xl border border-paper-line/30 bg-paper px-3 py-2 transition-[transform,border-color] duration-200 hover:scale-105 hover:border-gold/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
-                  >
-                    <img
-                      src={p.logo}
-                      alt={p.label}
-                      className="h-8 w-auto max-w-[4.75rem] object-contain sm:h-9 sm:max-w-[5.5rem]"
-                      loading="lazy"
-                    />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         <div className="site-footer__rule mt-12 pt-6">
