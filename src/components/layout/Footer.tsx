@@ -37,38 +37,69 @@ export function Footer() {
   return (
     <footer className="site-footer mt-auto">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-        {/* 2열: 연락처 | 바로가기 (첨부샷과 동일) */}
+        {/* 2열: 연락처(+저작권 메타) | 바로가기 */}
         <div className="grid gap-10 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-14 lg:gap-20">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
-            <img
-              src="/logo-image/logo-full-color.png"
-              alt={SITE_NAME}
-              className="h-12 w-auto shrink-0 sm:h-14"
-            />
-            <address className="not-italic max-w-xl space-y-1.5 text-sm leading-relaxed text-ink-muted">
-              <p className="text-paper">
-                <span className="index-num">{FOOTER_CONTACT.postal}</span>{' '}
-                {FOOTER_CONTACT.addressKo}
-              </p>
-              <p className="text-xs sm:text-sm">{FOOTER_CONTACT.addressEn}</p>
-              <p className="pt-1">
-                <span className="font-medium text-paper">Tel</span> :{' '}
-                <a
-                  href={toTelHref(FOOTER_CONTACT.tel)}
-                  className="underline-offset-2 transition-colors duration-200 hover:text-gold hover:underline"
-                >
-                  {FOOTER_CONTACT.tel}
-                </a>
-                <span className="mx-2 text-ink-line" aria-hidden>
-                  |
-                </span>
-                <span className="font-medium text-paper">Fax</span> : {FOOTER_CONTACT.fax}
-              </p>
-            </address>
+          <div className="min-w-0 space-y-6">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
+              <img
+                src="/logo-image/logo-full-color.png"
+                alt={SITE_NAME}
+                className="h-12 w-auto shrink-0 sm:h-14"
+              />
+              <address className="not-italic max-w-xl space-y-1.5 text-sm leading-relaxed text-ink-muted">
+                <p className="text-paper">
+                  <span className="index-num">{FOOTER_CONTACT.postal}</span>{' '}
+                  {FOOTER_CONTACT.addressKo}
+                </p>
+                <p className="text-xs sm:text-sm">{FOOTER_CONTACT.addressEn}</p>
+                <p className="pt-1">
+                  <span className="font-medium text-paper">Tel</span> :{' '}
+                  <a
+                    href={toTelHref(FOOTER_CONTACT.tel)}
+                    className="underline-offset-2 transition-colors duration-200 hover:text-gold hover:underline"
+                  >
+                    {FOOTER_CONTACT.tel}
+                  </a>
+                  <span className="mx-2 text-ink-line" aria-hidden>
+                    |
+                  </span>
+                  <span className="font-medium text-paper">Fax</span> : {FOOTER_CONTACT.fax}
+                </p>
+              </address>
+            </div>
+
+            <p className="text-xs leading-relaxed text-ink-muted sm:text-[13px]">
+              © {FOUNDED_YEAR}-{currentYear} {SITE_NAME}. All rights reserved.
+              <span className="mx-1.5 text-ink-line" aria-hidden>
+                |
+              </span>
+              Email :{' '}
+              <a
+                href={`mailto:${FOOTER_CONTACT.email}`}
+                className="text-paper underline-offset-2 transition-colors duration-200 hover:text-gold hover:underline"
+              >
+                {FOOTER_CONTACT.email}
+              </a>
+              {!isAdminMode ? (
+                <>
+                  <span className="mx-1.5 text-ink-line" aria-hidden>
+                    |
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setLoginOpen(true)}
+                    aria-label="관리자 로그인"
+                    className="text-ink-muted underline-offset-2 transition-colors duration-200 hover:text-gold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
+                  >
+                    Admin
+                  </button>
+                </>
+              ) : null}
+            </p>
           </div>
 
           <nav aria-label="바로가기" className="min-w-0 sm:pt-1">
-            <p className="mb-3">
+            <p className="mb-3 flex justify-center">
               <span className="inline-flex items-center rounded-full border border-gold/55 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-gold">
                 Quick Link
               </span>
@@ -103,37 +134,6 @@ export function Footer() {
               ))}
             </ul>
           </nav>
-        </div>
-
-        <div className="site-footer__rule mt-12 pt-6">
-          <p className="text-right text-xs leading-relaxed text-ink-muted sm:text-[13px]">
-            © {FOUNDED_YEAR}-{currentYear} {SITE_NAME}. All rights reserved.
-            <span className="mx-1.5 text-ink-line" aria-hidden>
-              |
-            </span>
-            Email :{' '}
-            <a
-              href={`mailto:${FOOTER_CONTACT.email}`}
-              className="text-paper underline-offset-2 transition-colors duration-200 hover:text-gold hover:underline"
-            >
-              {FOOTER_CONTACT.email}
-            </a>
-            {!isAdminMode ? (
-              <>
-                <span className="mx-1.5 text-ink-line" aria-hidden>
-                  |
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setLoginOpen(true)}
-                  aria-label="관리자 로그인"
-                  className="text-ink-muted underline-offset-2 transition-colors duration-200 hover:text-gold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40"
-                >
-                  Admin
-                </button>
-              </>
-            ) : null}
-          </p>
         </div>
       </div>
     </footer>
