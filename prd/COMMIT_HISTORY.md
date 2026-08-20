@@ -8,6 +8,8 @@
 
 | 해시 | 날짜 | 내용 |
 |------|------|------|
+| `fa2a561` | 2026-08-20 | Merge feature/header-transparent-hero-scroll: 홈 투명 헤더 오버레이 + 스크롤 전환 |
+| `9d20e90` | 2026-08-20 | feat(header): 홈 진입 시 투명 헤더 오버레이 + 스크롤 시 검정 헤더 전환 |
 | `3f995f8` | 2026-08-19 | fix(footer): 저작권 줄을 Quick Link 하단과 정렬 + 메타 색상 gold 통일 |
 | `74c68f9` | 2026-08-19 | fix(footer): Quick Link 뱃지 중앙정렬 + 저작권·Email·Admin 좌측 이동 |
 | `b0f6512` | 2026-08-19 | feat(footer): 바로가기 영역에 Quick Link 라운드 뱃지 추가 |
