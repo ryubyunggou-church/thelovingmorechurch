@@ -60,7 +60,7 @@ export const seedHeroSlides: HeroSlide[] = [
     mediaType: 'image',
     tag: '다음세대',
     title: '다음세대를 세우는 교회',
-    subtitle: '유치부부터 청년가족부까지 · 말씀과 관계로 양육',
+    subtitle: '유초등부부터 청년대학부까지 · 말씀과 관계로 양육',
     linkUrl: '/education',
     order: 3,
     isActive: true,
@@ -103,35 +103,36 @@ export const seedContact: ContactInfo = {
   email: 'ryubyunggou@gmail.com',
   siteUrl: 'https://www.tlmc.kr',
   mapImageUrl: '/photos/directions-map.webp',
-  mapLinkUrl: '',
+  mapLinkUrl:
+    'https://map.kakao.com/?urlX=512492&urlY=1129706&urlLevel=3&map_type=TYPE_MAP&map_hybrid=false',
   routes: [
     {
       id: 'route-1',
       iconType: 'subway',
       title: '1호선·2호선',
-      description: '신설동역 하차 → 도보 이동 (placeholder — 관리자 모드에서 실제 경로로 수정)',
+      description: '신설동역 하차 → 도보 이동',
       order: 1,
     },
     {
       id: 'route-2',
       iconType: 'bus',
       title: '간선버스',
-      description: '전농로 인근 정류장 하차 (placeholder — 관리자 모드에서 실제 노선으로 수정)',
+      description: '전농로 인근 정류장 하차',
       order: 1,
     },
     {
       id: 'route-3',
       iconType: 'walk',
       title: '역에서 도보',
-      description: '도보 약 10분 (placeholder — 관리자 모드에서 실제 경로로 수정)',
+      description: '도보 약 10분',
       order: 1,
     },
   ],
   parkingPhotos: [],
   parkingNotices: [
-    '교회 주차장은 주일 예배 시간에 한해 이용 가능합니다. (placeholder)',
-    '이중 주차 차량은 연락처를 남기고 기어를 중립에 두어 주세요. (placeholder)',
-    '만차 시 인근 공영주차장 또는 대중교통을 이용해 주시기 바랍니다. (placeholder)',
+    '교회 주차장은 주일 예배 시간에 한해 이용 가능합니다.',
+    '이중 주차 차량은 연락처를 남기고 기어를 중립에 두어 주세요.',
+    '만차 시 인근 공영주차장 또는 대중교통을 이용해 주시기 바랍니다.',
   ],
 }
 
@@ -141,7 +142,7 @@ export const seedAboutTabs: AboutTab[] = [
     tabKey: 'church',
     title: '교회소개',
     content:
-      '대한예수교장로회 사랑하는교회는 예수 그리스도의 십자가 복음을 중심으로, 예배·교육·선교·교제를 통해 하나님의 나라를 이 땅에 이루고자 합니다. (placeholder 콘텐츠 — 관리자 인라인 편집으로 교체)',
+      '대한예수교장로회 사랑하는교회는 예수 그리스도의 십자가 복음을 중심으로, 예배·교육·선교·교제를 통해 하나님의 나라를 이 땅에 이루고자 합니다.',
   },
   {
     id: 'about-pastor',
@@ -158,35 +159,33 @@ export const seedAboutTabs: AboutTab[] = [
   },
 ]
 
-/** /about 교회소개 — 전경 + 본문 placeholder */
+/** /about 교회소개 — 전경 + 본문 */
 export const seedAboutChurch: AboutChurch = {
   id: 'main',
   heroImageUrl: '/photos/church-exterior-1.webp',
   title: '교회소개',
   body: `대한예수교장로회 사랑하는교회는 예수 그리스도의 십자가 복음을 중심으로, 예배·교육·선교·교제를 통해 하나님의 나라를 이 땅에 이루고자 합니다.
 
-말씀 위에 굳게 서서 세대를 아우르는 공동체를 세우며, 이웃과 열방을 향해 열린 교회로 걸어갑니다.
-
-(placeholder — 관리자 모드에서 교회전경 사진과 소개글을 수정할 수 있습니다.)`,
+말씀 위에 굳게 서서 세대를 아우르는 공동체를 세우며, 이웃과 열방을 향해 열린 교회로 걸어갑니다.`,
   updatedAt: new Date().toISOString(),
 }
 
-/** /about 담임목사소개 — 인물 + 학력/경력 placeholder */
+/** /about 담임목사소개 — 인물 + 학력/경력 */
 export const seedAboutPastor: AboutPastor = {
   id: 'main',
   photoUrl: '/photos/pastor-ryu.webp',
   name: '유병구 목사',
   title: '담임목사',
   education: [
-    '○○대학교 신학과 졸업 (placeholder)',
-    '○○신학대학원 M.Div. (placeholder)',
+    '○○대학교 신학과 졸업',
+    '○○신학대학원 M.Div.',
   ],
   career: [
-    '○○교회 부목사 사역 (placeholder)',
+    '○○교회 부목사 사역',
     '대한예수교장로회 사랑하는교회 담임 (현재)',
   ],
   notes:
-    '성도와 함께 말씀과 기도로 성장하는 공동체를 소망합니다. (placeholder — 관리자 편집으로 교체)',
+    '성도와 함께 말씀과 기도로 성장하는 공동체를 소망합니다.',
   updatedAt: new Date().toISOString(),
 }
 
@@ -200,24 +199,38 @@ export const seedStaff: StaffMember[] = [
   },
   {
     id: 's2',
-    name: '이○○',
+    name: '마훈희',
     role: '부목사',
-    photoUrl: '/photos/avatar-placeholder.svg',
+    photoUrl: '/photos/placeholder.png',
     order: 2,
   },
   {
     id: 's3',
-    name: '박○○',
+    name: '윤성실',
     role: '전도사',
-    photoUrl: '/photos/avatar-placeholder.svg',
+    photoUrl: '/photos/placeholder.png',
     order: 3,
   },
   {
     id: 's4',
-    name: '최○○',
-    role: '교육전도사',
-    photoUrl: '/photos/avatar-placeholder.svg',
+    name: '이은성',
+    role: '전도사',
+    photoUrl: '/photos/placeholder.png',
     order: 4,
+  },
+  {
+    id: 's5',
+    name: '김현수',
+    role: '장로',
+    photoUrl: '/photos/placeholder.png',
+    order: 5,
+  },
+  {
+    id: 's6',
+    name: '김단비',
+    role: '피아노',
+    photoUrl: '/photos/placeholder.png',
+    order: 6,
   },
 ]
 
@@ -236,36 +249,18 @@ export const educationPlaceholderImages: string[] = [
 
 export const seedEducation: EducationDepartment[] = [
   {
-    id: 'e1',
-    deptKey: 'kindergarten',
-    name: '유치부',
-    missionText: `말씀과 놀이로 하나님을 처음 만나는 어린이 공동체입니다.
-
-찬양·성경이야기·교제를 통해 주님의 사랑을 몸으로 익히고, 가정과 함께 믿음의 첫걸음을 돕습니다.
-
-(placeholder — 관리자 모드에서 사진과 소개글을 수정할 수 있습니다.)`,
-    image:
-      'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1200&q=80',
-    scheduleInfo: '주일 오전 11:00',
-    targetAge: '만 3~7세',
-    place: '유치부실',
-    order: 1,
-  },
-  {
     id: 'e2',
     deptKey: 'elementary',
     name: '유초등부',
     missionText: `성경 이야기와 교제를 통해 믿음의 뿌리를 세우는 초등 공동체입니다.
 
-말씀 암송과 소그룹으로 친구와 함께 예수님을 알아가며, 예배하는 아이로 자라도록 동행합니다.
-
-(placeholder — 관리자 모드에서 사진과 소개글을 수정할 수 있습니다.)`,
+말씀 암송과 소그룹으로 친구와 함께 예수님을 알아가며, 예배하는 아이로 자라도록 동행합니다.`,
     image:
-      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80',
-    scheduleInfo: '주일 오전 11:00',
+      'https://firebasestorage.googleapis.com/v0/b/tlmchurch.firebasestorage.app/o/uploads%2Feducation%2Felementary%2F1787185921586____________________________2.webp?alt=media&token=c1146289-2c60-4dc9-9a8c-6dada2d35e82',
+    scheduleInfo: '주일 오전 9:40',
     targetAge: '초등 1~6학년',
     place: '유초등부실',
-    order: 2,
+    order: 1,
   },
   {
     id: 'e3',
@@ -273,31 +268,27 @@ export const seedEducation: EducationDepartment[] = [
     name: '중고등부',
     missionText: `청소년의 고민과 꿈을 말씀으로 품는 사역입니다.
 
-주일 예배와 금요 모임에서 또래와 멘토가 함께 기도하고, 세상에서 그리스도인으로 서는 연습을 합니다.
-
-(placeholder — 관리자 모드에서 사진과 소개글을 수정할 수 있습니다.)`,
+주일 예배와  성경 공부모임에서 또래와 멘토가 함께 기도하고, 세상에서 그리스도인으로 서는 연습을 합니다.`,
     image:
-      'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80',
-    scheduleInfo: '주일 오전 11:00 · 금요 모임',
+      'https://firebasestorage.googleapis.com/v0/b/tlmchurch.firebasestorage.app/o/uploads%2Feducation%2Fyouth%2F1787194068164_LOGO-01-01.webp?alt=media&token=1959084f-a724-456a-8db7-deb1fa8bea75',
+    scheduleInfo: '주일 오전 10:00',
     targetAge: '중·고등학생',
     place: '중고등부실',
-    order: 3,
+    order: 2,
   },
   {
     id: 'e4',
     deptKey: 'youngadult',
-    name: '청년가족부',
+    name: '청년대학부',
     missionText: `청년과 가정이 함께 성장하는 예배와 교제입니다.
 
-말씀 나눔과 주중 소그룹으로 서로를 붙들고, 일터와 가정에서 복음을 살아내는 공동체를 꿈꿉니다.
-
-(placeholder — 관리자 모드에서 사진과 소개글을 수정할 수 있습니다.)`,
+말씀 나눔과 주중 소그룹으로 서로를 붙들고, 일터와 가정에서 복음을 살아내는 공동체를 꿈꿉니다.`,
     image:
-      'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1200&q=80',
+      'https://firebasestorage.googleapis.com/v0/b/tlmchurch.firebasestorage.app/o/uploads%2Feducation%2Fyoungadult%2F1787185868486___________________.webp?alt=media&token=121ca55a-def0-4b86-b979-f1c6ed24cb30',
     scheduleInfo: '주일 오후 · 주중 소그룹',
     targetAge: '청년·가정',
     place: '본당 / 소그룹',
-    order: 4,
+    order: 3,
   },
 ]
 
@@ -324,18 +315,17 @@ export const seedMissions: MissionItem[] = [
     type: 'domestic',
     name: '국내 이웃 섬김',
     description:
-      '동대문구 인근 이웃과 함께하는 나눔·돌봄 사역입니다. 필요를 나누고 기도로 동행합니다. (placeholder)',
+      '동대문구 인근 이웃과 함께하는 나눔·돌봄 사역입니다. 필요를 나누고 기도로 동행합니다.',
     order: 1,
     region: '서울 동대문구',
-    image:
-      'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=80',
+    image: '/photos/mission-domestic-care.jpeg',
   },
   {
     id: 'm2',
     type: 'domestic',
     name: '국내 미자립 교회 후원',
     description:
-      '동역 교회를 후원하고 기도 네트워크로 연결하는 사역입니다. (placeholder)',
+      '동역 교회를 후원하고 기도 네트워크로 연결하는 사역입니다.',
     order: 2,
     region: '국내 동역',
     image:
@@ -346,7 +336,7 @@ export const seedMissions: MissionItem[] = [
     type: 'overseas',
     name: '몽골 선교',
     description:
-      '파송 선교사와 현지 사역을 후원하고 중보하는 몽골 선교지입니다. (placeholder)',
+      '파송 선교사와 현지 사역을 후원하고 중보하는 몽골 선교지입니다.',
     order: 1,
     region: '몽골',
     image: '/photos/mission-mongolia.webp',
@@ -355,7 +345,7 @@ export const seedMissions: MissionItem[] = [
     id: 'm4',
     type: 'overseas',
     name: '캄보디아 선교',
-    description: '단기 선교와 중보 기도로 함께하는 캄보디아 선교지입니다. (placeholder)',
+    description: '단기 선교와 중보 기도로 함께하는 캄보디아 선교지입니다.',
     order: 2,
     region: '캄보디아',
     image: '/photos/mission-cambodia.webp',

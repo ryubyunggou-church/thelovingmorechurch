@@ -18,7 +18,7 @@ export const indexItems = [
     key: 'education',
     label: '교육부서',
     href: '/education',
-    desc: '유치부부터 청년가족부까지',
+    desc: '유초등부부터 청년대학부까지',
     live: () => '다음세대 사역',
     image: '/photos/mission-cambodia.webp',
   },

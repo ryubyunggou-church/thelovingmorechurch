@@ -27,7 +27,7 @@ export function AboutStaffPanel({ members, onUpdated }: Props) {
       await saveDocument('staffMembers', id, {
         name: '새 사역자',
         role: '직분',
-        photoUrl: '/photos/avatar-placeholder.svg',
+        photoUrl: '/photos/placeholder.png',
         order: maxOrder + 1,
       })
       pushToast({ title: '사역자가 추가되었습니다', variant: 'success' })
