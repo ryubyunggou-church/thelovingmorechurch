@@ -72,6 +72,11 @@ export function HeroSlider({ slides }: HeroSliderProps) {
   return (
     <div
       className="group relative"
+      /**
+       * 홈 헤더가 투명 오버레이인 동안 Hero가 그 뒤로 파고들도록 헤더 높이만큼
+       * 끌어올린다 — Header.tsx가 실측해 퍼블리시하는 --header-h를 그대로 쓴다.
+       */
+      style={{ marginTop: 'calc(var(--header-h, 0px) * -1)' }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}

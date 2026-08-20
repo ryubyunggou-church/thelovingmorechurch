@@ -5,6 +5,11 @@
  * 팔레트. ink(짙은 예배당 어둠)를 중심 서페이스로 쓰고 paper(주보 갱지 톤)는
  * 정독이 필요한 콘텐츠에만, gold/wine은 스테인드글라스 조각처럼 절제해 쓴다.
  */
+:root {
+  /* Header.tsx가 실측해 갱신한다 — 이 값은 JS 실행 전 첫 페인트용 대략치일 뿐. */
+  --header-h: 6.5rem;
+}
+
 @theme {
   --color-ink: #17130f;
   --color-ink-soft: #221b15;
