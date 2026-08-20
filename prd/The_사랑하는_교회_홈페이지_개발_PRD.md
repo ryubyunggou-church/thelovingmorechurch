@@ -42,7 +42,7 @@ irijc.co.kr(이리중앙교회)은 디자인/로직의 **부분 참고용**이�
 
 1. **관리자 모드 = 페이지 내 인라인 편집모드.** 별도 대시보드가 아니라, 관리자로 로그인한 상태에서 실제 방문자용 페이지를 그대로 보면서 편집 가능한 요소에 편집 UI(예: 호버 시 연필 아이콘 → 인라인 폼/모달)가 나타나는 방식.
 2. **프레임워크 = React + Vite (SPA), TypeScript.** Next.js 같은 SSR 프레임워크는 채택하지 않는다. 대신 SEO는 별도 보완 조치(2.1 참고)로 대응한다.
-3. **하위 탭(교회소개 3탭, 교육부서 4탭, 선교사역 2탭) = 단일 페이지 내 상태 기반 탭 전환.** 별도 URL 세그먼트를 만들지 않는다.
+3. **하위 탭(교회소개 3탭, 교육부서 3탭, 선교사역 2탭) = 단일 페이지 내 상태 기반 탭 전환.** 별도 URL 세그먼트를 만들지 않는다.
 4. **게시판(교회소식) 보안 = 처음부터 스팸 방지 선반영.** 지금은 관리자 전용 글쓰기이지만, Firestore 규칙·요청 제한(rate limit)·향후 확장(문의/댓글) 대비 검증 로직을 설계 단계부터 넣는다.
 
 ### 2.1 SPA 선택에 따른 SEO 보완 조치
@@ -63,7 +63,7 @@ irijc.co.kr(이리중앙교회)은 디자인/로직의 **부분 참고용**이�
 | HOME | `/`          | 랜딩 페이지 (5섹션)                     |
 | 교회소개 | `/about`     | 탭 3개: 교회소개 / 담임목사소개 / 사역자소개      |
 | 예배안내 | `/worship`   | 리스트 레이아웃 단일 페이지                  |
-| 교육부서 | `/education` | 탭 4개: 유치부 / 유초등부 / 중고등부 / 청년가족부  |
+| 교육부서 | `/education` | 탭 3개: 유초등부 / 중고등부 / 청년대학부  |
 | 선교사역 | `/missions`  | 탭 2개: 국내선교 / 국외선교                |
 | 교회소식 | `/news`      | 게시판 (목록 `/news`, 상세 `/news/:id`) |
 | 오시는길 | `/contact`   | Contact Us + 지도                  |
@@ -109,7 +109,7 @@ irijc.co.kr(이리중앙교회)은 디자인/로직의 **부분 참고용**이�
 | `aboutTabs`            | 교회소개 3탭 콘텐츠                   | tabKey(church/pastor/staff), content(rich text/구조화)              |
 | `staffMembers`         | 사역자 소개 목록                     | name, role, photoUrl, order                                      |
 | `worshipSchedule`      | 예배안내 리스트                      | name(예: 주일오전예배), time, note, order                               |
-| `educationDepartments` | 교육부서 4탭                       | deptKey, missionText, image, scheduleInfo                        |
+| `educationDepartments` | 교육부서 3탭                       | deptKey, missionText, image, scheduleInfo                        |
 | `missions`             | 선교사역 2탭 항목                    | type(국내/국외), name, description, order                            |
 | `newsPosts`            | 교회소식 게시판                      | title, contentHtml, thumbnail, authorUid, createdAt, isPublished |
 | `contactInfo`          | 오시는길                          | address, naverMapEmbedUrl(네이버 지도), phone, fax, siteUrl           |
