@@ -64,12 +64,12 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
     }
   }
 
-  const requestDelete = (id: string) => {
-    if (confirmingId === id) {
-      void doDelete(id)
+  const requestDelete = (dept: EducationDepartment) => {
+    if (confirmingId === dept.id) {
+      void doDelete(dept)
       return
     }
-    setConfirmingId(id)
+    setConfirmingId(dept.id)
     if (confirmTimer.current) clearTimeout(confirmTimer.current)
     confirmTimer.current = setTimeout(() => setConfirmingId(null), CONFIRM_TIMEOUT_MS)
   }
@@ -111,11 +111,11 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
     }
   }
 
-  const doDelete = async (id: string) => {
+  const doDelete = async (dept: EducationDepartment) => {
     if (confirmTimer.current) clearTimeout(confirmTimer.current)
-    setDeletingId(id)
+    setDeletingId(dept.id)
     try {
-      await removeDocument('educationDepartments', id)
+      await removeDocument('educationDepartments', dept.id)
       pushToast({ title: '부서가 삭제되었습니다', variant: 'success' })
       onUpdated()
     } catch (err) {
@@ -136,7 +136,7 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
         <p className="text-sm font-semibold text-gold">부서 관리</p>
         <h2 className="mt-1 font-serif text-2xl font-semibold text-paper-text">부서추가/삭제</h2>
         <p className="mt-2 text-sm text-paper-muted">
-          기본 4개 부서(유치부·유초등부·중고등부·청년가족부)는 삭제할 수 없습니다. 새로 추가한
+          기본 3개 부서(유초등부·중고등부·청년대학부)는 삭제할 수 없습니다. 새로 추가한
           부서만 삭제할 수 있습니다. 부서명을 클릭하면 수정할 수 있습니다.
         </p>
       </div>
@@ -217,7 +217,7 @@ export function EducationDeptManagePanel({ depts, onUpdated }: Props) {
                   variant="outline"
                   size="sm"
                   disabled={deletingId === dept.id}
-                  onClick={() => requestDelete(dept.id)}
+                  onClick={() => requestDelete(dept)}
                   className={cn(
                     'shrink-0 border-wine/30 bg-paper/80 text-wine-deep hover:bg-wine/10',
                     isConfirming && 'bg-red-50',

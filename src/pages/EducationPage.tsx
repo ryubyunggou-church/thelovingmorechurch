@@ -43,7 +43,7 @@ export function EducationPage() {
         description="다음세대를 말씀으로 양육하는 교육 사역을 소개합니다."
         current="교육부서"
       >
-        <TabbedPage tabs={tabs} />
+        <TabbedPage tabs={tabs} defaultTab="elementary" />
       </PageShell>
     </>
   )

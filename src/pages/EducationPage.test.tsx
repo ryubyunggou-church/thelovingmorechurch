@@ -22,14 +22,14 @@ describe('EducationPage admin-only manage tab', () => {
 
   it('hides the manage tab for regular visitors', async () => {
     renderPage()
-    await waitFor(() => expect(screen.getByRole('tab', { name: '유치부' })).toBeInTheDocument())
+    await waitFor(() => expect(screen.getByRole('tab', { name: '유초등부' })).toBeInTheDocument())
     expect(screen.queryByRole('tab', { name: '부서추가/삭제' })).not.toBeInTheDocument()
   })
 
   it('appends the manage tab as the last tab in admin mode', async () => {
     useAdminStore.setState({ isAdminMode: true })
     renderPage()
-    await waitFor(() => expect(screen.getByRole('tab', { name: '유치부' })).toBeInTheDocument())
+    await waitFor(() => expect(screen.getByRole('tab', { name: '유초등부' })).toBeInTheDocument())
     const tabs = screen.getAllByRole('tab')
     expect(tabs.at(-1)).toHaveTextContent('부서추가/삭제')
   })

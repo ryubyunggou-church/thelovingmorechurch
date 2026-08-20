@@ -1,15 +1,10 @@
 import type { EducationDepartment } from '../types/content'
 import { educationPlaceholderImages, seedEducation } from '../data/seed'
 
-/** 기본 4부서 고정 순서 — 삭제 불가 판별 기준으로도 재사용 */
-export const EDUCATION_DEPT_ORDER = [
-  'kindergarten',
-  'elementary',
-  'youth',
-  'youngadult',
-] as const
+/** 삭제 불가 고정 부서 순서. */
+export const EDUCATION_DEPT_ORDER = ['elementary', 'youth', 'youngadult'] as const
 
-/** 기본 4부서 여부 (기본 부서는 삭제 불가) */
+/** 삭제 불가 기본 부서 여부. */
 export function isDefaultEducationDept(deptKey: string): boolean {
   return (EDUCATION_DEPT_ORDER as readonly string[]).includes(deptKey)
 }
@@ -25,9 +20,22 @@ function optionalField(remote: string | undefined, fallback: string | undefined)
   return remote
 }
 
+function mergeDept(fromRemote: EducationDepartment, fromSeed: EducationDepartment): EducationDepartment {
+  return {
+    ...fromSeed,
+    ...fromRemote,
+    name: requiredField(fromRemote.name, fromSeed.name),
+    missionText: requiredField(fromRemote.missionText, fromSeed.missionText),
+    image: requiredField(fromRemote.image, fromSeed.image),
+    scheduleInfo: requiredField(fromRemote.scheduleInfo, fromSeed.scheduleInfo),
+    targetAge: optionalField(fromRemote.targetAge, fromSeed.targetAge),
+    place: optionalField(fromRemote.place, fromSeed.place),
+  }
+}
+
 /**
- * 기본 4부서는 고정 순서로 시드와 병합해 항상 노출하고,
- * 관리자가 추가한 부서(기본 4개 외 deptKey)는 그 뒤에 order 오름차순으로 이어붙인다.
+ * 유초등부·중고등부·청년대학부는 고정 순서로 시드와 병합해 항상 노출하고,
+ * 관리자가 추가한 부서(기본 3개 외 deptKey)는 그 뒤에 order 오름차순으로 이어붙인다.
  */
 export function orderEducationDepartments(
   remote: EducationDepartment[],
@@ -38,18 +46,7 @@ export function orderEducationDepartments(
     const fromSeed = seeds.find((d) => d.deptKey === key)
     if (!fromSeed) return fromRemote ? [fromRemote] : []
     if (!fromRemote) return [fromSeed]
-    return [
-      {
-        ...fromSeed,
-        ...fromRemote,
-        name: requiredField(fromRemote.name, fromSeed.name),
-        missionText: requiredField(fromRemote.missionText, fromSeed.missionText),
-        image: requiredField(fromRemote.image, fromSeed.image),
-        scheduleInfo: requiredField(fromRemote.scheduleInfo, fromSeed.scheduleInfo),
-        targetAge: optionalField(fromRemote.targetAge, fromSeed.targetAge),
-        place: optionalField(fromRemote.place, fromSeed.place),
-      },
-    ]
+    return [mergeDept(fromRemote, fromSeed)]
   })
 
   const customs = remote
@@ -68,7 +65,7 @@ function pickPlaceholderImage(order: number, pool: string[] = educationPlacehold
 
 /**
  * 관리자 "부서 추가"로 생성되는 빈 부서 — 저장 후 해당 탭에서 개별 수정한다.
- * 대표사진은 비워두지 않고 풀에서 하나를 자동 배정해, 기존 4부서처럼 placeholder가 채워진 채로 시작한다.
+ * 대표사진은 비워두지 않고 풀에서 하나를 자동 배정해, 기존 부서처럼 대표사진이 채워진 채로 시작한다.
  */
 export function createBlankEducationDept(order: number, now = Date.now()): EducationDepartment {
   return {

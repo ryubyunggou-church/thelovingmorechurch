@@ -22,34 +22,29 @@ const sample = (
 })
 
 describe('orderEducationDepartments', () => {
-  it('returns four tabs in fixed order from seed when remote is empty', () => {
+  it('returns three tabs in fixed order from seed when remote is empty', () => {
     const result = orderEducationDepartments([])
-    expect(result.map((d) => d.deptKey)).toEqual([
-      'kindergarten',
-      'elementary',
-      'youth',
-      'youngadult',
-    ])
-    expect(result[0]?.name).toBe('유치부')
-    expect(result[3]?.name).toBe('청년가족부')
+    expect(result.map((d) => d.deptKey)).toEqual(['elementary', 'youth', 'youngadult'])
+    expect(result[0]?.name).toBe('유초등부')
+    expect(result[2]?.name).toBe('청년대학부')
   })
 
   it('fills a missing remote department from seed', () => {
     const remote = [
       sample({
-        deptKey: 'kindergarten',
-        name: '유치부(원격)',
+        deptKey: 'elementary',
+        name: '유초등부(원격)',
         missionText: '원격 본문',
-        image: 'https://example.com/k.jpg',
+        image: 'https://example.com/e.jpg',
         scheduleInfo: '주일 9:00',
         order: 1,
       }),
     ]
     const result = orderEducationDepartments(remote)
-    expect(result).toHaveLength(4)
-    expect(result[0]?.name).toBe('유치부(원격)')
+    expect(result).toHaveLength(3)
+    expect(result[0]?.name).toBe('유초등부(원격)')
     expect(result[1]?.name).toBe(seedEducation[1]?.name)
-    expect(result[1]?.deptKey).toBe('elementary')
+    expect(result[1]?.deptKey).toBe('youth')
   })
 
   it('falls back to seed for required fields (including scheduleInfo) when remote values are blank', () => {
@@ -60,7 +55,7 @@ describe('orderEducationDepartments', () => {
         missionText: '',
         image: '',
         scheduleInfo: '',
-        order: 3,
+        order: 2,
       }),
     ]
     const result = orderEducationDepartments(remote)
@@ -82,7 +77,7 @@ describe('orderEducationDepartments', () => {
         scheduleInfo: '금요 모임',
         targetAge: '',
         place: '',
-        order: 3,
+        order: 2,
       }),
     ]
     const result = orderEducationDepartments(remote)
@@ -98,7 +93,7 @@ describe('orderEducationDepartments', () => {
         name: '유초등부',
         missionText: '본문',
         image: 'https://example.com/e.jpg',
-        order: 2,
+        order: 1,
       }),
     ]
     delete remote[0]!.targetAge
@@ -110,7 +105,7 @@ describe('orderEducationDepartments', () => {
     expect(elem?.place).toBe(seedElem?.place)
   })
 
-  it('appends custom (non-default) departments after the fixed four, sorted by order', () => {
+  it('appends custom (non-default) departments after the fixed three, sorted by order', () => {
     const remote = [
       ...seedEducation,
       sample({ deptKey: 'custom_2', name: '신규부서2', order: 6 }),
@@ -118,25 +113,26 @@ describe('orderEducationDepartments', () => {
     ]
     const result = orderEducationDepartments(remote)
     expect(result.map((d) => d.deptKey)).toEqual([
-      'kindergarten',
       'elementary',
       'youth',
       'youngadult',
       'custom_1',
       'custom_2',
     ])
-    expect(result[4]?.name).toBe('신규부서1')
-    expect(result[5]?.name).toBe('신규부서2')
+    expect(result[3]?.name).toBe('신규부서1')
+    expect(result[4]?.name).toBe('신규부서2')
   })
 })
 
 describe('isDefaultEducationDept', () => {
-  it('treats the fixed four keys as default (non-deletable)', () => {
-    expect(isDefaultEducationDept('kindergarten')).toBe(true)
+  it('treats the fixed three keys as default (non-deletable)', () => {
+    expect(isDefaultEducationDept('elementary')).toBe(true)
+    expect(isDefaultEducationDept('youth')).toBe(true)
     expect(isDefaultEducationDept('youngadult')).toBe(true)
   })
 
   it('treats any other key as a custom (deletable) department', () => {
+    expect(isDefaultEducationDept('kindergarten')).toBe(false)
     expect(isDefaultEducationDept('custom_123')).toBe(false)
     expect(isDefaultEducationDept('unknown')).toBe(false)
   })

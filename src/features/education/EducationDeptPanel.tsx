@@ -159,7 +159,7 @@ function DeptEditor({
           placeholder="대상"
         />
       </FormField>
-      <FormField label="장소" htmlFor={`edu-place-${dept.id}`} hint="예: 유치부실">
+      <FormField label="장소" htmlFor={`edu-place-${dept.id}`} hint="예: 유초등부실">
         <Input
           id={`edu-place-${dept.id}`}
           value={form.place ?? ''}

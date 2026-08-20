@@ -15,8 +15,8 @@ vi.mock('../../lib/content-service', () => ({
 const depts: EducationDepartment[] = [
   {
     id: 'd1',
-    deptKey: 'kindergarten',
-    name: '유치부',
+    deptKey: 'elementary',
+    name: '유초등부',
     missionText: '',
     image: '',
     scheduleInfo: '',
@@ -77,8 +77,8 @@ describe('EducationDeptManagePanel', () => {
     const onUpdated = vi.fn()
     render(<EducationDeptManagePanel depts={depts} onUpdated={onUpdated} />)
 
-    await user.click(screen.getByRole('button', { name: /유치부/ }))
-    const input = screen.getByRole('textbox', { name: /유치부 부서명 수정/ })
+    await user.click(screen.getByRole('button', { name: /유초등부/ }))
+    const input = screen.getByRole('textbox', { name: /유초등부 부서명 수정/ })
     await user.clear(input)
     await user.type(input, '유아부')
     await user.click(screen.getByRole('button', { name: '저장' }))
@@ -94,12 +94,12 @@ describe('EducationDeptManagePanel', () => {
     const user = userEvent.setup()
     render(<EducationDeptManagePanel depts={depts} onUpdated={() => {}} />)
 
-    await user.click(screen.getByRole('button', { name: /유치부/ }))
-    const input = screen.getByRole('textbox', { name: /유치부 부서명 수정/ })
+    await user.click(screen.getByRole('button', { name: /유초등부/ }))
+    const input = screen.getByRole('textbox', { name: /유초등부 부서명 수정/ })
     await user.type(input, '변경중')
     await user.click(screen.getByRole('button', { name: '취소' }))
 
     expect(saveDocument).not.toHaveBeenCalled()
-    expect(screen.getByRole('button', { name: /유치부/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /유초등부/ })).toBeInTheDocument()
   })
 })
