@@ -26,7 +26,10 @@ let cachedHeroSlides: HeroSlide[] | null = null
 /** 세션 내 첫 로딩 동안 노출: seed 사진 대신 중립 스켈레톤을 보여줘 실제 콘텐츠로 오인되지 않게 한다. */
 function HeroSkeleton() {
   return (
-    <div className="relative h-[min(92vh,900px)] min-h-[560px] w-full animate-pulse overflow-hidden bg-ink" />
+    <div
+      className="relative h-[min(92vh,900px)] min-h-[560px] w-full animate-pulse overflow-hidden bg-ink"
+      style={{ marginTop: 'calc(var(--header-h, 0px) * -1)' }}
+    />
   )
 }
 
