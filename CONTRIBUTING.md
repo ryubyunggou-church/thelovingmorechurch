@@ -13,6 +13,9 @@
 - `prd/github-firebase-info.txt`는 로컬 참고용이며 **원격 저장소에 올리지 말 것**.
 - `prd/*firebase-adminsdk*.json`(Firebase 서비스 계정 키)도 로컬 전용 — `.gitignore`에
   `**/*firebase-adminsdk*.json` 패턴으로 이미 제외되어 있다. 발급 방법은 아래 "배포" 참고.
+- `prd/github-pat.txt`(GitHub fine-grained PAT)도 로컬 전용 — `.gitignore`에
+  `prd/github-pat*.txt` 패턴으로 제외되어 있다. 발급/연결 방법은
+  `prd/DEPLOY_ACCOUNT_RECOVERY.md` 참고.
 
 ## 테스트
 

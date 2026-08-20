@@ -60,9 +60,34 @@ firebase login:ci     # 실제 터미널에서 직접 실행
 `CONTRIBUTING.md`의 "배포" 섹션 참고. 서비스 계정 키를 쓰면 이 계정 꼬임
 복구 과정 자체가 필요 없어진다.
 
+## GitHub — PAT로 브라우저 로그인 자체를 없애기 (권장, 영구 해결)
+
+`gh auth login`의 keyring 로그인은 실제로는 상당히 안정적이지만, 로그아웃되거나
+브라우저 계정 선택에서 또 실수하면 같은 문제가 재발할 수 있다. Firebase 서비스
+계정 키와 동급으로 만들려면 **저장소 전용 fine-grained PAT**를 발급해 브라우저
+로그인 단계 자체를 없앤다.
+
+1. `ryubyunggou-church` 계정으로 로그인한 상태에서
+   https://github.com/settings/personal-access-tokens/new 접속
+2. Resource owner: `ryubyunggou-church` / Repository access: `thelovingmorechurch`만
+   선택 / Permissions → Contents: Read and write
+3. 생성된 토큰(`github_pat_...`)을 **채팅이 아니라 로컬 파일**
+   `prd/github-pat.txt`에 저장 (`.gitignore`의 `prd/github-pat*.txt` 패턴으로
+   자동 제외됨)
+4. 연결:
+
+   ```bash
+   gh auth login --with-token < prd/github-pat.txt
+   gh auth setup-git
+   ```
+
+   브라우저 창이 전혀 뜨지 않고, `gh auth status`에 `github_pat_...` 토큰으로
+   표시되면 완료. 이제 계정 선택 화면에서 실수할 여지 자체가 없다.
+
 ## 이미 해결된 상태 (2026-08-20 기준)
 
-- GitHub: `gh` keyring에 `ryubyunggou-church` 계정으로 영구 로그인됨.
+- GitHub: PAT(`prd/github-pat.txt`) 기반으로 `gh auth login --with-token` 연결
+  완료 — 브라우저 로그인 불필요.
 - Firebase: `prd/tlmchurch-firebase-adminsdk-*.json` 서비스 계정 키 발급 완료,
   `GOOGLE_APPLICATION_CREDENTIALS`로 비대화형 배포 가능.
 
