@@ -91,7 +91,12 @@ export function HeroSlider({ slides }: HeroSliderProps) {
           type="button"
           onClick={goToManagePanel}
           aria-label="Hero 슬라이드 관리로 이동"
-          className="absolute right-2 top-2 z-10 inline-flex min-h-11 items-center gap-1 rounded-sm bg-ink/85 px-3 py-2 text-xs font-medium text-gold opacity-100 shadow transition duration-200 sm:opacity-0 sm:group-hover:opacity-100"
+          /**
+           * 부모가 --header-h만큼 끌어올려져 있어(위 style 참고), top을 그만큼 되돌려
+           * sticky Header(z-40) 행 안이 아니라 그 아래 Hero 영역에 실제로 놓이게 한다.
+           */
+          style={{ top: 'calc(var(--header-h, 0px) + 0.5rem)' }}
+          className="absolute right-2 z-50 inline-flex min-h-11 items-center gap-1 rounded-sm bg-ink/85 px-3 py-2 text-xs font-medium text-gold opacity-100 shadow transition duration-200 sm:opacity-0 sm:group-hover:opacity-100"
         >
           <Settings className="h-3.5 w-3.5" />
           관리로 이동
