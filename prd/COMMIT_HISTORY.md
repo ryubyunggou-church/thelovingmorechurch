@@ -8,6 +8,7 @@
 
 | 해시 | 날짜 | 내용 |
 |------|------|------|
+| `59cdada` | 2026-08-21 | feat(presbytery): 다운로드 확인모달+실제 저장, 뷰 아이콘 새창보기, 헤더 중앙정렬 |
 | `4ab716b` | 2026-08-21 | feat(presbytery): 문서함 테이블에 인라인 수정/삭제 추가, 액션 아이콘화 |
 | `2cc4a2b` | 2026-08-21 | fix(ci): Build 스텝에 VITE_FIREBASE_* 환경변수 누락 — 프로덕션 배포 시 Firebase 설정 없이 빌드되던 문제 수정 |
 | `94e8fbb` | 2026-08-21 | Merge feature/nam-gyeonggi-docs: 남경기노회 문서함 + 탭 타이틀 축약 |
