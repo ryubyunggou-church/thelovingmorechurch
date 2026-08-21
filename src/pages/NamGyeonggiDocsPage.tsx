@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Check, Download, Eye, Pencil, Plus, Printer, Trash2, X } from 'lucide-react'
+import { Check, Download, Eye, Pencil, Plus, Trash2, X } from 'lucide-react'
 import { PageShell } from '../components/layout/PageShell'
 import { Seo } from '../components/shared/Seo'
 import { Button } from '../components/ui/button'
@@ -43,9 +43,10 @@ export function NamGyeonggiDocsPage() {
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
   const [uploadOpen, setUploadOpen] = useState(false)
-  const [viewing, setViewing] = useState<PresbyteryDocument | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
+  const [downloadTarget, setDownloadTarget] = useState<PresbyteryDocument | null>(null)
+  const [downloading, setDownloading] = useState(false)
 
   const reload = useCallback(async () => {
     setDocs(await getPresbyteryDocuments())
@@ -97,13 +98,41 @@ export function NamGyeonggiDocsPage() {
     }
   }
 
-  const openView = (target: PresbyteryDocument) => {
-    setViewing(target)
+  const openInNewTab = (target: PresbyteryDocument) => {
+    window.open(target.fileUrl, '_blank', 'noreferrer')
     void markRead(target)
   }
 
-  const downloadDoc = (target: PresbyteryDocument) => {
-    void markRead(target)
+  const performDownload = async (target: PresbyteryDocument) => {
+    setDownloading(true)
+    try {
+      const res = await fetch(target.fileUrl)
+      if (!res.ok) throw new Error('다운로드에 실패했습니다.')
+      const blob = await res.blob()
+      const blobUrl = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = blobUrl
+      a.download = target.fileName
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(blobUrl)
+      void markRead(target)
+      pushToast({ title: '다운로드 완료', variant: 'success' })
+      setDownloadTarget(null)
+    } catch {
+      // 브라우저 정책(CORS 등)으로 강제 다운로드가 막히면 새 탭으로 열어 수동 저장할 수 있게 폴백
+      window.open(target.fileUrl, '_blank', 'noreferrer')
+      void markRead(target)
+      pushToast({
+        title: '자동 다운로드에 실패해 새 탭으로 열었습니다',
+        description: '새 탭에서 저장(다른 이름으로 저장)해 주세요.',
+        variant: 'error',
+      })
+      setDownloadTarget(null)
+    } finally {
+      setDownloading(false)
+    }
   }
 
   const startEdit = (target: PresbyteryDocument) => {
@@ -204,9 +233,9 @@ export function NamGyeonggiDocsPage() {
         <div className="overflow-x-auto rounded-sm border border-paper-line">
           <table className="w-full min-w-[720px] text-sm">
             <thead>
-              <tr className="border-b border-paper-line bg-paper-dim text-left text-xs font-semibold text-paper-muted">
+              <tr className="border-b border-paper-line bg-paper-dim text-center text-xs font-semibold text-paper-muted">
                 <th className="px-4 py-3">구분</th>
-                <th className="px-4 py-3">제목</th>
+                <th className="px-4 py-3 text-left">제목</th>
                 <th className="px-4 py-3">등록일</th>
                 <th className="px-4 py-3">등록자</th>
                 <th className="px-4 py-3">읽음상태</th>
@@ -223,7 +252,7 @@ export function NamGyeonggiDocsPage() {
               ) : (
                 pageItems.map((d) => (
                   <tr key={d.id} className="border-b border-paper-line last:border-0">
-                    <td className="px-4 py-3 text-xs font-medium text-paper-muted">
+                    <td className="px-4 py-3 text-center text-xs font-medium text-paper-muted">
                       {DIRECTION_LABEL[d.direction]}
                     </td>
                     <td className="px-4 py-3 font-medium text-paper-text">
@@ -238,9 +267,11 @@ export function NamGyeonggiDocsPage() {
                         <span title={d.note || undefined}>{d.title}</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-paper-muted">{formatDate(d.uploadedAt)}</td>
-                    <td className="px-4 py-3 text-paper-muted">{d.uploadedBy}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-center text-paper-muted">
+                      {formatDate(d.uploadedAt)}
+                    </td>
+                    <td className="px-4 py-3 text-center text-paper-muted">{d.uploadedBy}</td>
+                    <td className="px-4 py-3 text-center">
                       {d.direction === 'inbound' ? (
                         <span
                           className={cn(
@@ -262,7 +293,7 @@ export function NamGyeonggiDocsPage() {
                     </td>
                     <td className="px-4 py-3">
                       {editingId === d.id ? (
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center justify-center gap-1">
                           <Button
                             variant="ghost"
                             size="sm"
@@ -285,49 +316,27 @@ export function NamGyeonggiDocsPage() {
                           </Button>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-1">
-                          {d.fileType === 'pdf' ? (
-                            <>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                                title="뷰"
-                                aria-label="뷰"
-                                onClick={() => openView(d)}
-                              >
-                                <Eye className="h-3.5 w-3.5" />
-                              </Button>
-                              <a href={d.fileUrl} target="_blank" rel="noreferrer">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-8 w-8 p-0"
-                                  title="출력"
-                                  aria-label="출력"
-                                >
-                                  <Printer className="h-3.5 w-3.5" />
-                                </Button>
-                              </a>
-                            </>
-                          ) : null}
-                          <a
-                            href={d.fileUrl}
-                            download={d.fileName}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={() => downloadDoc(d)}
+                        <div className="flex items-center justify-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            title="뷰 (새 창에서 보기)"
+                            aria-label="뷰"
+                            onClick={() => openInNewTab(d)}
                           >
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0"
-                              title="다운로드"
-                              aria-label="다운로드"
-                            >
-                              <Download className="h-3.5 w-3.5" />
-                            </Button>
-                          </a>
+                            <Eye className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            title="다운로드"
+                            aria-label="다운로드"
+                            onClick={() => setDownloadTarget(d)}
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                          </Button>
                           <Button
                             variant="ghost"
                             size="sm"
@@ -411,38 +420,31 @@ export function NamGyeonggiDocsPage() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={viewing !== null} onOpenChange={(open) => !open && setViewing(null)}>
-        <DialogContent className="w-[min(92vw,48rem)]">
+      <Dialog open={downloadTarget !== null} onOpenChange={(open) => !open && setDownloadTarget(null)}>
+        <DialogContent className="w-[min(92vw,24rem)]">
           <DialogHeader>
-            <DialogTitle>{viewing?.title}</DialogTitle>
+            <DialogTitle>다운로드</DialogTitle>
             <DialogDescription>
-              {viewing ? `등록일 ${formatDate(viewing.uploadedAt)} · ${viewing.uploadedBy}` : ''}
+              {downloadTarget ? `"${downloadTarget.fileName}" 파일을 다운로드할까요?` : ''}
             </DialogDescription>
           </DialogHeader>
-          {viewing?.note ? (
-            <p className="rounded-sm bg-paper-dim px-3 py-2 text-sm text-paper-muted">
-              {viewing.note}
-            </p>
-          ) : null}
-          {viewing ? (
-            <object
-              data={viewing.fileUrl}
-              type="application/pdf"
-              className="h-[65vh] w-full border border-paper-line"
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={downloading}
+              onClick={() => setDownloadTarget(null)}
             >
-              <p className="p-4 text-sm text-paper-muted">
-                이 브라우저에서는 PDF 미리보기를 지원하지 않습니다.{' '}
-                <a
-                  href={viewing.fileUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-gold-deep underline"
-                >
-                  새 탭에서 PDF 열기
-                </a>
-              </p>
-            </object>
-          ) : null}
+              취소
+            </Button>
+            <Button
+              size="sm"
+              disabled={downloading}
+              onClick={() => downloadTarget && void performDownload(downloadTarget)}
+            >
+              {downloading ? '다운로드 중…' : '다운로드'}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </>
