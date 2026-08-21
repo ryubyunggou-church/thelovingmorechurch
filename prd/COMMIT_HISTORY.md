@@ -8,6 +8,7 @@
 
 | 해시 | 날짜 | 내용 |
 |------|------|------|
+| `5d495e5` | 2026-08-21 | feat(presbytery): 삭제 확인을 window.confirm alert에서 Dialog 모달로 변경 |
 | `ce3de30` | 2026-08-21 | fix(presbytery): 다운로드가 새 탭으로만 열리던 진짜 원인 — Storage 버킷 CORS 누락 |
 | `59cdada` | 2026-08-21 | feat(presbytery): 다운로드 확인모달+실제 저장, 뷰 아이콘 새창보기, 헤더 중앙정렬 |
 | `4ab716b` | 2026-08-21 | feat(presbytery): 문서함 테이블에 인라인 수정/삭제 추가, 액션 아이콘화 |
