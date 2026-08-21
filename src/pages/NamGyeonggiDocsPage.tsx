@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Download, Eye, Plus, Printer } from 'lucide-react'
+import { Check, Download, Eye, Pencil, Plus, Printer, Trash2, X } from 'lucide-react'
 import { PageShell } from '../components/layout/PageShell'
 import { Seo } from '../components/shared/Seo'
 import { Button } from '../components/ui/button'
@@ -13,7 +13,12 @@ import {
   DialogTitle,
 } from '../components/ui/dialog'
 import { PresbyteryDocForm } from '../features/presbytery/PresbyteryDocForm'
-import { getPresbyteryDocuments, markPresbyteryDocumentRead } from '../lib/content-service'
+import {
+  getPresbyteryDocuments,
+  markPresbyteryDocumentRead,
+  removeDocument,
+  saveDocument,
+} from '../lib/content-service'
 import { getPageNumbers } from '../lib/pagination'
 import { cn, formatDate } from '../lib/utils'
 import { useAdminStore } from '../store/admin-store'
@@ -39,6 +44,8 @@ export function NamGyeonggiDocsPage() {
   const [page, setPage] = useState(1)
   const [uploadOpen, setUploadOpen] = useState(false)
   const [viewing, setViewing] = useState<PresbyteryDocument | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editTitle, setEditTitle] = useState('')
 
   const reload = useCallback(async () => {
     setDocs(await getPresbyteryDocuments())
@@ -58,7 +65,10 @@ export function NamGyeonggiDocsPage() {
   }, [docs, directionFilter, keyword])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  // 삭제·필터링으로 목록이 줄어들어 마지막 페이지가 사라진 경우, 상태 갱신 없이 즉시
+  // 유효한 페이지로 맞춰서 렌더링한다 (빈 화면에 갇히는 것 방지).
+  const currentPage = Math.min(page, totalPages)
+  const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
 
   // Firebase 인증 확인이 끝나기 전(authLoading)에는 isAdminMode가 아직 기본값(false)일 수 있다 —
   // 이 시점에 바로 리다이렉트하면 실제 관리자가 새로고침/직접 접근 시 튕겨나간다. 확인이 끝난 뒤에만 판단한다.
@@ -94,6 +104,51 @@ export function NamGyeonggiDocsPage() {
 
   const downloadDoc = (target: PresbyteryDocument) => {
     void markRead(target)
+  }
+
+  const startEdit = (target: PresbyteryDocument) => {
+    setEditingId(target.id)
+    setEditTitle(target.title)
+  }
+
+  const cancelEdit = () => {
+    setEditingId(null)
+    setEditTitle('')
+  }
+
+  const saveEdit = async (target: PresbyteryDocument) => {
+    const title = editTitle.trim()
+    if (!title) {
+      pushToast({ title: '제목을 입력해 주세요.', variant: 'error' })
+      return
+    }
+    try {
+      await saveDocument('presbyteryDocuments', target.id, { title })
+      setDocs((prev) => prev.map((d) => (d.id === target.id ? { ...d, title } : d)))
+      pushToast({ title: '수정됨', variant: 'success' })
+      cancelEdit()
+    } catch (err) {
+      pushToast({
+        title: '수정 실패',
+        description: err instanceof Error ? err.message : '',
+        variant: 'error',
+      })
+    }
+  }
+
+  const deleteDoc = async (target: PresbyteryDocument) => {
+    if (!window.confirm(`"${target.title}" 문서를 삭제할까요?`)) return
+    try {
+      await removeDocument('presbyteryDocuments', target.id)
+      setDocs((prev) => prev.filter((d) => d.id !== target.id))
+      pushToast({ title: '삭제됨', variant: 'success' })
+    } catch (err) {
+      pushToast({
+        title: '삭제 실패',
+        description: err instanceof Error ? err.message : '',
+        variant: 'error',
+      })
+    }
   }
 
   return (
@@ -171,11 +226,17 @@ export function NamGyeonggiDocsPage() {
                     <td className="px-4 py-3 text-xs font-medium text-paper-muted">
                       {DIRECTION_LABEL[d.direction]}
                     </td>
-                    <td
-                      className="px-4 py-3 font-medium text-paper-text"
-                      title={d.note || undefined}
-                    >
-                      {d.title}
+                    <td className="px-4 py-3 font-medium text-paper-text">
+                      {editingId === d.id ? (
+                        <Input
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          className="h-8"
+                          autoFocus
+                        />
+                      ) : (
+                        <span title={d.note || undefined}>{d.title}</span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-paper-muted">{formatDate(d.uploadedAt)}</td>
                     <td className="px-4 py-3 text-paper-muted">{d.uploadedBy}</td>
@@ -200,34 +261,95 @@ export function NamGyeonggiDocsPage() {
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1">
-                        {d.fileType === 'pdf' ? (
-                          <>
-                            <Button variant="ghost" size="sm" onClick={() => openView(d)}>
-                              <Eye className="h-3.5 w-3.5" />
-                              뷰
-                            </Button>
-                            <a href={d.fileUrl} target="_blank" rel="noreferrer">
-                              <Button variant="ghost" size="sm">
-                                <Printer className="h-3.5 w-3.5" />
-                                출력
-                              </Button>
-                            </a>
-                          </>
-                        ) : null}
-                        <a
-                          href={d.fileUrl}
-                          download={d.fileName}
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={() => downloadDoc(d)}
-                        >
-                          <Button variant="ghost" size="sm">
-                            <Download className="h-3.5 w-3.5" />
-                            다운로드
+                      {editingId === d.id ? (
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            title="저장"
+                            aria-label="저장"
+                            onClick={() => void saveEdit(d)}
+                          >
+                            <Check className="h-3.5 w-3.5" />
                           </Button>
-                        </a>
-                      </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            title="취소"
+                            aria-label="취소"
+                            onClick={cancelEdit}
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          {d.fileType === 'pdf' ? (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                                title="뷰"
+                                aria-label="뷰"
+                                onClick={() => openView(d)}
+                              >
+                                <Eye className="h-3.5 w-3.5" />
+                              </Button>
+                              <a href={d.fileUrl} target="_blank" rel="noreferrer">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-8 w-8 p-0"
+                                  title="출력"
+                                  aria-label="출력"
+                                >
+                                  <Printer className="h-3.5 w-3.5" />
+                                </Button>
+                              </a>
+                            </>
+                          ) : null}
+                          <a
+                            href={d.fileUrl}
+                            download={d.fileName}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={() => downloadDoc(d)}
+                          >
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                              title="다운로드"
+                              aria-label="다운로드"
+                            >
+                              <Download className="h-3.5 w-3.5" />
+                            </Button>
+                          </a>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            title="수정"
+                            aria-label="수정"
+                            onClick={() => startEdit(d)}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 hover:text-wine"
+                            title="삭제"
+                            aria-label="삭제"
+                            onClick={() => void deleteDoc(d)}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))
@@ -241,7 +363,7 @@ export function NamGyeonggiDocsPage() {
             aria-label="문서함 페이지 이동"
             className="mt-6 flex items-center justify-center gap-1"
           >
-            {getPageNumbers(page, totalPages).map((token, i) =>
+            {getPageNumbers(currentPage, totalPages).map((token, i) =>
               token === 'ellipsis' ? (
                 <span
                   key={`ellipsis-${i}`}
@@ -257,7 +379,7 @@ export function NamGyeonggiDocsPage() {
                   onClick={() => setPage(token)}
                   className={cn(
                     'inline-flex h-8 w-8 items-center justify-center rounded-sm text-sm transition',
-                    token === page
+                    token === currentPage
                       ? 'bg-gold text-ink font-semibold'
                       : 'text-paper-muted hover:bg-paper-dim',
                   )}
