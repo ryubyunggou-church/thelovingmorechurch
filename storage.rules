@@ -22,12 +22,40 @@ service firebase.storage {
         || request.resource.contentType.matches('application/pdf');
     }
 
+    function isAllowedPresbyteryDocType() {
+      return request.resource.contentType.matches('image/.*')
+        || request.resource.contentType == 'application/pdf'
+        || request.resource.contentType == 'application/x-hwp'
+        || request.resource.contentType == 'application/haansofthwp'
+        || request.resource.contentType == 'application/msword'
+        || request.resource.contentType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        || request.resource.contentType == 'application/vnd.ms-excel'
+        || request.resource.contentType == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        // hwp/hwpx는 브라우저·OS에 따라 octet-stream으로 잡히는 경우가 많다 — 임의 바이너리 업로드를
+        // 막기 위해 확장자가 .hwp/.hwpx일 때만 octet-stream을 허용한다.
+        || (request.resource.contentType == 'application/octet-stream'
+            && request.resource.name.matches('.*\\.(hwp|hwpx)$'));
+    }
+
     // 앱 업로드 경로 (uploadMediaFile → uploads/{folder}/...)
     match /uploads/{allPaths=**} {
       allow read: if true;
       allow create, update: if isAdmin()
         && request.resource.size < 15 * 1024 * 1024
         && isAllowedContentType();
+      allow delete: if isAdmin();
+    }
+
+    // 남경기노회 문서함: 관리자만 read/write, 공문 특성상 용량 상한 20MB.
+    // 주의: getDownloadURL()이 반환하는 토큰 URL은 Storage 규칙 재평가 없이 URL을 아는 누구나
+    // 접근 가능하다(Firebase의 알려진 제약) — 이 규칙은 "누가 URL을 발급받을 수 있는가"만 막는다.
+    // URL 유출까지 막으려면 Cloud Functions로 관리자 인증을 다시 확인한 뒤 스트리밍하는 프록시가
+    // 필요하다 (후속 과제, prd/04-남경기노회-문서함-PRD.md 참고).
+    match /presbytery-docs/{allPaths=**} {
+      allow read: if isAdmin();
+      allow create, update: if isAdmin()
+        && request.resource.size < 20 * 1024 * 1024
+        && isAllowedPresbyteryDocType();
       allow delete: if isAdmin();
     }
 

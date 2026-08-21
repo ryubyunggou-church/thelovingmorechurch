@@ -97,6 +97,11 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // 남경기노회 문서함: 완전 비공개 — 관리자만 read/write (공개 read 없음)
+    match /presbyteryDocuments/{id} {
+      allow read, write: if isAdmin();
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
