@@ -104,18 +104,21 @@ function StaffCard({
         />
       )}
     >
-      <article className="group">
-        <div className="overflow-hidden">
-          <img
-            src={member.photoUrl}
-            alt={member.name}
-            className="aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-            loading="lazy"
-          />
-        </div>
-        <div className="border-t border-paper-line pt-3 mt-3">
-          <p className="text-xs font-semibold tracking-wide text-gold-deep">{member.role}</p>
-          <h3 className="mt-0.5 font-serif font-medium text-paper-text">{member.name}</h3>
+      <article className="group relative aspect-[3/4] w-full overflow-hidden rounded-sm">
+        <img
+          src={member.photoUrl}
+          alt={member.name}
+          className="absolute inset-0 h-full w-full object-cover grayscale sepia-[.15] contrast-105 brightness-90 transition-[filter] duration-500 ease-out group-hover:grayscale-0 group-hover:sepia-0 group-hover:contrast-100 group-hover:brightness-100"
+          loading="lazy"
+        />
+        {/* 촛불빛이 닿는 순간 — 호버 시 골드 헤어라인 프레임이 번져 나타난다 */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-2 scale-[0.97] border border-gold opacity-0 transition-all duration-500 ease-out group-hover:scale-100 group-hover:opacity-100"
+        />
+        <div className="absolute inset-x-0 bottom-0 border-t border-gold/40 bg-ink/85 px-3 py-2 transition-all duration-500 ease-out group-hover:-translate-y-0.5 group-hover:border-gold/90">
+          <p className="text-xs font-semibold tracking-wide text-gold">{member.role}</p>
+          <h3 className="mt-0.5 font-serif font-medium text-paper">{member.name}</h3>
         </div>
       </article>
     </EditableBlock>
