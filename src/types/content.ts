@@ -173,6 +173,8 @@ export interface ContactInfo {
 }
 
 export const SITE_NAME = '대한예수교장로회 사랑하는교회'
+/** 브라우저 탭 타이틀 전용 축약 브랜딩 — 로고 alt·저작권 문구 등에는 쓰지 않는다 */
+export const SITE_TITLE = '사랑하는교회|예장합동'
 
 export const PARTNER_LINKS = [
   { label: '대한예수교장로회 총회', href: 'https://gapck.org' },
