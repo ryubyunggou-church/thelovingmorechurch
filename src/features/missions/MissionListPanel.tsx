@@ -91,12 +91,17 @@ function MissionCard({ item }: { item: MissionItem }) {
   return (
     <article className="group">
       {image ? (
-        <div className="overflow-hidden">
+        <div className="relative overflow-hidden">
           <img
             src={image}
             alt={item.name}
             className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.02]"
             loading="lazy"
+          />
+          {/* 골드 헤어라인 프레임 — 호버 시 번지듯 나타난다 (사역자소개 카드와 동일 효과) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-2 scale-[0.97] border border-gold opacity-0 transition-all duration-500 ease-out group-hover:scale-100 group-hover:opacity-100"
           />
         </div>
       ) : (
