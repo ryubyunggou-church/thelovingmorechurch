@@ -67,3 +67,58 @@ export async function uploadMediaFile(file: File, folder = 'hero'): Promise<stri
     throw new Error(mapUploadError(err))
   }
 }
+
+const PRESBYTERY_DOC_EXT = /\.(pdf|hwp|hwpx|docx?|xlsx?|jpe?g|png)$/i
+
+function isAllowedPresbyteryDoc(file: File): boolean {
+  const type = file.type
+  if (
+    type === 'application/pdf' ||
+    type.startsWith('image/') ||
+    type === 'application/msword' ||
+    type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+    type === 'application/vnd.ms-excel' ||
+    type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  ) {
+    return true
+  }
+  // hwp/hwpx는 브라우저가 종종 빈 문자열이나 application/octet-stream으로 잡는다 — 확장자로 보완 판별
+  return PRESBYTERY_DOC_EXT.test(file.name)
+}
+
+/**
+ * 남경기노회 문서함 전용 업로드 — 공개 `uploads/**`와 분리된 비공개 경로
+ * `presbytery-docs/{direction}/...`에 저장한다. 이미지 압축 없이 원본 그대로 올린다
+ * (공문 스캔본 화질 보존 목적).
+ */
+export async function uploadPresbyteryDocument(
+  file: File,
+  direction: 'inbound' | 'outbound',
+): Promise<{ url: string; fileName: string }> {
+  if (!app) {
+    throw new Error('Firebase Storage가 설정되지 않았습니다. .env 및 Storage 활성화를 확인해 주세요.')
+  }
+  if (!auth?.currentUser) {
+    throw new Error('관리자로 로그인한 뒤에 파일을 업로드할 수 있습니다.')
+  }
+  if (!isAllowedPresbyteryDoc(file)) {
+    throw new Error('허용 형식: PDF, HWP, Word(doc/docx), Excel(xls/xlsx), 이미지')
+  }
+  if (file.size > 20 * 1024 * 1024) {
+    throw new Error('파일 용량은 20MB 이하여야 합니다.')
+  }
+
+  const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
+  const storage = getStorage(app)
+
+  const safeName = file.name.replace(/[^\w.\-가-힣]/g, '_')
+  const path = `presbytery-docs/${direction}/${Date.now()}_${safeName}`
+  const storageRef = ref(storage, path)
+  try {
+    await uploadBytes(storageRef, file, { contentType: file.type || undefined })
+    const url = await getDownloadURL(storageRef)
+    return { url, fileName: file.name }
+  } catch (err) {
+    throw new Error(mapUploadError(err))
+  }
+}
