@@ -8,6 +8,7 @@
 
 | 해시 | 날짜 | 내용 |
 |------|------|------|
+| `c062ee2` | 2026-08-21 | feat(missions): 선교사역 카드 이미지에 골드 헤어라인 호버 프레임 추가 |
 | `5d495e5` | 2026-08-21 | feat(presbytery): 삭제 확인을 window.confirm alert에서 Dialog 모달로 변경 |
 | `ce3de30` | 2026-08-21 | fix(presbytery): 다운로드가 새 탭으로만 열리던 진짜 원인 — Storage 버킷 CORS 누락 |
 | `59cdada` | 2026-08-21 | feat(presbytery): 다운로드 확인모달+실제 저장, 뷰 아이콘 새창보기, 헤더 중앙정렬 |
