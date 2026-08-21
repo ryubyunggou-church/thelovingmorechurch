@@ -138,6 +138,24 @@ export interface NewsPost {
   viewCount?: number
 }
 
+/** 남경기노회 문서함 — 노회↔교회 문서 수발신 방향 */
+export type PresbyteryDocDirection = 'inbound' | 'outbound'
+export type PresbyteryDocFileType = 'pdf' | 'other'
+
+export interface PresbyteryDocument {
+  id: string
+  title: string
+  direction: PresbyteryDocDirection
+  fileType: PresbyteryDocFileType
+  fileUrl: string
+  fileName: string
+  uploadedBy: string
+  uploadedAt: string
+  /** 수신(inbound) 문서에만 의미 있음 */
+  isRead: boolean
+  note?: string
+}
+
 /** 오시는길 "오시는 방법" 경로 안내 아이콘 종류 */
 export type RouteIconType = 'subway' | 'bus' | 'walk'
 
