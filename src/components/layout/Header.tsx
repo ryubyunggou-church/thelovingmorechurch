@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Menu, X, LogOut, Users, Megaphone } from 'lucide-react'
+import { Menu, X, LogOut, Users, Megaphone, FileText } from 'lucide-react'
 import { NAV_ITEMS, SITE_NAME } from '../../types/content'
 import { useAdminStore } from '../../store/admin-store'
 import { Button } from '../ui/button'
@@ -150,6 +150,17 @@ export function Header() {
                 </Button>
               ) : null}
               <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="hidden border-ink-line text-paper hover:bg-ink-soft sm:inline-flex"
+              >
+                <Link to="/admin/nam-gyeonggi">
+                  <FileText className="h-4 w-4" />
+                  남경기노회
+                </Link>
+              </Button>
+              <Button
                 variant="outline"
                 size="sm"
                 className="hidden border-ink-line text-paper hover:bg-ink-soft sm:inline-flex"
@@ -238,6 +249,18 @@ export function Header() {
                 >
                   관리자 관리
                 </button>
+              ) : null}
+              {isAdminMode ? (
+                <Link
+                  to="/admin/nam-gyeonggi"
+                  className={cn(
+                    'px-5 py-3 text-left text-sm font-medium text-ink-muted transition-colors hover:bg-ink hover:text-paper',
+                    admin?.role !== 'super' && 'border-t border-ink-line',
+                  )}
+                  onClick={closeMenu}
+                >
+                  남경기노회
+                </Link>
               ) : null}
               {isAdminMode ? (
                 <button
