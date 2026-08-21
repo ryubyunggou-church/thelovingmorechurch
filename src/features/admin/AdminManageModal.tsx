@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAdminStore } from '../../store/admin-store'
 import type { AdminDoc } from '../../types/content'
 import {
@@ -27,17 +27,17 @@ export function AdminManageModal() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     try {
       setAdmins(await listAdmins())
     } catch {
       setAdmins([])
     }
-  }
+  }, [listAdmins])
 
   useEffect(() => {
     if (open) void refresh()
-  }, [open])
+  }, [open, refresh])
 
   const onAdd = async (e: React.FormEvent) => {
     e.preventDefault()

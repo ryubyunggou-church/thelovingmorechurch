@@ -8,8 +8,6 @@ import { cn } from '../../lib/utils'
 import { HeroMediaBackground } from './HeroMediaBackground'
 import { HERO_MANAGE_PANEL_ID } from './hero-manage-panel-id'
 
-export { nextSlideIndex, prevSlideIndex } from './hero-slide-index'
-
 interface HeroSliderProps {
   slides: HeroSlide[]
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { PageShell } from '../components/layout/PageShell'
@@ -30,13 +30,13 @@ export function NewsPage() {
   const user = useAdminStore((s) => s.user)
   const pushToast = useAdminStore((s) => s.pushToast)
 
-  const reload = async () => {
+  const reload = useCallback(async () => {
     setPosts(await getNewsPosts({ publishedOnly: !isAdminMode, pageSize: 100 }))
-  }
+  }, [isAdminMode])
 
   useEffect(() => {
     void reload()
-  }, [isAdminMode])
+  }, [reload])
 
   const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE))
   const pageItems = useMemo(
