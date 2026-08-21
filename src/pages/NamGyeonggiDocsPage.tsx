@@ -47,6 +47,8 @@ export function NamGyeonggiDocsPage() {
   const [editTitle, setEditTitle] = useState('')
   const [downloadTarget, setDownloadTarget] = useState<PresbyteryDocument | null>(null)
   const [downloading, setDownloading] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<PresbyteryDocument | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   const reload = useCallback(async () => {
     setDocs(await getPresbyteryDocuments())
@@ -167,18 +169,21 @@ export function NamGyeonggiDocsPage() {
     }
   }
 
-  const deleteDoc = async (target: PresbyteryDocument) => {
-    if (!window.confirm(`"${target.title}" 문서를 삭제할까요?`)) return
+  const performDelete = async (target: PresbyteryDocument) => {
+    setDeleting(true)
     try {
       await removeDocument('presbyteryDocuments', target.id)
       setDocs((prev) => prev.filter((d) => d.id !== target.id))
       pushToast({ title: '삭제됨', variant: 'success' })
+      setDeleteTarget(null)
     } catch (err) {
       pushToast({
         title: '삭제 실패',
         description: err instanceof Error ? err.message : '',
         variant: 'error',
       })
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -355,7 +360,7 @@ export function NamGyeonggiDocsPage() {
                             className="h-8 w-8 p-0 hover:text-wine"
                             title="삭제"
                             aria-label="삭제"
-                            onClick={() => void deleteDoc(d)}
+                            onClick={() => setDeleteTarget(d)}
                           >
                             <Trash2 className="h-3.5 w-3.5" />
                           </Button>
@@ -445,6 +450,36 @@ export function NamGyeonggiDocsPage() {
               onClick={() => downloadTarget && void performDownload(downloadTarget)}
             >
               {downloading ? '다운로드 중…' : '다운로드'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <DialogContent className="w-[min(92vw,24rem)]">
+          <DialogHeader>
+            <DialogTitle>문서 삭제</DialogTitle>
+            <DialogDescription>
+              {deleteTarget ? `"${deleteTarget.title}" 문서를 삭제할까요? 이 작업은 되돌릴 수 없습니다.` : ''}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={deleting}
+              onClick={() => setDeleteTarget(null)}
+            >
+              취소
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-wine text-paper hover:bg-wine-deep"
+              disabled={deleting}
+              onClick={() => deleteTarget && void performDelete(deleteTarget)}
+            >
+              {deleting ? '삭제 중…' : '삭제'}
             </Button>
           </div>
         </DialogContent>
