@@ -187,3 +187,31 @@ Firestore를 그대로 "클라우드"로 사용하므로 "로컬에서 읽음 �
 5. `NamGyeonggiDocsPage` + 테이블/필터/페이지네이션 + 등록 모달 + PDF 뷰어
 6. `Header.tsx` 버튼 + `App.tsx` 라우트
 7. 코드 리뷰 → 테스트/빌드 → main으로 PR 또는 병합 방식 확인 후 진행
+
+---
+
+## 9. 운영 노트 — Storage 버킷 CORS (2026-08-21 추가)
+
+다운로드 버튼을 "확인 모달 → 실제 fetch+blob으로 디바이스에 저장" 방식으로 구현하려면
+**`fetch()`가 `firebasestorage.googleapis.com`에 대해 성공해야 한다.** `<img src>`나 직접
+URL 이동은 CORS 검증이 필요 없어 버킷에 CORS 설정이 없어도 동작하지만, `fetch()`는
+브라우저가 CORS 모드로 요청을 보내고 서버가 이를 제대로 처리하지 못하면 실패한다
+(이 프로젝트에서는 CORS 헤더 부재가 아니라 **503 응답**으로 나타났다 — `curl`로는
+`Access-Control-Allow-Origin: *`가 보였지만 실제 브라우저 `fetch()`는 503을 받았음).
+
+**해결**: `gsutil cors set` 또는 `firebase-admin`의 `bucket.setMetadata({ cors })`로
+버킷에 CORS를 설정해야 한다. `firebase deploy`(Firestore/Storage 규칙 배포)는 이
+버킷 레벨 CORS 설정을 건드리지 않는다 — **별도로, 한 번만** 적용하면 되고 배포마다
+반복할 필요는 없다(버킷 메타데이터는 영구적으로 유지됨).
+
+- 설정 파일: `storage-cors.json` (저장소 루트)
+- 재적용 방법(계정 꼬임 등으로 다시 필요할 경우):
+  ```js
+  const { initializeApp, cert } = require('firebase-admin/app')
+  const { getStorage } = require('firebase-admin/storage')
+  const serviceAccount = require('../prd/tlmchurch-firebase-adminsdk-fbsvc-3660696d5b.json')
+  initializeApp({ credential: cert(serviceAccount), storageBucket: 'tlmchurch.firebasestorage.app' })
+  const cors = require('../storage-cors.json')
+  getStorage().bucket().setMetadata({ cors })
+  ```
+- 새 배포 도메인(예: 커스텀 도메인)을 추가하면 `storage-cors.json`의 `origin` 배열에도 추가하고 재적용해야 한다.

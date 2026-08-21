@@ -120,13 +120,15 @@ export function NamGyeonggiDocsPage() {
       void markRead(target)
       pushToast({ title: '다운로드 완료', variant: 'success' })
       setDownloadTarget(null)
-    } catch {
+    } catch (err) {
       // 브라우저 정책(CORS 등)으로 강제 다운로드가 막히면 새 탭으로 열어 수동 저장할 수 있게 폴백
+      console.error('[NamGyeonggiDocsPage] performDownload failed:', err)
       window.open(target.fileUrl, '_blank', 'noreferrer')
       void markRead(target)
       pushToast({
         title: '자동 다운로드에 실패해 새 탭으로 열었습니다',
-        description: '새 탭에서 저장(다른 이름으로 저장)해 주세요.',
+        description:
+          (err instanceof Error ? err.message : '') || '새 탭에서 저장(다른 이름으로 저장)해 주세요.',
         variant: 'error',
       })
       setDownloadTarget(null)
