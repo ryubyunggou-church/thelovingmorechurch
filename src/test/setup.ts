@@ -34,6 +34,17 @@ if (!('IntersectionObserver' in window)) {
   window.IntersectionObserver = MockIntersectionObserver
 }
 
+// jsdom has no ResizeObserver impl — polyfill for Header.tsx height measurement etc.
+if (!('ResizeObserver' in window)) {
+  class MockResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+  // @ts-expect-error jsdom test polyfill
+  window.ResizeObserver = MockResizeObserver
+}
+
 afterEach(() => {
   cleanup()
 })
